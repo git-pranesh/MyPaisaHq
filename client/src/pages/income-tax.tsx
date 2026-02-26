@@ -294,6 +294,10 @@ export default function IncomeTax() {
           </div>
         </div>
       </div>
+
+      <p className="mt-4 text-xs text-muted-foreground text-center" data-testid="text-surcharge-note">
+        Note: Surcharge is not included in the above calculation. Surcharge is applicable for taxable incomes above ₹50 lakh (10% for ₹50L-1Cr, 15% for ₹1Cr-2Cr, 25% for ₹2Cr-5Cr, 37% for above ₹5Cr under old regime; capped at 25% under new regime).
+      </p>
     </div>
   );
 }

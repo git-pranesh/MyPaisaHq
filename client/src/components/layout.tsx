@@ -82,12 +82,12 @@ function Footer() {
     <footer className="border-t bg-muted/30 mt-16" data-testid="footer">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2" data-testid="link-footer-home">
             <div className="w-6 h-6 rounded bg-primary flex items-center justify-center">
               <IndianRupee className="w-4 h-4 text-primary-foreground" />
             </div>
             <span className="font-semibold text-sm">My Paisa HQ</span>
-          </div>
+          </Link>
           <p className="text-xs text-muted-foreground text-center max-w-xl" data-testid="text-disclaimer">
             Disclaimer: The calculators provided are for informational purposes only. Results are approximate
             and should not be considered as financial advice. Please consult a qualified financial advisor for
