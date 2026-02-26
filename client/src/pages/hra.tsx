@@ -44,8 +44,9 @@ export default function HRA() {
               <Label>Basic Salary (Monthly)</Label>
               <Input
                 type="number"
-                value={basic || ""}
-                onChange={(e) => setBasic(Number(e.target.value))}
+                min={0}
+                value={basic}
+                onChange={(e) => setBasic(Math.max(0, Number(e.target.value)))}
                 data-testid="input-basic"
               />
             </div>
@@ -53,8 +54,9 @@ export default function HRA() {
               <Label>Actual HRA Received (Monthly)</Label>
               <Input
                 type="number"
-                value={hraReceived || ""}
-                onChange={(e) => setHraReceived(Number(e.target.value))}
+                min={0}
+                value={hraReceived}
+                onChange={(e) => setHraReceived(Math.max(0, Number(e.target.value)))}
                 data-testid="input-hra-received"
               />
             </div>
@@ -62,8 +64,9 @@ export default function HRA() {
               <Label>Actual Rent Paid (Monthly)</Label>
               <Input
                 type="number"
-                value={rentPaid || ""}
-                onChange={(e) => setRentPaid(Number(e.target.value))}
+                min={0}
+                value={rentPaid}
+                onChange={(e) => setRentPaid(Math.max(0, Number(e.target.value)))}
                 data-testid="input-rent"
               />
             </div>

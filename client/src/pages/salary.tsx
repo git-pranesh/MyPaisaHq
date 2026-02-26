@@ -61,17 +61,18 @@ export default function Salary() {
   const hraPercent = isMetro ? 50 : 40;
   const hraAnnual = (basicAnnual * hraPercent) / 100;
 
-  const pfAnnual = pfEnabled ? Math.min(basicAnnual * 0.12, 21600 * 12) : 0;
-  const employerPF = pfEnabled ? Math.min(basicAnnual * 0.12, 21600 * 12) : 0;
+  const pfAnnual = pfEnabled ? Math.min(basicAnnual * 0.12, 21600) : 0;
+  const employerPF = pfEnabled ? Math.min(basicAnnual * 0.12, 21600) : 0;
 
   const grossAnnual = ctc - employerPF;
+  const otherAllowances = grossAnnual - basicAnnual - hraAnnual;
 
   const stdDeductionNew = 75000;
   const stdDeductionOld = 50000;
 
   const taxableNew = Math.max(0, grossAnnual - stdDeductionNew - pfAnnual);
   const section80C = pfEnabled ? Math.min(pfAnnual, 150000) : 0;
-  const taxableOld = Math.max(0, grossAnnual - stdDeductionOld - hraAnnual * 0.5 - section80C);
+  const taxableOld = Math.max(0, grossAnnual - stdDeductionOld - section80C);
 
   const taxNew = calcNewRegimeTax(taxableNew);
   const cessNew = taxNew * 0.04;
@@ -81,18 +82,99 @@ export default function Salary() {
   const cessOld = taxOld * 0.04;
   const totalTaxOld = Math.round(taxOld + cessOld);
 
-  const inHandNewMonthly = Math.round((grossAnnual - totalTaxNew - pfAnnual - professionalTax) / 12);
-  const inHandOldMonthly = Math.round((grossAnnual - totalTaxOld - pfAnnual - professionalTax) / 12);
+  const inHandNewAnnual = grossAnnual - totalTaxNew - pfAnnual - professionalTax;
+  const inHandNewMonthly = Math.round(inHandNewAnnual / 12);
+
+  const inHandOldAnnual = grossAnnual - totalTaxOld - pfAnnual - professionalTax;
+  const inHandOldMonthly = Math.round(inHandOldAnnual / 12);
 
   const copyText = `CTC Breakdown\nAnnual CTC: ${formatINR(ctc)}\nBasic: ${formatINR(basicAnnual)}/yr\nHRA: ${formatINR(hraAnnual)}/yr\nPF (Employee): ${formatINR(pfAnnual)}/yr\nNew Regime Tax: ${formatINR(totalTaxNew)}\nIn-Hand (New): ${formatINR(inHandNewMonthly)}/month\nOld Regime Tax: ${formatINR(totalTaxOld)}\nIn-Hand (Old): ${formatINR(inHandOldMonthly)}/month`;
 
-  const Row = ({ label, annual, monthly, highlight }: { label: string; annual: number; monthly: number; highlight?: boolean }) => (
-    <tr className={highlight ? "font-semibold border-t-2" : ""}>
-      <td className="py-2 text-sm">{label}</td>
-      <td className="text-right py-2 text-sm">{formatINR(Math.round(monthly))}</td>
-      <td className="text-right py-2 text-sm">{formatINR(Math.round(annual))}</td>
-    </tr>
-  );
+  const BreakdownTable = ({ regime }: { regime: "new" | "old" }) => {
+    const stdDed = regime === "new" ? stdDeductionNew : stdDeductionOld;
+    const tax = regime === "new" ? totalTaxNew : totalTaxOld;
+    const inHand = regime === "new" ? inHandNewMonthly : inHandOldMonthly;
+    const taxableIncome = regime === "new" ? taxableNew : taxableOld;
+
+    return (
+      <div className="space-y-4">
+        <div>
+          <p className="text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wide">Earnings</p>
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b">
+                <th className="text-left py-1.5 font-medium text-xs">Component</th>
+                <th className="text-right py-1.5 font-medium text-xs">Monthly</th>
+                <th className="text-right py-1.5 font-medium text-xs">Annual</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y">
+              <tr>
+                <td className="py-1.5 text-sm">Basic Salary</td>
+                <td className="text-right py-1.5 text-sm">{formatINR(Math.round(basicMonthly))}</td>
+                <td className="text-right py-1.5 text-sm">{formatINR(Math.round(basicAnnual))}</td>
+              </tr>
+              <tr>
+                <td className="py-1.5 text-sm">HRA</td>
+                <td className="text-right py-1.5 text-sm">{formatINR(Math.round(hraAnnual / 12))}</td>
+                <td className="text-right py-1.5 text-sm">{formatINR(Math.round(hraAnnual))}</td>
+              </tr>
+              <tr>
+                <td className="py-1.5 text-sm">Other Allowances</td>
+                <td className="text-right py-1.5 text-sm">{formatINR(Math.round(otherAllowances / 12))}</td>
+                <td className="text-right py-1.5 text-sm">{formatINR(Math.round(otherAllowances))}</td>
+              </tr>
+              <tr className="font-medium border-t">
+                <td className="py-1.5 text-sm">Gross Salary</td>
+                <td className="text-right py-1.5 text-sm">{formatINR(Math.round(grossAnnual / 12))}</td>
+                <td className="text-right py-1.5 text-sm">{formatINR(Math.round(grossAnnual))}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div>
+          <p className="text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wide">Deductions</p>
+          <table className="w-full text-sm">
+            <tbody className="divide-y">
+              <tr>
+                <td className="py-1.5 text-sm">PF (Employee)</td>
+                <td className="text-right py-1.5 text-sm">{formatINR(Math.round(pfAnnual / 12))}</td>
+                <td className="text-right py-1.5 text-sm">{formatINR(Math.round(pfAnnual))}</td>
+              </tr>
+              <tr>
+                <td className="py-1.5 text-sm">Professional Tax</td>
+                <td className="text-right py-1.5 text-sm">{formatINR(Math.round(professionalTax / 12))}</td>
+                <td className="text-right py-1.5 text-sm">{formatINR(Math.round(professionalTax))}</td>
+              </tr>
+              <tr>
+                <td className="py-1.5 text-sm">Income Tax + Cess</td>
+                <td className="text-right py-1.5 text-sm">{formatINR(Math.round(tax / 12))}</td>
+                <td className="text-right py-1.5 text-sm">{formatINR(tax)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="border-t-2 pt-2">
+          <table className="w-full text-sm">
+            <tbody>
+              <tr className="font-semibold">
+                <td className="py-1.5">In-Hand Salary</td>
+                <td className="text-right py-1.5 text-primary">{formatINR(inHand)}</td>
+                <td className="text-right py-1.5 text-primary">{formatINR(inHand * 12)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="text-xs text-muted-foreground p-2 rounded-md bg-muted/50">
+          Std Deduction: {formatINR(stdDed)} | {regime === "old" ? `80C: ${formatINR(section80C)} | ` : ""}
+          Taxable Income: {formatINR(Math.round(taxableIncome))}
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
@@ -111,8 +193,9 @@ export default function Salary() {
               <Label>Annual CTC</Label>
               <Input
                 type="number"
-                value={ctc || ""}
-                onChange={(e) => setCTC(Number(e.target.value))}
+                min={0}
+                value={ctc}
+                onChange={(e) => setCTC(Math.max(0, Number(e.target.value)))}
                 data-testid="input-ctc"
               />
             </div>
@@ -122,8 +205,8 @@ export default function Salary() {
                 type="number"
                 min={1}
                 max={100}
-                value={basicPercent || ""}
-                onChange={(e) => setBasicPercent(Number(e.target.value))}
+                value={basicPercent}
+                onChange={(e) => setBasicPercent(Math.max(1, Math.min(100, Number(e.target.value))))}
                 data-testid="input-basic-percent"
               />
             </div>
@@ -131,8 +214,9 @@ export default function Salary() {
               <Label>Professional Tax (Annual)</Label>
               <Input
                 type="number"
-                value={professionalTax || ""}
-                onChange={(e) => setProfessionalTax(Number(e.target.value))}
+                min={0}
+                value={professionalTax}
+                onChange={(e) => setProfessionalTax(Math.max(0, Number(e.target.value)))}
                 data-testid="input-prof-tax"
               />
             </div>
@@ -144,6 +228,9 @@ export default function Salary() {
               <Label>PF Contribution (12%)</Label>
               <Switch checked={pfEnabled} onCheckedChange={setPfEnabled} data-testid="switch-pf" />
             </div>
+            <p className="text-xs text-muted-foreground">
+              PF capped at statutory limit of ₹15,000/month basic (₹21,600/year max contribution)
+            </p>
           </CardContent>
         </Card>
 
@@ -155,49 +242,12 @@ export default function Salary() {
             </TabsList>
             <TabsContent value="new">
               <ResultCard title="New Regime Breakdown" copyText={copyText} id="salary-new">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b">
-                      <th className="text-left py-2 font-medium">Component</th>
-                      <th className="text-right py-2 font-medium">Monthly</th>
-                      <th className="text-right py-2 font-medium">Annual</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y">
-                    <Row label="Basic Salary" annual={basicAnnual} monthly={basicMonthly} />
-                    <Row label="HRA" annual={hraAnnual} monthly={hraAnnual / 12} />
-                    <Row label="Other Allowances" annual={grossAnnual - basicAnnual - hraAnnual} monthly={(grossAnnual - basicAnnual - hraAnnual) / 12} />
-                    <Row label="(-) PF Deduction" annual={pfAnnual} monthly={pfAnnual / 12} />
-                    <Row label="(-) Professional Tax" annual={professionalTax} monthly={professionalTax / 12} />
-                    <Row label="(-) Std Deduction" annual={stdDeductionNew} monthly={stdDeductionNew / 12} />
-                    <Row label="(-) Income Tax + Cess" annual={totalTaxNew} monthly={totalTaxNew / 12} />
-                    <Row label="In-Hand Salary" annual={inHandNewMonthly * 12} monthly={inHandNewMonthly} highlight />
-                  </tbody>
-                </table>
+                <BreakdownTable regime="new" />
               </ResultCard>
             </TabsContent>
             <TabsContent value="old">
               <ResultCard title="Old Regime Breakdown" copyText={copyText} id="salary-old">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b">
-                      <th className="text-left py-2 font-medium">Component</th>
-                      <th className="text-right py-2 font-medium">Monthly</th>
-                      <th className="text-right py-2 font-medium">Annual</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y">
-                    <Row label="Basic Salary" annual={basicAnnual} monthly={basicMonthly} />
-                    <Row label="HRA" annual={hraAnnual} monthly={hraAnnual / 12} />
-                    <Row label="Other Allowances" annual={grossAnnual - basicAnnual - hraAnnual} monthly={(grossAnnual - basicAnnual - hraAnnual) / 12} />
-                    <Row label="(-) PF Deduction" annual={pfAnnual} monthly={pfAnnual / 12} />
-                    <Row label="(-) Professional Tax" annual={professionalTax} monthly={professionalTax / 12} />
-                    <Row label="(-) Std Deduction" annual={stdDeductionOld} monthly={stdDeductionOld / 12} />
-                    <Row label="(-) 80C (PF)" annual={section80C} monthly={section80C / 12} />
-                    <Row label="(-) Income Tax + Cess" annual={totalTaxOld} monthly={totalTaxOld / 12} />
-                    <Row label="In-Hand Salary" annual={inHandOldMonthly * 12} monthly={inHandOldMonthly} highlight />
-                  </tbody>
-                </table>
+                <BreakdownTable regime="old" />
               </ResultCard>
             </TabsContent>
           </Tabs>

@@ -47,8 +47,9 @@ export default function Hike() {
                   <Label>Current CTC (Annual)</Label>
                   <Input
                     type="number"
-                    value={currentCTC || ""}
-                    onChange={(e) => setCurrentCTC(Number(e.target.value))}
+                    min={0}
+                    value={currentCTC}
+                    onChange={(e) => setCurrentCTC(Math.max(0, Number(e.target.value)))}
                     data-testid="input-current-ctc"
                   />
                 </div>
@@ -56,8 +57,9 @@ export default function Hike() {
                   <Label>Hike Percentage (%)</Label>
                   <Input
                     type="number"
-                    value={hikePercent || ""}
-                    onChange={(e) => setHikePercent(Number(e.target.value))}
+                    min={0}
+                    value={hikePercent}
+                    onChange={(e) => setHikePercent(Math.max(0, Number(e.target.value)))}
                     data-testid="input-hike-percent"
                   />
                 </div>
@@ -96,8 +98,9 @@ export default function Hike() {
                   <Label>Current CTC (Annual)</Label>
                   <Input
                     type="number"
-                    value={currentCTC || ""}
-                    onChange={(e) => setCurrentCTC(Number(e.target.value))}
+                    min={0}
+                    value={currentCTC}
+                    onChange={(e) => setCurrentCTC(Math.max(0, Number(e.target.value)))}
                     data-testid="input-current-ctc-reverse"
                   />
                 </div>
@@ -105,8 +108,9 @@ export default function Hike() {
                   <Label>Desired CTC (Annual)</Label>
                   <Input
                     type="number"
-                    value={desiredCTC || ""}
-                    onChange={(e) => setDesiredCTC(Number(e.target.value))}
+                    min={0}
+                    value={desiredCTC}
+                    onChange={(e) => setDesiredCTC(Math.max(0, Number(e.target.value)))}
                     data-testid="input-desired-ctc"
                   />
                 </div>

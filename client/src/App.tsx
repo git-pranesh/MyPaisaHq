@@ -13,6 +13,7 @@ import HikeCalc from "@/pages/hike";
 import IncomeTaxCalc from "@/pages/income-tax";
 import SIPCalc from "@/pages/sip";
 import LoanVsSIP from "@/pages/loan-vs-sip";
+import GoalSIP from "@/pages/goal-sip";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -28,6 +29,7 @@ function Router() {
         <Route path="/income-tax" component={IncomeTaxCalc} />
         <Route path="/sip" component={SIPCalc} />
         <Route path="/loan-vs-sip" component={LoanVsSIP} />
+        <Route path="/goal-sip" component={GoalSIP} />
         <Route component={NotFound} />
       </Switch>
     </Layout>

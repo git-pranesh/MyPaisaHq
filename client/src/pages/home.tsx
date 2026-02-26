@@ -9,6 +9,7 @@ import {
   Receipt,
   PiggyBank,
   Scale,
+  Target,
 } from "lucide-react";
 
 const tools = [
@@ -60,6 +61,12 @@ const tools = [
     title: "Loan vs SIP",
     desc: "Should you prepay your loan or invest in SIP? Compare total outflow and make smarter decisions",
   },
+  {
+    href: "/goal-sip",
+    icon: Target,
+    title: "Goal-based Top-up SIP",
+    desc: "Find the monthly SIP needed to reach your financial goal, with annual top-ups and inflation adjustment",
+  },
 ];
 
 export default function Home() {
@@ -76,7 +83,7 @@ export default function Home() {
             <span className="text-primary block mt-1">financial decisions</span>
           </h1>
           <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto">
-            8 powerful calculators covering salary, tax, investment and more — designed for Indian professionals.
+            9 powerful calculators covering salary, tax, investment and more — designed for Indian professionals.
             All calculations update in real-time.
           </p>
         </div>

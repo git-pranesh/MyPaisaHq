@@ -123,8 +123,9 @@ export default function IncomeTax() {
               <Label>Annual Income</Label>
               <Input
                 type="number"
-                value={income || ""}
-                onChange={(e) => setIncome(Number(e.target.value))}
+                min={0}
+                value={income}
+                onChange={(e) => setIncome(Math.max(0, Number(e.target.value)))}
                 data-testid="input-income"
               />
             </div>
@@ -148,8 +149,9 @@ export default function IncomeTax() {
                   <Label className="text-xs">Section 80C (max 1.5L)</Label>
                   <Input
                     type="number"
-                    value={deduction80C || ""}
-                    onChange={(e) => setDeduction80C(Number(e.target.value))}
+                    min={0}
+                    value={deduction80C}
+                    onChange={(e) => setDeduction80C(Math.max(0, Number(e.target.value)))}
                     data-testid="input-80c"
                   />
                 </div>
@@ -157,8 +159,9 @@ export default function IncomeTax() {
                   <Label className="text-xs">Section 80D (max {age === "below60" ? "25K" : "50K"})</Label>
                   <Input
                     type="number"
-                    value={deduction80D || ""}
-                    onChange={(e) => setDeduction80D(Number(e.target.value))}
+                    min={0}
+                    value={deduction80D}
+                    onChange={(e) => setDeduction80D(Math.max(0, Number(e.target.value)))}
                     data-testid="input-80d"
                   />
                 </div>
@@ -166,8 +169,9 @@ export default function IncomeTax() {
                   <Label className="text-xs">HRA Exemption</Label>
                   <Input
                     type="number"
-                    value={hraExemption || ""}
-                    onChange={(e) => setHraExemption(Number(e.target.value))}
+                    min={0}
+                    value={hraExemption}
+                    onChange={(e) => setHraExemption(Math.max(0, Number(e.target.value)))}
                     data-testid="input-hra-exempt"
                   />
                 </div>

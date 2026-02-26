@@ -1,7 +1,7 @@
 # RupeeTools - Indian Finance Calculator Suite
 
 ## Overview
-A professional Indian finance calculator website with 8 fully working tools. Built with React + TypeScript + Tailwind CSS + Recharts. All calculations are client-side (no database needed).
+A professional Indian finance calculator website with 9 fully working tools. Built with React + TypeScript + Tailwind CSS + Recharts. All calculations are client-side (no database needed).
 
 ## Architecture
 - **Frontend-only calculators** - No backend API calls needed for calculations
@@ -30,18 +30,20 @@ client/src/
 │   ├── hike.tsx         # Salary hike calculator
 │   ├── income-tax.tsx   # Income tax FY 2025-26
 │   ├── sip.tsx          # SIP returns calculator
-│   └── loan-vs-sip.tsx  # Loan vs SIP comparison
+│   ├── loan-vs-sip.tsx  # Loan vs SIP comparison
+│   └── goal-sip.tsx     # Goal-based top-up SIP calculator
 ```
 
-## 8 Calculators
+## 9 Calculators
 1. `/8th-pay-commission` - 8th CPC salary with fitment factor
-2. `/gratuity` - Gratuity with tax exemption
-3. `/salary` - CTC to in-hand salary (old vs new regime)
+2. `/gratuity` - Gratuity with tax exemption + 5-year eligibility warning
+3. `/salary` - CTC to in-hand salary (old vs new regime), PF capped at ₹21,600/yr
 4. `/hra` - HRA exemption under 10(13A)
 5. `/hike` - Salary hike forward/reverse calculator
 6. `/income-tax` - FY 2025-26 income tax with slab breakup
 7. `/sip` - SIP returns with step-up and chart
 8. `/loan-vs-sip` - Loan prepayment vs SIP investment
+9. `/goal-sip` - Goal-based top-up SIP (inflation-adjusted target, reverse-calc starting SIP)
 
 ## Key Features
 - Real-time calculations (update on every input change)
@@ -50,3 +52,6 @@ client/src/
 - Fully responsive design
 - Area/bar charts via Recharts
 - No database or API needed
+- Input validation: min=0 on all fields, min=1 on tenure/duration fields to prevent divide-by-zero
+- Gratuity shows eligibility warning for < 5 years service
+- Salary breakdown separates earnings and deductions for clear math

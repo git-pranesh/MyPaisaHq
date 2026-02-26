@@ -14,13 +14,15 @@ export default function SIP() {
   const [stepUpEnabled, setStepUpEnabled] = useState(false);
   const [stepUpPercent, setStepUpPercent] = useState(10);
 
+  const safeDuration = Math.max(1, duration);
+
   const chartData = useMemo(() => {
     const data: { year: number; invested: number; value: number }[] = [];
     const r = annualReturn / 100 / 12;
     let totalInvested = 0;
     let totalValue = 0;
 
-    for (let year = 1; year <= duration; year++) {
+    for (let year = 1; year <= safeDuration; year++) {
       const sipAmount = stepUpEnabled
         ? monthlyInv * Math.pow(1 + stepUpPercent / 100, year - 1)
         : monthlyInv;
@@ -37,14 +39,14 @@ export default function SIP() {
       });
     }
     return data;
-  }, [monthlyInv, annualReturn, duration, stepUpEnabled, stepUpPercent]);
+  }, [monthlyInv, annualReturn, safeDuration, stepUpEnabled, stepUpPercent]);
 
   const finalData = chartData[chartData.length - 1] || { invested: 0, value: 0 };
   const totalInvested = finalData.invested;
   const maturityValue = finalData.value;
   const estimatedReturns = maturityValue - totalInvested;
 
-  const copyText = `SIP Returns\nMonthly Investment: ${formatINR(monthlyInv)}\nExpected Return: ${annualReturn}%\nDuration: ${duration} years${stepUpEnabled ? `\nStep-up: ${stepUpPercent}%/yr` : ""}\nTotal Invested: ${formatINR(totalInvested)}\nEstimated Returns: ${formatINR(estimatedReturns)}\nMaturity Value: ${formatINR(maturityValue)}`;
+  const copyText = `SIP Returns\nMonthly Investment: ${formatINR(monthlyInv)}\nExpected Return: ${annualReturn}%\nDuration: ${safeDuration} years${stepUpEnabled ? `\nStep-up: ${stepUpPercent}%/yr` : ""}\nTotal Invested: ${formatINR(totalInvested)}\nEstimated Returns: ${formatINR(estimatedReturns)}\nMaturity Value: ${formatINR(maturityValue)}`;
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
@@ -63,8 +65,9 @@ export default function SIP() {
               <Label>Monthly Investment</Label>
               <Input
                 type="number"
-                value={monthlyInv || ""}
-                onChange={(e) => setMonthlyInv(Number(e.target.value))}
+                min={0}
+                value={monthlyInv}
+                onChange={(e) => setMonthlyInv(Math.max(0, Number(e.target.value)))}
                 data-testid="input-monthly-inv"
               />
             </div>
@@ -72,8 +75,10 @@ export default function SIP() {
               <Label>Expected Annual Return (%)</Label>
               <Input
                 type="number"
-                value={annualReturn || ""}
-                onChange={(e) => setAnnualReturn(Number(e.target.value))}
+                min={0}
+                max={50}
+                value={annualReturn}
+                onChange={(e) => setAnnualReturn(Math.max(0, Number(e.target.value)))}
                 data-testid="input-annual-return"
               />
             </div>
@@ -83,8 +88,8 @@ export default function SIP() {
                 type="number"
                 min={1}
                 max={40}
-                value={duration || ""}
-                onChange={(e) => setDuration(Number(e.target.value))}
+                value={duration}
+                onChange={(e) => setDuration(Math.max(1, Math.min(40, Math.floor(Number(e.target.value)))))}
                 data-testid="input-duration"
               />
             </div>
@@ -100,8 +105,10 @@ export default function SIP() {
                 <Label>Annual Step-up (%)</Label>
                 <Input
                   type="number"
-                  value={stepUpPercent || ""}
-                  onChange={(e) => setStepUpPercent(Number(e.target.value))}
+                  min={0}
+                  max={100}
+                  value={stepUpPercent}
+                  onChange={(e) => setStepUpPercent(Math.max(0, Number(e.target.value)))}
                   data-testid="input-stepup-percent"
                 />
               </div>

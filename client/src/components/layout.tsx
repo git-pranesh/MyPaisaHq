@@ -12,6 +12,7 @@ const navLinks = [
   { href: "/income-tax", label: "Income Tax" },
   { href: "/sip", label: "SIP" },
   { href: "/loan-vs-sip", label: "Loan vs SIP" },
+  { href: "/goal-sip", label: "Goal SIP" },
 ];
 
 function Navbar() {

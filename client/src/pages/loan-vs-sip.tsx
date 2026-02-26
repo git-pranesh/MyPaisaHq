@@ -12,28 +12,27 @@ export default function LoanVsSIP() {
   const [loanTenure, setLoanTenure] = useState(20);
   const [sipReturn, setSipReturn] = useState(12);
 
+  const safeTenure = Math.max(1, loanTenure);
   const r = loanRate / 100 / 12;
-  const n = loanTenure * 12;
+  const n = safeTenure * 12;
   const emi = r > 0 ? (loanAmount * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1) : loanAmount / n;
   const totalLoanPayment = emi * n;
   const totalInterest = totalLoanPayment - loanAmount;
 
   const sipR = sipReturn / 100 / 12;
-  const sipMonthly =
-    sipR > 0
-      ? loanAmount / (((Math.pow(1 + sipR, n) - 1) / sipR) * (1 + sipR))
-      : loanAmount / n;
+  const sipFactor = sipR > 0 ? (((Math.pow(1 + sipR, n) - 1) / sipR) * (1 + sipR)) : n;
+  const sipMonthly = sipFactor > 0 ? loanAmount / sipFactor : 0;
   const totalSipInvested = sipMonthly * n;
-  const sipCorpus = sipMonthly * (((Math.pow(1 + sipR, n) - 1) / sipR) * (1 + sipR));
+  const sipCorpus = sipMonthly * sipFactor;
 
   const investBetter = sipReturn > loanRate;
 
   const comparisonData = useMemo(() => [
-    { name: "Loan Repayment", principal: loanAmount, extra: totalInterest, label: "Interest" },
+    { name: "Loan Repayment", principal: loanAmount, extra: Math.round(totalInterest), label: "Interest" },
     { name: "SIP Investment", principal: Math.round(totalSipInvested), extra: Math.round(sipCorpus - totalSipInvested), label: "Returns" },
   ], [loanAmount, totalInterest, totalSipInvested, sipCorpus]);
 
-  const copyText = `Loan vs SIP Comparison\nLoan: ${formatINR(loanAmount)} at ${loanRate}% for ${loanTenure} yrs\nEMI: ${formatINR(Math.round(emi))}/mo\nTotal Interest: ${formatINR(Math.round(totalInterest))}\nTotal Loan Outflow: ${formatINR(Math.round(totalLoanPayment))}\n\nSIP needed for same corpus: ${formatINR(Math.round(sipMonthly))}/mo at ${sipReturn}%\nTotal SIP Invested: ${formatINR(Math.round(totalSipInvested))}\nSIP Corpus: ${formatINR(Math.round(sipCorpus))}\n\nVerdict: ${investBetter ? "Investing in SIP is better" : "Prepaying the loan is better"}`;
+  const copyText = `Loan vs SIP Comparison\nLoan: ${formatINR(loanAmount)} at ${loanRate}% for ${safeTenure} yrs\nEMI: ${formatINR(Math.round(emi))}/mo\nTotal Interest: ${formatINR(Math.round(totalInterest))}\nTotal Loan Outflow: ${formatINR(Math.round(totalLoanPayment))}\n\nSIP needed for same corpus: ${formatINR(Math.round(sipMonthly))}/mo at ${sipReturn}%\nTotal SIP Invested: ${formatINR(Math.round(totalSipInvested))}\nSIP Corpus: ${formatINR(Math.round(sipCorpus))}\n\nVerdict: ${investBetter ? "Investing in SIP is better" : "Prepaying the loan is better"}`;
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
@@ -52,8 +51,9 @@ export default function LoanVsSIP() {
               <Label>Loan Amount</Label>
               <Input
                 type="number"
-                value={loanAmount || ""}
-                onChange={(e) => setLoanAmount(Number(e.target.value))}
+                min={0}
+                value={loanAmount}
+                onChange={(e) => setLoanAmount(Math.max(0, Number(e.target.value)))}
                 data-testid="input-loan-amount"
               />
             </div>
@@ -62,9 +62,10 @@ export default function LoanVsSIP() {
                 <Label>Loan Interest Rate (%)</Label>
                 <Input
                   type="number"
+                  min={0}
                   step={0.1}
-                  value={loanRate || ""}
-                  onChange={(e) => setLoanRate(Number(e.target.value))}
+                  value={loanRate}
+                  onChange={(e) => setLoanRate(Math.max(0, Number(e.target.value)))}
                   data-testid="input-loan-rate"
                 />
               </div>
@@ -72,8 +73,9 @@ export default function LoanVsSIP() {
                 <Label>Loan Tenure (Years)</Label>
                 <Input
                   type="number"
-                  value={loanTenure || ""}
-                  onChange={(e) => setLoanTenure(Number(e.target.value))}
+                  min={1}
+                  value={loanTenure}
+                  onChange={(e) => setLoanTenure(Math.max(1, Math.floor(Number(e.target.value))))}
                   data-testid="input-loan-tenure"
                 />
               </div>
@@ -82,9 +84,10 @@ export default function LoanVsSIP() {
               <Label>Expected SIP Return (%)</Label>
               <Input
                 type="number"
+                min={0}
                 step={0.1}
-                value={sipReturn || ""}
-                onChange={(e) => setSipReturn(Number(e.target.value))}
+                value={sipReturn}
+                onChange={(e) => setSipReturn(Math.max(0, Number(e.target.value)))}
                 data-testid="input-sip-return"
               />
             </div>

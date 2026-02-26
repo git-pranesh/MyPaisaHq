@@ -25,9 +25,8 @@ export default function PayCommission() {
   const oldGross = currentBasic + oldDA + oldHRA + oldTA;
 
   const newBasic = Math.round(currentBasic * fitment);
-  const newDA = Math.round(newBasic * 0.0);
-  const newHRARate = cityType === "X" ? 0.27 : cityType === "Y" ? 0.18 : 0.09;
-  const newHRA = Math.round(newBasic * newHRARate);
+  const newDA = 0;
+  const newHRA = Math.round(newBasic * hraRates[cityType]);
   const newTA = taRates[cityType];
   const newGross = newBasic + newDA + newHRA + newTA;
   const increase = newGross - oldGross;

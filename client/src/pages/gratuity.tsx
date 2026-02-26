@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import ResultCard from "@/components/result-card";
 import { formatINR } from "@/lib/formatters";
+import { AlertCircle } from "lucide-react";
 
 export default function Gratuity() {
   const [basicDA, setBasicDA] = useState(50000);
@@ -13,13 +14,14 @@ export default function Gratuity() {
   const [covered, setCovered] = useState(true);
 
   const effectiveYears = months >= 7 ? years + 1 : years;
+  const isEligible = effectiveYears >= 5;
 
   const gratuity = covered
     ? (effectiveYears * basicDA * 15) / 26
     : (effectiveYears * basicDA * 15) / 30;
 
   const roundedGratuity = Math.round(gratuity);
-  const exemptionLimit = 2500000; // As per latest tax rules
+  const exemptionLimit = 2500000;
   const exemptAmount = Math.min(roundedGratuity, exemptionLimit);
   const taxableAmount = Math.max(0, roundedGratuity - exemptionLimit);
 
@@ -42,8 +44,9 @@ export default function Gratuity() {
               <Label>Monthly Basic Salary + DA</Label>
               <Input
                 type="number"
-                value={basicDA || ""}
-                onChange={(e) => setBasicDA(Number(e.target.value))}
+                min={0}
+                value={basicDA}
+                onChange={(e) => setBasicDA(Math.max(0, Number(e.target.value)))}
                 data-testid="input-basic-da"
               />
             </div>
@@ -54,8 +57,8 @@ export default function Gratuity() {
                 <Input
                   type="number"
                   min={0}
-                  value={years || ""}
-                  onChange={(e) => setYears(Number(e.target.value))}
+                  value={years}
+                  onChange={(e) => setYears(Math.max(0, Math.floor(Number(e.target.value))))}
                   data-testid="input-years"
                 />
               </div>
@@ -65,12 +68,19 @@ export default function Gratuity() {
                   type="number"
                   min={0}
                   max={11}
-                  value={months || ""}
-                  onChange={(e) => setMonths(Number(e.target.value))}
+                  value={months}
+                  onChange={(e) => setMonths(Math.max(0, Math.min(11, Math.floor(Number(e.target.value)))))}
                   data-testid="input-months"
                 />
               </div>
             </div>
+
+            {!isEligible && (
+              <div className="flex items-start gap-2 p-3 rounded-md bg-destructive/10 text-destructive text-sm" data-testid="text-eligibility-warning">
+                <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+                <p>Under the Payment of Gratuity Act, an employee must complete at least <strong>5 years of continuous service</strong> to be eligible for gratuity. Your current service period is below this threshold.</p>
+              </div>
+            )}
 
             <div className="flex items-center justify-between gap-2 p-3 rounded-md bg-muted/50">
               <div>
