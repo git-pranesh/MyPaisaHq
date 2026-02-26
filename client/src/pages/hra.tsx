@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -7,6 +7,7 @@ import ResultCard from "@/components/result-card";
 import { formatINR } from "@/lib/formatters";
 
 export default function HRA() {
+  useEffect(() => { document.title = "HRA Exemption Calculator - My Paisa HQ"; }, []);
   const [basic, setBasic] = useState(40000);
   const [hraReceived, setHraReceived] = useState(20000);
   const [rentPaid, setRentPaid] = useState(15000);

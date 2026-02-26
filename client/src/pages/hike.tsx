@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -7,6 +7,7 @@ import ResultCard from "@/components/result-card";
 import { formatINR } from "@/lib/formatters";
 
 export default function Hike() {
+  useEffect(() => { document.title = "Salary Hike Calculator - My Paisa HQ"; }, []);
   const [currentCTC, setCurrentCTC] = useState(1000000);
   const [hikePercent, setHikePercent] = useState(20);
   const [desiredCTC, setDesiredCTC] = useState(1500000);

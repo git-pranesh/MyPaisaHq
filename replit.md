@@ -1,4 +1,4 @@
-# RupeeTools - Indian Finance Calculator Suite
+# My Paisa HQ - Indian Finance Calculator Suite
 
 ## Overview
 A professional Indian finance calculator website with 9 fully working tools. Built with React + TypeScript + Tailwind CSS + Recharts. All calculations are client-side (no database needed).

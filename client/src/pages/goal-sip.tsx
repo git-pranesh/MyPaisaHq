@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -7,6 +7,7 @@ import { formatINR, formatINRCompact } from "@/lib/formatters";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 
 export default function GoalSIP() {
+  useEffect(() => { document.title = "Goal-based Top-up SIP Calculator - My Paisa HQ"; }, []);
   const [goalAmount, setGoalAmount] = useState(10000000);
   const [investmentYears, setInvestmentYears] = useState(15);
   const [expectedReturn, setExpectedReturn] = useState(12);

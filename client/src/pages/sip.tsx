@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -8,6 +8,7 @@ import { formatINR, formatINRCompact } from "@/lib/formatters";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 
 export default function SIP() {
+  useEffect(() => { document.title = "SIP Returns Calculator - My Paisa HQ"; }, []);
   const [monthlyInv, setMonthlyInv] = useState(10000);
   const [annualReturn, setAnnualReturn] = useState(12);
   const [duration, setDuration] = useState(10);

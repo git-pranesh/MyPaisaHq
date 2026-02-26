@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -77,6 +77,7 @@ function formatSlabRange(from: number, to: number): string {
 }
 
 export default function IncomeTax() {
+  useEffect(() => { document.title = "Income Tax Calculator FY 2025-26 - My Paisa HQ"; }, []);
   const [income, setIncome] = useState(1500000);
   const [age, setAge] = useState("below60");
   const [deduction80C, setDeduction80C] = useState(150000);

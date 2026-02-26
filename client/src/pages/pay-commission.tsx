@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -8,6 +8,7 @@ import { formatINR } from "@/lib/formatters";
 import { payLevels, getPayValuesForLevel } from "@/lib/pay-matrix";
 
 export default function PayCommission() {
+  useEffect(() => { document.title = "8th Pay Commission Salary Calculator - My Paisa HQ"; }, []);
   const [selectedLevel, setSelectedLevel] = useState("7");
   const [selectedPay, setSelectedPay] = useState("44900");
   const [fitment, setFitment] = useState(2.28);

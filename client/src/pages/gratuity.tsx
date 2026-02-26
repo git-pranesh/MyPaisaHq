@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -8,6 +8,7 @@ import { formatINR } from "@/lib/formatters";
 import { AlertCircle } from "lucide-react";
 
 export default function Gratuity() {
+  useEffect(() => { document.title = "Gratuity Calculator - My Paisa HQ"; }, []);
   const [basicDA, setBasicDA] = useState(50000);
   const [years, setYears] = useState(15);
   const [months, setMonths] = useState(0);

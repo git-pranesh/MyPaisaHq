@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -49,6 +49,7 @@ function calcOldRegimeTax(taxableIncome: number): number {
 }
 
 export default function Salary() {
+  useEffect(() => { document.title = "In-Hand Salary & CTC Calculator - My Paisa HQ"; }, []);
   const [ctc, setCTC] = useState(1200000);
   const [basicPercent, setBasicPercent] = useState(40);
   const [isMetro, setIsMetro] = useState(true);

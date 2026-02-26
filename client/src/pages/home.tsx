@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -70,13 +71,14 @@ const tools = [
 ];
 
 export default function Home() {
+  useEffect(() => { document.title = "My Paisa HQ - Free Indian Finance Calculators"; }, []);
   return (
     <div>
       <section className="py-16 md:py-24 px-4" data-testid="hero-section">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-6">
             <IndianRupee className="w-4 h-4" />
-            Free Indian Finance Tools
+            My Paisa HQ - Free Finance Tools
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4">
             Smart tools for your

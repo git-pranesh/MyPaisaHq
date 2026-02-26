@@ -27,7 +27,7 @@ function Navbar() {
             <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center">
               <IndianRupee className="w-5 h-5 text-primary-foreground" />
             </div>
-            <span className="text-lg font-bold tracking-tight">RupeeTools</span>
+            <span className="text-lg font-bold tracking-tight">My Paisa HQ</span>
           </Link>
 
           <div className="hidden lg:flex items-center gap-1 flex-wrap">
@@ -86,7 +86,7 @@ function Footer() {
             <div className="w-6 h-6 rounded bg-primary flex items-center justify-center">
               <IndianRupee className="w-4 h-4 text-primary-foreground" />
             </div>
-            <span className="font-semibold text-sm">RupeeTools</span>
+            <span className="font-semibold text-sm">My Paisa HQ</span>
           </div>
           <p className="text-xs text-muted-foreground text-center max-w-xl" data-testid="text-disclaimer">
             Disclaimer: The calculators provided are for informational purposes only. Results are approximate

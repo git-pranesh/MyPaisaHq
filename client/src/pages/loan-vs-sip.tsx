@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -7,6 +7,7 @@ import { formatINR, formatINRCompact } from "@/lib/formatters";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell } from "recharts";
 
 export default function LoanVsSIP() {
+  useEffect(() => { document.title = "Loan vs SIP Comparison - My Paisa HQ"; }, []);
   const [loanAmount, setLoanAmount] = useState(3000000);
   const [loanRate, setLoanRate] = useState(8.5);
   const [loanTenure, setLoanTenure] = useState(20);
