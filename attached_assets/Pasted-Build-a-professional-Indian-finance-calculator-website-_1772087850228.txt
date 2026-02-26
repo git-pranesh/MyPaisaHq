@@ -1,0 +1,23 @@
+Build a professional Indian finance calculator website called "RupeeTools" with 8 fully working tools. Use React + TypeScript + Tailwind CSS + Recharts for charts. Single page app with React Router for navigation. Mobile-first, clean modern design with saffron/orange accent color (#FF6B00) on white background.
+
+Include these 8 calculator pages:
+
+1. /8th-pay-commission - 8th Pay Commission Salary Calculator: Inputs: current basic pay (dropdown of all 7th CPC pay matrix values from Level 1 to Level 18), fitment factor slider (1.83 to 2.86, step 0.01, default 2.28), HRA city type (X/Y/Z), TA. Output: new basic pay, DA, HRA, TA, gross salary, net salary. Show comparison table of old vs new salary.
+
+2. /gratuity - Gratuity Calculator: Inputs: monthly basic salary + DA, years of service (with months). Formula: G = N * B * 15/26 for Gratuity Act covered, G = N * B * 15/30 for non-covered. Toggle for coverage. Show gratuity amount, tax exemption (up to 20L), taxable amount.
+
+3. /salary - In-Hand Salary / CTC Calculator: Inputs: annual CTC, basic salary % of CTC (default 40%), HRA % of basic (50% metro, 40% non-metro), standard deduction 75000, professional tax, PF toggle (12% of basic). Old regime vs New regime FY 2025-26 toggle. New regime slabs: 0-4L=0%, 4-8L=5%, 8-12L=10%, 12-16L=15%, 16-20L=20%, 20-24L=25%, above 24L=30%. Output: detailed monthly and annual breakdown table, tax payable, net in-hand.
+
+4. /hra - HRA Exemption Calculator: Inputs: basic salary (monthly), actual HRA received (monthly), actual rent paid (monthly), metro/non-metro toggle. Calculate exemption as minimum of: actual HRA received, 50%/40% of basic, rent paid minus 10% of basic. Show all 3 values, highlight minimum (exemption amount), taxable HRA.
+
+5. /hike - Salary Hike Calculator: Inputs: current CTC, hike percentage. Output: new CTC, monthly increase, yearly increase. Also show reverse: input desired new salary, calculate required hike %. Add a comparison table for hike percentages 5% to 50% in 5% steps.
+
+6. /income-tax - Income Tax Calculator FY 2025-26: Inputs: annual income, age group (below 60 / 60-80 / above 80), regime toggle (old/new). Old regime deductions: 80C (max 1.5L), 80D (max 25k/50k), HRA exemption, standard deduction 50k. New regime: standard deduction 75k, no other deductions, tax rebate u/s 87A up to 12L income. Show slab-wise tax breakup table, total tax, cess (4%), comparison of both regimes side by side.
+
+7. /sip - SIP Returns Calculator: Inputs: monthly investment amount, expected annual return % (default 12%), investment duration in years. Formula: M = P * [((1+r)^n - 1)/r] * (1+r) where r = annual_rate/12/100, n = months. Output: total invested, estimated returns, maturity value. Add step-up SIP option (annual increase %). Show area chart of investment growth over time with Recharts.
+
+8. /loan-vs-sip - Loan vs SIP Comparison: Inputs: loan amount, loan interest rate %, loan tenure years, expected SIP return %. Calculate: monthly EMI (standard formula), total interest paid on loan, monthly SIP needed to generate same corpus as loan amount at end of tenure. Show: should you prepay loan or invest in SIP? Decision logic: if SIP return > loan interest rate, investing is better. Show bar chart comparing total outflow.
+
+Home page (/) should have a clean hero section with all 8 tools as cards with icons, brief description, and link to each tool. Add a sticky top navbar with the site name RupeeTools and links to all calculators. Add a footer with disclaimer text.
+
+Make all calculations real-time (update on every input change). Format all currency values in Indian number system (lakhs/crores). Add a copy result button on each calculator. Make it fully responsive.
