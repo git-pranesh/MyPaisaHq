@@ -1,13 +1,45 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import ResultCard from "@/components/result-card";
+import SEOHead from "@/components/seo-head";
+import Breadcrumb from "@/components/breadcrumb";
+import FAQSection, { type FAQItem } from "@/components/faq-section";
+import RelatedTools from "@/components/related-tools";
 import { formatINR, formatINRCompact } from "@/lib/formatters";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell } from "recharts";
 
+const faqs: FAQItem[] = [
+  {
+    question: "Should I prepay my home loan or invest in SIP?",
+    answer: "Compare your loan interest rate with expected SIP returns. If your SIP can earn more than the loan interest rate (e.g., 12% SIP return vs 8.5% loan interest), investing in SIP is mathematically better. However, consider factors like tax benefits on home loan (Section 24 and 80C), risk tolerance, and the psychological comfort of being debt-free. A balanced approach of partial prepayment and partial SIP investment often works best.",
+  },
+  {
+    question: "When is prepaying a loan better than SIP?",
+    answer: "Prepaying the loan is better when: (1) Your loan interest rate is higher than expected SIP returns (e.g., personal loan at 14% vs SIP at 12%), (2) You want guaranteed returns (loan prepayment gives certain interest savings), (3) You're nearing retirement and want to reduce financial obligations, (4) You have high-interest loans like credit card debt or personal loans.",
+  },
+  {
+    question: "How is EMI calculated for a loan?",
+    answer: "EMI (Equated Monthly Installment) is calculated using the formula: EMI = P x R x (1+R)^N / ((1+R)^N - 1), where P = Principal loan amount, R = Monthly interest rate (annual rate / 12 / 100), N = Total number of monthly installments (tenure in years x 12). For example, a Rs. 30 lakh loan at 8.5% for 20 years results in an EMI of approximately Rs. 26,036.",
+  },
+  {
+    question: "What factors should I consider in the loan vs SIP decision?",
+    answer: "Key factors: (1) Interest rate differential — SIP returns minus loan interest rate, (2) Tax benefits — home loan interest deduction under Sec 24(b) up to Rs. 2 lakh and principal under 80C, (3) Investment horizon — SIP works better over 7+ years, (4) Risk appetite — loan prepayment is risk-free while SIP carries market risk, (5) Emergency fund — maintain 6 months' expenses before extra payments/investments.",
+  },
+  {
+    question: "Can I do both — partial loan prepayment and SIP?",
+    answer: "Yes, this is often the most balanced strategy. You could use 50% of surplus funds to prepay the loan (reducing tenure and total interest) and invest the other 50% in SIP for wealth creation. This gives you the benefit of reduced debt burden while also building a growing investment corpus. Adjust the ratio based on your loan interest rate and financial goals.",
+  },
+];
+
+const relatedTools = [
+  { href: "/sip", title: "SIP Returns Calculator", desc: "Estimate SIP returns with step-up option" },
+  { href: "/goal-sip", title: "Goal-based Top-up SIP", desc: "Calculate SIP for a specific financial goal" },
+  { href: "/income-tax", title: "Income Tax Calculator", desc: "Check tax benefits on home loan interest" },
+];
+
 export default function LoanVsSIP() {
-  useEffect(() => { document.title = "Loan vs SIP Comparison - My Paisa HQ"; }, []);
   const [loanAmount, setLoanAmount] = useState(3000000);
   const [loanRate, setLoanRate] = useState(8.5);
   const [loanTenure, setLoanTenure] = useState(20);
@@ -35,8 +67,45 @@ export default function LoanVsSIP() {
 
   const copyText = `Loan vs SIP Comparison\nLoan: ${formatINR(loanAmount)} at ${loanRate}% for ${safeTenure} yrs\nEMI: ${formatINR(Math.round(emi))}/mo\nTotal Interest: ${formatINR(Math.round(totalInterest))}\nTotal Loan Outflow: ${formatINR(Math.round(totalLoanPayment))}\n\nSIP needed for same corpus: ${formatINR(Math.round(sipMonthly))}/mo at ${sipReturn}%\nTotal SIP Invested: ${formatINR(Math.round(totalSipInvested))}\nSIP Corpus: ${formatINR(Math.round(sipCorpus))}\n\nVerdict: ${investBetter ? "Investing in SIP is better" : "Prepaying the loan is better"}`;
 
+  const jsonLd = useMemo(() => [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      name: "Loan vs SIP Comparison Calculator",
+      url: "https://mypaisahq.com/loan-vs-sip",
+      applicationCategory: "FinanceApplication",
+      operatingSystem: "Any",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "INR" },
+      description: "Compare loan prepayment vs SIP investment. Calculate EMI, total interest, and SIP returns to make smarter financial decisions.",
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.question,
+        acceptedAnswer: { "@type": "Answer", text: f.answer },
+      })),
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://mypaisahq.com" },
+        { "@type": "ListItem", position: 2, name: "Loan vs SIP Comparison", item: "https://mypaisahq.com/loan-vs-sip" },
+      ],
+    },
+  ], []);
+
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
+      <SEOHead
+        title="Loan vs SIP Comparison Calculator - My Paisa HQ"
+        description="Should you prepay your home loan or invest in SIP? Compare EMI payments, total interest outflow and SIP returns side by side. Calculate the optimal strategy for your financial situation."
+        canonicalPath="/loan-vs-sip"
+        jsonLd={jsonLd}
+      />
+      <Breadcrumb currentPage="Loan vs SIP Comparison" />
       <div className="mb-8">
         <h1 className="text-2xl md:text-3xl font-bold mb-2">Loan vs SIP Comparison</h1>
         <p className="text-muted-foreground">Should you prepay your loan or invest the surplus in SIP?</p>
@@ -166,6 +235,9 @@ export default function LoanVsSIP() {
           </div>
         </ResultCard>
       </div>
+
+      <RelatedTools tools={relatedTools} />
+      <FAQSection faqs={faqs} />
     </div>
   );
 }

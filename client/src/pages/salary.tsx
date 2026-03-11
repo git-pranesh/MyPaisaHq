@@ -1,11 +1,44 @@
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ResultCard from "@/components/result-card";
+import SEOHead from "@/components/seo-head";
+import Breadcrumb from "@/components/breadcrumb";
+import FAQSection, { type FAQItem } from "@/components/faq-section";
+import RelatedTools from "@/components/related-tools";
 import { formatINR } from "@/lib/formatters";
+
+const faqs: FAQItem[] = [
+  {
+    question: "How to calculate in-hand salary from CTC?",
+    answer: "In-hand salary = CTC minus employer PF contribution minus employee PF minus professional tax minus income tax. First, calculate basic salary (typically 40-50% of CTC). Then compute HRA, PF deductions, professional tax, and income tax under your chosen regime. The remaining amount is your monthly in-hand (take-home) salary.",
+  },
+  {
+    question: "What is the difference between CTC and in-hand salary?",
+    answer: "CTC (Cost to Company) is the total amount your employer spends on you annually, including basic pay, HRA, employer PF, insurance, bonuses and other benefits. In-hand salary is what you actually receive in your bank account after all deductions like employee PF, professional tax, and income tax. Typically, in-hand salary is 65-75% of CTC.",
+  },
+  {
+    question: "What is the PF contribution limit in India?",
+    answer: "The statutory PF contribution is 12% of basic salary from both employer and employee. The PF contribution is calculated on basic salary up to a ceiling of Rs. 15,000 per month, which means the maximum PF contribution is Rs. 1,800/month or Rs. 21,600/year. However, some companies contribute PF on the full basic salary if it exceeds Rs. 15,000.",
+  },
+  {
+    question: "What is professional tax and how much is deducted?",
+    answer: "Professional tax is a state-level tax on income earned through employment or profession. The maximum amount that can be levied is Rs. 2,500 per year. Different states have different slabs — for example, Maharashtra charges Rs. 200/month (Rs. 2,400/year) while Karnataka charges Rs. 200/month for salaries above Rs. 15,000.",
+  },
+  {
+    question: "Which tax regime is better — old or new?",
+    answer: "The new tax regime (FY 2025-26) offers lower slab rates and no tax up to Rs. 12 lakhs income but does not allow most deductions. The old regime has higher rates but allows deductions under 80C, 80D, HRA, etc. If your total deductions exceed Rs. 3-4 lakhs, the old regime might save more. Use this calculator to compare both regimes with your actual numbers.",
+  },
+];
+
+const relatedTools = [
+  { href: "/income-tax", title: "Income Tax Calculator", desc: "Detailed slab-wise tax breakup for FY 2025-26" },
+  { href: "/hra", title: "HRA Exemption Calculator", desc: "Calculate HRA exemption under Section 10(13A)" },
+  { href: "/hike", title: "Salary Hike Calculator", desc: "Find new CTC after a percentage hike" },
+];
 
 function calcNewRegimeTax(taxableIncome: number): number {
   const slabs = [
@@ -49,7 +82,6 @@ function calcOldRegimeTax(taxableIncome: number): number {
 }
 
 export default function Salary() {
-  useEffect(() => { document.title = "In-Hand Salary & CTC Calculator - My Paisa HQ"; }, []);
   const [ctc, setCTC] = useState(1200000);
   const [basicPercent, setBasicPercent] = useState(40);
   const [isMetro, setIsMetro] = useState(true);
@@ -90,6 +122,36 @@ export default function Salary() {
   const inHandOldMonthly = Math.round(inHandOldAnnual / 12);
 
   const copyText = `CTC Breakdown\nAnnual CTC: ${formatINR(ctc)}\nBasic: ${formatINR(basicAnnual)}/yr\nHRA: ${formatINR(hraAnnual)}/yr\nPF (Employee): ${formatINR(pfAnnual)}/yr\nNew Regime Tax: ${formatINR(totalTaxNew)}\nIn-Hand (New): ${formatINR(inHandNewMonthly)}/month\nOld Regime Tax: ${formatINR(totalTaxOld)}\nIn-Hand (Old): ${formatINR(inHandOldMonthly)}/month`;
+
+  const jsonLd = useMemo(() => [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      name: "In-Hand Salary & CTC Calculator",
+      url: "https://mypaisahq.com/salary",
+      applicationCategory: "FinanceApplication",
+      operatingSystem: "Any",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "INR" },
+      description: "Break down your CTC into monthly in-hand salary with PF, HRA, professional tax and income tax for both old and new regime.",
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.question,
+        acceptedAnswer: { "@type": "Answer", text: f.answer },
+      })),
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://mypaisahq.com" },
+        { "@type": "ListItem", position: 2, name: "In-Hand Salary / CTC Calculator", item: "https://mypaisahq.com/salary" },
+      ],
+    },
+  ], []);
 
   const BreakdownTable = ({ regime }: { regime: "new" | "old" }) => {
     const stdDed = regime === "new" ? stdDeductionNew : stdDeductionOld;
@@ -179,6 +241,13 @@ export default function Salary() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
+      <SEOHead
+        title="In-Hand Salary & CTC Calculator FY 2025-26 - My Paisa HQ"
+        description="Calculate your in-hand (take-home) salary from CTC with detailed breakdown of basic pay, HRA, PF, professional tax and income tax. Compare old vs new tax regime side by side."
+        canonicalPath="/salary"
+        jsonLd={jsonLd}
+      />
+      <Breadcrumb currentPage="In-Hand Salary / CTC Calculator" />
       <div className="mb-8">
         <h1 className="text-2xl md:text-3xl font-bold mb-2">In-Hand Salary / CTC Calculator</h1>
         <p className="text-muted-foreground">Break down your CTC into monthly in-hand salary for FY 2025-26</p>
@@ -273,6 +342,9 @@ export default function Salary() {
           </div>
         </div>
       </div>
+
+      <RelatedTools tools={relatedTools} />
+      <FAQSection faqs={faqs} />
     </div>
   );
 }

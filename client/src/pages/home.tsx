@@ -1,6 +1,7 @@
-import { useEffect } from "react";
+import { useMemo } from "react";
 import { Link } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
+import SEOHead from "@/components/seo-head";
 import {
   IndianRupee,
   Award,
@@ -71,9 +72,43 @@ const tools = [
 ];
 
 export default function Home() {
-  useEffect(() => { document.title = "My Paisa HQ - Free Indian Finance Calculators"; }, []);
+  const jsonLd = useMemo(() => [
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: "My Paisa HQ",
+      url: "https://mypaisahq.com",
+      logo: "https://mypaisahq.com/logo-full.svg",
+      description: "Free Indian finance calculators for salary, tax, investment and more.",
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: "My Paisa HQ",
+      url: "https://mypaisahq.com",
+      description: "9 powerful Indian finance calculators covering salary, tax, investment and more. Designed for Indian professionals.",
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      name: "Finance Calculators",
+      itemListElement: tools.map((tool, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: tool.title,
+        url: `https://mypaisahq.com${tool.href}`,
+      })),
+    },
+  ], []);
+
   return (
     <div>
+      <SEOHead
+        title="My Paisa HQ - Free Indian Finance Calculators"
+        description="Free Indian finance calculators - 8th Pay Commission, Gratuity, Income Tax, SIP, HRA, Salary Hike, CTC breakdown, Loan vs SIP and Goal-based SIP tools. All free, all real-time."
+        canonicalPath="/"
+        jsonLd={jsonLd}
+      />
       <section className="py-16 md:py-24 px-4" data-testid="hero-section">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-6">

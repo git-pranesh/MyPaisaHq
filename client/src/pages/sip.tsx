@@ -1,14 +1,46 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import ResultCard from "@/components/result-card";
+import SEOHead from "@/components/seo-head";
+import Breadcrumb from "@/components/breadcrumb";
+import FAQSection, { type FAQItem } from "@/components/faq-section";
+import RelatedTools from "@/components/related-tools";
 import { formatINR, formatINRCompact } from "@/lib/formatters";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 
+const faqs: FAQItem[] = [
+  {
+    question: "How does SIP (Systematic Investment Plan) work?",
+    answer: "SIP is a method of investing a fixed amount regularly (usually monthly) in mutual funds. Each month, your SIP amount buys units at the current NAV (Net Asset Value). Over time, this averages out the cost of buying units — a concept called rupee cost averaging. SIPs benefit from compounding, where returns earned are reinvested to generate further returns.",
+  },
+  {
+    question: "What is step-up SIP and how does it help?",
+    answer: "Step-up SIP (also called top-up SIP) means increasing your SIP amount by a fixed percentage every year. For example, a 10% step-up on a Rs. 10,000 SIP means investing Rs. 11,000 in year 2, Rs. 12,100 in year 3, and so on. This aligns your investments with salary growth and significantly boosts your final corpus. A 10% annual step-up over 15 years can result in 50-80% more corpus compared to a flat SIP.",
+  },
+  {
+    question: "What returns can I expect from SIP in India?",
+    answer: "Historical returns from equity mutual funds in India have averaged 12-15% annually over 10+ year periods. Large-cap funds typically deliver 10-12%, mid-cap funds 12-15%, and small-cap funds 14-18% over long periods. However, past performance doesn't guarantee future returns. For conservative planning, use 10-12% for equity and 6-8% for debt fund SIPs.",
+  },
+  {
+    question: "How much should I invest in SIP per month?",
+    answer: "A common guideline is to invest at least 20-30% of your monthly income through SIPs. You can start with as little as Rs. 500/month. The right amount depends on your financial goals, time horizon, and risk tolerance. Use a goal-based calculator to determine the exact SIP amount needed for your specific goals like retirement, child education, or house purchase.",
+  },
+  {
+    question: "Is SIP better than lump sum investment?",
+    answer: "SIP is generally better for most investors because: (1) it averages purchase costs through rupee cost averaging, reducing the impact of market volatility, (2) it enforces investment discipline, (3) it's easier on your monthly budget. Lump sum can outperform SIP in consistently rising markets, but SIP provides better risk-adjusted returns for most investors over the long term.",
+  },
+];
+
+const relatedTools = [
+  { href: "/goal-sip", title: "Goal-based Top-up SIP", desc: "Calculate SIP needed for a specific financial goal" },
+  { href: "/loan-vs-sip", title: "Loan vs SIP", desc: "Should you prepay your loan or invest in SIP?" },
+  { href: "/hike", title: "Salary Hike Calculator", desc: "Invest your increment — see how it grows" },
+];
+
 export default function SIP() {
-  useEffect(() => { document.title = "SIP Returns Calculator - My Paisa HQ"; }, []);
   const [monthlyInv, setMonthlyInv] = useState(10000);
   const [annualReturn, setAnnualReturn] = useState(12);
   const [duration, setDuration] = useState(10);
@@ -49,8 +81,45 @@ export default function SIP() {
 
   const copyText = `SIP Returns\nMonthly Investment: ${formatINR(monthlyInv)}\nExpected Return: ${annualReturn}%\nDuration: ${safeDuration} years${stepUpEnabled ? `\nStep-up: ${stepUpPercent}%/yr` : ""}\nTotal Invested: ${formatINR(totalInvested)}\nEstimated Returns: ${formatINR(estimatedReturns)}\nMaturity Value: ${formatINR(maturityValue)}`;
 
+  const jsonLd = useMemo(() => [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      name: "SIP Returns Calculator",
+      url: "https://mypaisahq.com/sip",
+      applicationCategory: "FinanceApplication",
+      operatingSystem: "Any",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "INR" },
+      description: "Calculate SIP returns with optional step-up (top-up) feature. Visualize investment growth over time with area chart.",
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.question,
+        acceptedAnswer: { "@type": "Answer", text: f.answer },
+      })),
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://mypaisahq.com" },
+        { "@type": "ListItem", position: 2, name: "SIP Returns Calculator", item: "https://mypaisahq.com/sip" },
+      ],
+    },
+  ], []);
+
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
+      <SEOHead
+        title="SIP Returns Calculator with Step-up - My Paisa HQ"
+        description="Calculate SIP (Systematic Investment Plan) returns with optional annual step-up. Estimate maturity value, total invested amount and wealth gained over time with interactive growth chart."
+        canonicalPath="/sip"
+        jsonLd={jsonLd}
+      />
+      <Breadcrumb currentPage="SIP Returns Calculator" />
       <div className="mb-8">
         <h1 className="text-2xl md:text-3xl font-bold mb-2">SIP Returns Calculator</h1>
         <p className="text-muted-foreground">Estimate returns from your systematic investment plan with step-up option</p>
@@ -200,6 +269,9 @@ export default function SIP() {
           </div>
         </ResultCard>
       </div>
+
+      <RelatedTools tools={relatedTools} />
+      <FAQSection faqs={faqs} />
     </div>
   );
 }

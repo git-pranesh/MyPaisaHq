@@ -45,6 +45,19 @@ client/src/
 8. `/loan-vs-sip` - Loan prepayment vs SIP investment
 9. `/goal-sip` - Goal-based top-up SIP (inflation-adjusted target, reverse-calc starting SIP)
 
+## SEO Infrastructure
+- **SEOHead component** (`components/seo-head.tsx`) - Per-page meta descriptions, canonical URLs, and JSON-LD structured data injection
+- **JSON-LD Schemas**: Every calculator page has WebApplication, FAQPage, and BreadcrumbList schemas. Homepage has Organization, WebSite, and ItemList schemas
+- **FAQ Sections** (`components/faq-section.tsx`) - 5 FAQs per calculator targeting "People Also Ask" queries, rendered in Accordion
+- **Breadcrumbs** (`components/breadcrumb.tsx`) - "Home > Calculator Name" with BreadcrumbList schema
+- **Related Tools** (`components/related-tools.tsx`) - 3 cross-links per calculator for internal link equity
+- **Twitter Cards** - twitter:card, twitter:title, twitter:description in index.html
+- **Open Graph** - og:title, og:description, og:url, og:type, og:site_name
+- **Sitemap** - `client/public/sitemap.xml` with lastmod dates and changefreq
+- **Robots.txt** - `client/public/robots.txt` with sitemap reference
+- **Domain**: mypaisahq.com — all canonical/OG URLs reference this domain
+- **Blog**: User uses Typeflo at mypaisahq.com/blog; "Knowledge Hub" links externally
+
 ## Key Features
 - Real-time calculations (update on every input change)
 - Indian number system formatting (lakhs/crores)

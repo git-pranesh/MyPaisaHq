@@ -1,13 +1,45 @@
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ResultCard from "@/components/result-card";
+import SEOHead from "@/components/seo-head";
+import Breadcrumb from "@/components/breadcrumb";
+import FAQSection, { type FAQItem } from "@/components/faq-section";
+import RelatedTools from "@/components/related-tools";
 import { formatINR } from "@/lib/formatters";
 
+const faqs: FAQItem[] = [
+  {
+    question: "How to calculate salary hike percentage?",
+    answer: "Salary hike percentage = ((New Salary - Old Salary) / Old Salary) x 100. For example, if your CTC increased from Rs. 10,00,000 to Rs. 12,00,000, the hike percentage is ((12,00,000 - 10,00,000) / 10,00,000) x 100 = 20%.",
+  },
+  {
+    question: "What is a good salary hike percentage in India?",
+    answer: "In India, the average annual salary hike is typically 8-12% for the IT industry. A hike of 15-20% is considered good, while 25%+ is excellent and usually happens when switching companies. During appraisals, most companies offer 5-15% based on performance ratings. Top performers and those in high-demand roles can negotiate 20-30%.",
+  },
+  {
+    question: "How to calculate new salary after hike?",
+    answer: "New Salary = Current Salary x (1 + Hike Percentage / 100). For example, if your current CTC is Rs. 8,00,000 and you receive a 15% hike: New CTC = 8,00,000 x (1 + 15/100) = 8,00,000 x 1.15 = Rs. 9,20,000. The monthly increase would be (9,20,000 - 8,00,000) / 12 = Rs. 10,000.",
+  },
+  {
+    question: "Should I negotiate salary based on CTC or in-hand salary?",
+    answer: "Always negotiate based on CTC (Cost to Company) as it represents the total compensation. However, understand the CTC breakup — a high CTC with large variable components or retiral benefits may result in lower monthly in-hand salary. Ask for the complete CTC structure including basic pay, HRA, PF, variable pay, and other benefits before accepting an offer.",
+  },
+  {
+    question: "How much hike should I ask when switching jobs in India?",
+    answer: "When switching jobs in India, a standard hike expectation is 30-50% of your current CTC. For experienced professionals in high-demand domains (AI, cloud, cybersecurity), 50-80% hikes are achievable. Entry-level switches typically see 20-40% hikes. The key factors are your current compensation, market rate for the role, your experience, and the company's budget.",
+  },
+];
+
+const relatedTools = [
+  { href: "/salary", title: "In-Hand Salary / CTC", desc: "Break down your new CTC into take-home salary" },
+  { href: "/income-tax", title: "Income Tax Calculator", desc: "Check tax impact of your new salary" },
+  { href: "/sip", title: "SIP Returns Calculator", desc: "Invest your increment — see how it grows" },
+];
+
 export default function Hike() {
-  useEffect(() => { document.title = "Salary Hike Calculator - My Paisa HQ"; }, []);
   const [currentCTC, setCurrentCTC] = useState(1000000);
   const [hikePercent, setHikePercent] = useState(20);
   const [desiredCTC, setDesiredCTC] = useState(1500000);
@@ -24,8 +56,45 @@ export default function Hike() {
 
   const copyText = `Salary Hike\nCurrent CTC: ${formatINR(currentCTC)}\nHike: ${hikePercent}%\nNew CTC: ${formatINR(newCTC)}\nMonthly Increase: ${formatINR(monthlyIncrease)}\nYearly Increase: ${formatINR(yearlyIncrease)}`;
 
+  const jsonLd = useMemo(() => [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      name: "Salary Hike Calculator",
+      url: "https://mypaisahq.com/hike",
+      applicationCategory: "FinanceApplication",
+      operatingSystem: "Any",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "INR" },
+      description: "Calculate new salary after a hike percentage or find the hike needed to reach a target CTC.",
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.question,
+        acceptedAnswer: { "@type": "Answer", text: f.answer },
+      })),
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://mypaisahq.com" },
+        { "@type": "ListItem", position: 2, name: "Salary Hike Calculator", item: "https://mypaisahq.com/hike" },
+      ],
+    },
+  ], []);
+
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
+      <SEOHead
+        title="Salary Hike Calculator India - My Paisa HQ"
+        description="Calculate your new CTC after a salary hike percentage or find the hike needed to reach a target salary. Compare hike percentages from 5% to 50% with monthly and yearly increase amounts."
+        canonicalPath="/hike"
+        jsonLd={jsonLd}
+      />
+      <Breadcrumb currentPage="Salary Hike Calculator" />
       <div className="mb-8">
         <h1 className="text-2xl md:text-3xl font-bold mb-2">Salary Hike Calculator</h1>
         <p className="text-muted-foreground">Calculate your new salary after a hike or find the hike needed for a target</p>
@@ -178,6 +247,9 @@ export default function Hike() {
           </CardContent>
         </Card>
       </div>
+
+      <RelatedTools tools={relatedTools} />
+      <FAQSection faqs={faqs} />
     </div>
   );
 }

@@ -1,13 +1,45 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import ResultCard from "@/components/result-card";
+import SEOHead from "@/components/seo-head";
+import Breadcrumb from "@/components/breadcrumb";
+import FAQSection, { type FAQItem } from "@/components/faq-section";
+import RelatedTools from "@/components/related-tools";
 import { formatINR, formatINRCompact } from "@/lib/formatters";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 
+const faqs: FAQItem[] = [
+  {
+    question: "What is a goal-based SIP?",
+    answer: "A goal-based SIP is an investment approach where you calculate the monthly SIP amount needed to reach a specific financial goal (like buying a house, child's education, or retirement) within a set time frame. It reverse-calculates the required monthly investment based on your target amount, investment horizon, expected returns, and inflation rate.",
+  },
+  {
+    question: "How does SIP top-up (step-up) work?",
+    answer: "SIP top-up means increasing your monthly SIP amount by a fixed percentage every year. For example, with a 10% annual top-up, if you start with Rs. 10,000/month, you invest Rs. 11,000/month in year 2, Rs. 12,100/month in year 3, and so on. This strategy helps you invest more as your income grows, significantly reducing the starting SIP amount needed to reach your goal.",
+  },
+  {
+    question: "How does inflation affect my financial goal?",
+    answer: "Inflation increases the cost of your goal over time. For example, if your goal is Rs. 1 crore today and inflation is 6%, the same goal will cost approximately Rs. 2.40 crore in 15 years. This calculator automatically adjusts your target for inflation, so the SIP amount it calculates will help you reach the inflation-adjusted (future) value of your goal, not just the present value.",
+  },
+  {
+    question: "What return rate should I assume for goal-based SIP?",
+    answer: "For equity mutual fund SIPs, assume 10-12% annual returns for long-term goals (10+ years). For medium-term goals (5-10 years), use 8-10% with a balanced fund approach. For short-term goals (under 5 years), use 6-7% with debt funds. Always be conservative in your assumptions — it's better to overshoot your goal than fall short.",
+  },
+  {
+    question: "How much SIP do I need for 1 crore in 15 years?",
+    answer: "At 12% annual returns with no step-up, you would need approximately Rs. 20,000/month SIP for 15 years to accumulate Rs. 1 crore. With a 10% annual step-up, you can start with just Rs. 10,500/month. If you account for 6% inflation (making your real target about Rs. 2.40 crore), you would need approximately Rs. 48,000/month without step-up or Rs. 25,000/month with 10% step-up.",
+  },
+];
+
+const relatedTools = [
+  { href: "/sip", title: "SIP Returns Calculator", desc: "Estimate returns from a fixed monthly SIP" },
+  { href: "/loan-vs-sip", title: "Loan vs SIP", desc: "Should you prepay your loan or invest in SIP?" },
+  { href: "/income-tax", title: "Income Tax Calculator", desc: "Plan taxes alongside your investment goals" },
+];
+
 export default function GoalSIP() {
-  useEffect(() => { document.title = "Goal-based Top-up SIP Calculator - My Paisa HQ"; }, []);
   const [goalAmount, setGoalAmount] = useState(10000000);
   const [investmentYears, setInvestmentYears] = useState(15);
   const [expectedReturn, setExpectedReturn] = useState(12);
@@ -31,7 +63,6 @@ export default function GoalSIP() {
     let totalFV = 0;
     for (let year = 0; year < safeYears; year++) {
       const yearSIP = Math.pow(1 + topUpPercent / 100, year);
-      const monthsRemaining = (safeYears - year) * 12;
       const startMonth = year * 12;
 
       for (let m = 0; m < 12; m++) {
@@ -78,8 +109,45 @@ export default function GoalSIP() {
 
   const copyText = `Goal-based Top-up SIP\nFinancial Goal: ${formatINR(goalAmount)}\nInflation-adjusted Goal: ${formatINR(inflationAdjustedGoal)}\nInvestment Period: ${safeYears} years\nExpected Return: ${expectedReturn}%\nInflation: ${inflationRate}%\nAnnual Top-up: ${topUpPercent}%\nStarting Monthly SIP: ${formatINR(Math.round(monthlySIP))}\nTotal Invested: ${formatINR(totalInvested)}\nTotal Growth: ${formatINR(totalGrowth)}\nFinal Corpus: ${formatINR(totalCorpus)}`;
 
+  const jsonLd = useMemo(() => [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      name: "Goal-based Top-up SIP Calculator",
+      url: "https://mypaisahq.com/goal-sip",
+      applicationCategory: "FinanceApplication",
+      operatingSystem: "Any",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "INR" },
+      description: "Calculate the monthly SIP needed to reach your financial goal with inflation adjustment and annual top-up. Year-by-year investment summary with growth chart.",
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.question,
+        acceptedAnswer: { "@type": "Answer", text: f.answer },
+      })),
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://mypaisahq.com" },
+        { "@type": "ListItem", position: 2, name: "Goal-based Top-up SIP Calculator", item: "https://mypaisahq.com/goal-sip" },
+      ],
+    },
+  ], []);
+
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
+      <SEOHead
+        title="Goal-based Top-up SIP Calculator - My Paisa HQ"
+        description="Calculate the monthly SIP needed to reach your financial goal with inflation adjustment and annual step-up. See year-by-year investment summary, corpus growth chart, and inflation-adjusted target amount."
+        canonicalPath="/goal-sip"
+        jsonLd={jsonLd}
+      />
+      <Breadcrumb currentPage="Goal-based Top-up SIP Calculator" />
       <div className="mb-8">
         <h1 className="text-2xl md:text-3xl font-bold mb-2">Goal-based Top-up SIP Calculator</h1>
         <p className="text-muted-foreground">Find how much monthly SIP you need to reach your financial goal, with annual top-ups and inflation adjustment</p>
@@ -253,6 +321,9 @@ export default function GoalSIP() {
           </CardContent>
         </Card>
       </div>
+
+      <RelatedTools tools={relatedTools} />
+      <FAQSection faqs={faqs} />
     </div>
   );
 }

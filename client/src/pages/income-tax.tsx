@@ -1,10 +1,43 @@
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import ResultCard from "@/components/result-card";
+import SEOHead from "@/components/seo-head";
+import Breadcrumb from "@/components/breadcrumb";
+import FAQSection, { type FAQItem } from "@/components/faq-section";
+import RelatedTools from "@/components/related-tools";
 import { formatINR } from "@/lib/formatters";
+
+const faqs: FAQItem[] = [
+  {
+    question: "What are the new income tax slabs for FY 2025-26?",
+    answer: "Under the new tax regime for FY 2025-26 (AY 2026-27), the slabs are: Up to Rs. 4,00,000 — Nil; Rs. 4,00,001 to Rs. 8,00,000 — 5%; Rs. 8,00,001 to Rs. 12,00,000 — 10%; Rs. 12,00,001 to Rs. 16,00,000 — 15%; Rs. 16,00,001 to Rs. 20,00,000 — 20%; Rs. 20,00,001 to Rs. 24,00,000 — 25%; Above Rs. 24,00,000 — 30%. Standard deduction of Rs. 75,000 is available.",
+  },
+  {
+    question: "Is there no tax up to Rs. 12 lakhs under new regime?",
+    answer: "Yes, effectively there is no tax for income up to Rs. 12,00,000 under the new regime for FY 2025-26 due to the Section 87A rebate of Rs. 60,000. After applying the standard deduction of Rs. 75,000, the taxable income for a gross salary of Rs. 12,75,000 would be Rs. 12,00,000, which qualifies for full rebate making the tax liability zero.",
+  },
+  {
+    question: "Which tax regime is better — old or new for FY 2025-26?",
+    answer: "The new regime is better if you have minimal tax-saving investments and deductions (below Rs. 3-4 lakhs). The old regime is better if you can claim substantial deductions under 80C (up to Rs. 1.5L), 80D (health insurance), HRA exemption, home loan interest, and other sections totaling Rs. 4 lakhs or more. Use this calculator to compare with your actual deduction amounts.",
+  },
+  {
+    question: "What is Section 87A rebate?",
+    answer: "Section 87A provides a tax rebate for individuals with taxable income below a certain threshold. Under the new regime for FY 2025-26, a rebate of up to Rs. 60,000 is available if taxable income does not exceed Rs. 12,00,000, effectively making income up to Rs. 12 lakhs tax-free. Under the old regime, a rebate of Rs. 12,500 is available for taxable income up to Rs. 5,00,000.",
+  },
+  {
+    question: "What is Health and Education Cess?",
+    answer: "Health and Education Cess is a 4% surcharge levied on the total income tax amount (after rebate). It was introduced to fund healthcare and education initiatives. The cess is applicable regardless of which tax regime you choose. For example, if your tax payable is Rs. 50,000, the cess would be Rs. 2,000 (4% of Rs. 50,000), making total tax Rs. 52,000.",
+  },
+];
+
+const relatedTools = [
+  { href: "/salary", title: "In-Hand Salary / CTC", desc: "Full CTC breakdown with tax under both regimes" },
+  { href: "/hra", title: "HRA Exemption Calculator", desc: "Calculate HRA exemption for old regime" },
+  { href: "/hike", title: "Salary Hike Calculator", desc: "See tax impact of your new salary" },
+];
 
 function calcNewRegime(income: number): { slabs: { range: string; rate: string; tax: number }[]; total: number; rebate: number } {
   const slabDefs = [
@@ -77,7 +110,6 @@ function formatSlabRange(from: number, to: number): string {
 }
 
 export default function IncomeTax() {
-  useEffect(() => { document.title = "Income Tax Calculator FY 2025-26 - My Paisa HQ"; }, []);
   const [income, setIncome] = useState(1500000);
   const [age, setAge] = useState("below60");
   const [deduction80C, setDeduction80C] = useState(150000);
@@ -107,8 +139,45 @@ export default function IncomeTax() {
 
   const copyText = `Income Tax FY 2025-26\nIncome: ${formatINR(income)}\nNew Regime Tax: ${formatINR(newTotal)}\nOld Regime Tax: ${formatINR(oldTotal)}\nBetter: ${savings > 0 ? "New Regime" : "Old Regime"} by ${formatINR(Math.abs(savings))}`;
 
+  const jsonLd = useMemo(() => [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      name: "Income Tax Calculator FY 2025-26",
+      url: "https://mypaisahq.com/income-tax",
+      applicationCategory: "FinanceApplication",
+      operatingSystem: "Any",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "INR" },
+      description: "Calculate income tax for FY 2025-26 with slab-wise breakup. Compare old vs new regime with Section 87A rebate, 80C, 80D deductions and cess.",
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.question,
+        acceptedAnswer: { "@type": "Answer", text: f.answer },
+      })),
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://mypaisahq.com" },
+        { "@type": "ListItem", position: 2, name: "Income Tax Calculator FY 2025-26", item: "https://mypaisahq.com/income-tax" },
+      ],
+    },
+  ], []);
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
+      <SEOHead
+        title="Income Tax Calculator FY 2025-26 (AY 2026-27) - My Paisa HQ"
+        description="Calculate income tax for FY 2025-26 with new tax slabs. Compare old vs new regime side by side with slab-wise breakup, Section 87A rebate, 80C, 80D deductions, HRA exemption and 4% cess."
+        canonicalPath="/income-tax"
+        jsonLd={jsonLd}
+      />
+      <Breadcrumb currentPage="Income Tax Calculator FY 2025-26" />
       <div className="mb-8">
         <h1 className="text-2xl md:text-3xl font-bold mb-2">Income Tax Calculator FY 2025-26</h1>
         <p className="text-muted-foreground">Compare old vs new regime with slab-wise breakup</p>
@@ -298,6 +367,9 @@ export default function IncomeTax() {
       <p className="mt-4 text-xs text-muted-foreground text-center" data-testid="text-surcharge-note">
         Note: Surcharge is not included in the above calculation. Surcharge is applicable for taxable incomes above ₹50 lakh (10% for ₹50L-1Cr, 15% for ₹1Cr-2Cr, 25% for ₹2Cr-5Cr, 37% for above ₹5Cr under old regime; capped at 25% under new regime).
       </p>
+
+      <RelatedTools tools={relatedTools} />
+      <FAQSection faqs={faqs} />
     </div>
   );
 }

@@ -1,14 +1,46 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import ResultCard from "@/components/result-card";
+import SEOHead from "@/components/seo-head";
+import Breadcrumb from "@/components/breadcrumb";
+import FAQSection, { type FAQItem } from "@/components/faq-section";
+import RelatedTools from "@/components/related-tools";
 import { formatINR } from "@/lib/formatters";
 import { payLevels, getPayValuesForLevel } from "@/lib/pay-matrix";
 
+const faqs: FAQItem[] = [
+  {
+    question: "What is the 8th Pay Commission fitment factor?",
+    answer: "The fitment factor is the multiplier applied to the current basic pay to determine the revised basic pay under a new pay commission. For the 8th CPC, it is expected to be around 2.28x to 2.86x based on historical trends. The 7th CPC used a fitment factor of 2.57x. The final factor will be decided by the commission after its formation.",
+  },
+  {
+    question: "When will the 8th Pay Commission be implemented?",
+    answer: "The 8th Pay Commission was approved by the Union Cabinet on January 16, 2025 and is expected to be implemented from January 1, 2026. The commission will submit its recommendations before that date, and the government will then decide on the implementation timeline.",
+  },
+  {
+    question: "Who will benefit from the 8th Pay Commission?",
+    answer: "The 8th Pay Commission will benefit approximately 50 lakh central government employees and 65 lakh pensioners. It covers all central government employees across all pay levels (Level 1 to Level 18) under the 7th CPC pay matrix.",
+  },
+  {
+    question: "How is DA (Dearness Allowance) affected by a new pay commission?",
+    answer: "When a new pay commission is implemented, the existing DA is merged into the revised basic pay. This means DA resets to 0% at the time of implementation and then starts accumulating again based on the All India Consumer Price Index (AICPI). Currently, DA under the 7th CPC is around 50%.",
+  },
+  {
+    question: "How does HRA change with the 8th Pay Commission?",
+    answer: "HRA is calculated as a percentage of the new basic pay: 27% for X cities (metros like Delhi, Mumbai), 18% for Y cities, and 9% for Z cities. Since the basic pay increases significantly, the HRA amount also increases proportionally under the 8th CPC.",
+  },
+];
+
+const relatedTools = [
+  { href: "/salary", title: "In-Hand Salary / CTC", desc: "Break down your CTC into monthly in-hand salary" },
+  { href: "/income-tax", title: "Income Tax Calculator", desc: "Compare old vs new tax regime for FY 2025-26" },
+  { href: "/gratuity", title: "Gratuity Calculator", desc: "Calculate gratuity based on your service period" },
+];
+
 export default function PayCommission() {
-  useEffect(() => { document.title = "8th Pay Commission Salary Calculator - My Paisa HQ"; }, []);
   const [selectedLevel, setSelectedLevel] = useState("7");
   const [selectedPay, setSelectedPay] = useState("44900");
   const [fitment, setFitment] = useState(2.28);
@@ -35,8 +67,45 @@ export default function PayCommission() {
 
   const copyText = `8th Pay Commission Estimate\nCurrent Basic: ${formatINR(currentBasic)}\nFitment Factor: ${fitment}x\nNew Basic Pay: ${formatINR(newBasic)}\nNew Gross Salary: ${formatINR(newGross)}\nIncrease: ${formatINR(increase)} (${increasePercent}%)`;
 
+  const jsonLd = useMemo(() => [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      name: "8th Pay Commission Salary Calculator",
+      url: "https://mypaisahq.com/8th-pay-commission",
+      applicationCategory: "FinanceApplication",
+      operatingSystem: "Any",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "INR" },
+      description: "Calculate your revised salary under the 8th CPC with fitment factor, HRA, DA and Transport Allowance for all pay levels.",
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.question,
+        acceptedAnswer: { "@type": "Answer", text: f.answer },
+      })),
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://mypaisahq.com" },
+        { "@type": "ListItem", position: 2, name: "8th Pay Commission Calculator", item: "https://mypaisahq.com/8th-pay-commission" },
+      ],
+    },
+  ], []);
+
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
+      <SEOHead
+        title="8th Pay Commission Salary Calculator 2026 - My Paisa HQ"
+        description="Calculate your revised salary under the 8th Pay Commission with expected fitment factor (2.28x-2.86x). Compare old 7th CPC vs new 8th CPC basic pay, DA, HRA and gross salary for all pay levels."
+        canonicalPath="/8th-pay-commission"
+        jsonLd={jsonLd}
+      />
+      <Breadcrumb currentPage="8th Pay Commission Calculator" />
       <div className="mb-8">
         <h1 className="text-2xl md:text-3xl font-bold mb-2">8th Pay Commission Salary Calculator</h1>
         <p className="text-muted-foreground">Estimate your revised salary based on the expected 8th CPC fitment factor</p>
@@ -170,6 +239,9 @@ export default function PayCommission() {
           </div>
         </ResultCard>
       </div>
+
+      <RelatedTools tools={relatedTools} />
+      <FAQSection faqs={faqs} />
     </div>
   );
 }
