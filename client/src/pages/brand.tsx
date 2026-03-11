@@ -1,4 +1,6 @@
 import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Download } from "lucide-react";
 
 export default function Brand() {
   useEffect(() => { document.title = "Brand Assets - My Paisa HQ"; }, []);
@@ -7,7 +9,7 @@ export default function Brand() {
     <div className="max-w-5xl mx-auto px-4 py-8">
       <div className="mb-8">
         <h1 className="text-2xl md:text-3xl font-bold mb-2">Brand Assets</h1>
-        <p className="text-muted-foreground">Right-click any logo below and select "Save image as" to download as PNG</p>
+        <p className="text-muted-foreground">Download logo files for use in marketing, social media, and more</p>
       </div>
 
       <div className="space-y-12">
@@ -18,15 +20,20 @@ export default function Brand() {
             <img
               src="/logo-icon.svg"
               alt="My Paisa HQ Icon Logo"
-              width={512}
-              height={512}
+              width={256}
+              height={256}
               className="block"
               data-testid="img-logo-icon"
             />
           </div>
-          <p className="text-xs text-muted-foreground mt-2">
-            Also available at: <a href="/logo-icon.svg" className="text-primary underline" target="_blank" rel="noopener noreferrer">mypaisahq.com/logo-icon.svg</a>
-          </p>
+          <div className="mt-3">
+            <a href="/logo-icon.svg" download="my-paisa-hq-icon.svg">
+              <Button variant="outline" size="sm" data-testid="button-download-icon">
+                <Download className="w-4 h-4 mr-2" />
+                Download Icon SVG
+              </Button>
+            </a>
+          </div>
         </div>
 
         <div>
@@ -37,22 +44,27 @@ export default function Brand() {
               src="/logo-full.svg"
               alt="My Paisa HQ Full Logo"
               width={700}
-              height={256}
+              height={163}
               className="block"
               data-testid="img-logo-full"
             />
           </div>
-          <p className="text-xs text-muted-foreground mt-2">
-            Also available at: <a href="/logo-full.svg" className="text-primary underline" target="_blank" rel="noopener noreferrer">mypaisahq.com/logo-full.svg</a>
-          </p>
+          <div className="mt-3">
+            <a href="/logo-full.svg" download="my-paisa-hq-full.svg">
+              <Button variant="outline" size="sm" data-testid="button-download-full">
+                <Download className="w-4 h-4 mr-2" />
+                Download Full Logo SVG
+              </Button>
+            </a>
+          </div>
         </div>
 
         <div className="p-4 rounded-md bg-muted/50 text-sm">
-          <p className="font-medium mb-2">How to get PNG versions:</p>
+          <p className="font-medium mb-2">Need PNG versions?</p>
           <ol className="list-decimal list-inside space-y-1 text-muted-foreground">
-            <li>Right-click the logo above and select "Save image as"</li>
-            <li>If your browser saves it as SVG, visit <a href="https://svgtopng.com" className="text-primary underline" target="_blank" rel="noopener noreferrer">svgtopng.com</a> to convert</li>
-            <li>Or take a screenshot of the logo for a quick PNG</li>
+            <li>Download the SVG file using the buttons above</li>
+            <li>Visit <a href="https://svgtopng.com" className="text-primary underline" target="_blank" rel="noopener noreferrer">svgtopng.com</a> to convert to PNG at any resolution</li>
+            <li>Or open the SVG in any image editor (Canva, Figma, etc.) and export as PNG</li>
           </ol>
         </div>
       </div>
