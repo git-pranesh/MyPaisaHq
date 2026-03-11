@@ -14,6 +14,7 @@ import IncomeTaxCalc from "@/pages/income-tax";
 import SIPCalc from "@/pages/sip";
 import LoanVsSIP from "@/pages/loan-vs-sip";
 import GoalSIP from "@/pages/goal-sip";
+import Brand from "@/pages/brand";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -30,6 +31,7 @@ function Router() {
         <Route path="/sip" component={SIPCalc} />
         <Route path="/loan-vs-sip" component={LoanVsSIP} />
         <Route path="/goal-sip" component={GoalSIP} />
+        <Route path="/brand" component={Brand} />
         <Route component={NotFound} />
       </Switch>
     </Layout>
