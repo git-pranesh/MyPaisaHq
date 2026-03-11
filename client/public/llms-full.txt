@@ -1,0 +1,210 @@
+# My Paisa HQ - Complete Calculator Reference
+
+> Free Indian finance calculators for salary, tax, investment and more. 9 tools covering 8th Pay Commission, Gratuity, In-Hand Salary/CTC, HRA exemption, Salary Hike, Income Tax FY 2025-26, SIP returns, Loan vs SIP comparison, and Goal-based Top-up SIP.
+
+---
+
+## 8th Pay Commission Salary Calculator
+URL: https://mypaisahq.com/8th-pay-commission
+Calculate revised salary under the 8th CPC with fitment factor (2.28x-2.86x), HRA, DA and Transport Allowance for all pay levels.
+
+### FAQ
+
+Q: What is the 8th Pay Commission fitment factor?
+A: The fitment factor is the multiplier applied to the current basic pay to determine the revised basic pay under a new pay commission. For the 8th CPC, it is expected to be around 2.28x to 2.86x based on historical trends. The 7th CPC used a fitment factor of 2.57x. The final factor will be decided by the commission after its formation.
+
+Q: When will the 8th Pay Commission be implemented?
+A: The 8th Pay Commission was approved by the Union Cabinet on January 16, 2025 and is expected to be implemented from January 1, 2026. The commission will submit its recommendations before that date, and the government will then decide on the implementation timeline.
+
+Q: Who will benefit from the 8th Pay Commission?
+A: The 8th Pay Commission will benefit approximately 50 lakh central government employees and 65 lakh pensioners. It covers all central government employees across all pay levels (Level 1 to Level 18) under the 7th CPC pay matrix.
+
+Q: How is DA (Dearness Allowance) affected by a new pay commission?
+A: When a new pay commission is implemented, the existing DA is merged into the revised basic pay. This means DA resets to 0% at the time of implementation and then starts accumulating again based on the All India Consumer Price Index (AICPI). Currently, DA under the 7th CPC is around 50%.
+
+Q: How does HRA change with the 8th Pay Commission?
+A: HRA is calculated as a percentage of the new basic pay: 27% for X cities (metros like Delhi, Mumbai), 18% for Y cities, and 9% for Z cities. Since the basic pay increases significantly, the HRA amount also increases proportionally under the 8th CPC.
+
+---
+
+## Gratuity Calculator
+URL: https://mypaisahq.com/gratuity
+Calculate gratuity amount using the Payment of Gratuity Act formula (15/26), tax exemption under Section 10(10), and 5-year eligibility check.
+
+### FAQ
+
+Q: How is gratuity calculated in India?
+A: For employees covered under the Payment of Gratuity Act, the formula is: Gratuity = (Last drawn salary x 15 x years of service) / 26. Here, last drawn salary means Basic Pay + Dearness Allowance. The divisor 26 represents working days in a month. For employees not covered under the Act, the divisor is 30 instead of 26.
+
+Q: What is the minimum service period for gratuity eligibility?
+A: Under the Payment of Gratuity Act, 1972, an employee must complete a minimum of 5 years of continuous service with the same employer to be eligible for gratuity. However, this condition is waived in cases of death or disability of the employee.
+
+Q: Is gratuity taxable in India?
+A: For government employees, the entire gratuity amount is tax-exempt. For private sector employees covered under the Gratuity Act, the tax exemption is limited to the least of: (a) actual gratuity received, (b) 15 days' salary for each completed year, or (c) Rs. 25,00,000. Any amount exceeding this is taxable as per the individual's income tax slab.
+
+Q: What happens to gratuity if months of service exceed 6?
+A: If an employee has completed more than 6 months (i.e., 7 months or more) in the last year of service, the period is rounded up to the next full year. For example, 8 years and 7 months is treated as 9 years for gratuity calculation purposes.
+
+Q: Which organizations are covered under the Payment of Gratuity Act?
+A: The Payment of Gratuity Act applies to every factory, mine, oilfield, plantation, port, and railway company. It also applies to every shop or establishment where 10 or more persons are employed or were employed on any day in the preceding 12 months.
+
+---
+
+## In-Hand Salary / CTC Calculator
+URL: https://mypaisahq.com/salary
+Break down CTC into monthly in-hand salary with basic pay, HRA, PF, professional tax, and income tax under old and new regime.
+
+### FAQ
+
+Q: How to calculate in-hand salary from CTC?
+A: In-hand salary = CTC minus employer PF contribution minus employee PF minus professional tax minus income tax. First, calculate basic salary (typically 40-50% of CTC). Then compute HRA, PF deductions, professional tax, and income tax under your chosen regime. The remaining amount is your monthly in-hand (take-home) salary.
+
+Q: What is the difference between CTC and in-hand salary?
+A: CTC (Cost to Company) is the total amount your employer spends on you annually, including basic pay, HRA, employer PF, insurance, bonuses and other benefits. In-hand salary is what you actually receive in your bank account after all deductions like employee PF, professional tax, and income tax. Typically, in-hand salary is 65-75% of CTC.
+
+Q: What is the PF contribution limit in India?
+A: The statutory PF contribution is 12% of basic salary from both employer and employee. The PF contribution is calculated on basic salary up to a ceiling of Rs. 15,000 per month, which means the maximum PF contribution is Rs. 1,800/month or Rs. 21,600/year.
+
+Q: What is professional tax and how much is deducted?
+A: Professional tax is a state-level tax on income earned through employment or profession. The maximum amount that can be levied is Rs. 2,500 per year. Different states have different slabs — for example, Maharashtra charges Rs. 200/month (Rs. 2,400/year).
+
+Q: Which tax regime is better — old or new?
+A: The new tax regime (FY 2025-26) offers lower slab rates and no tax up to Rs. 12 lakhs income but does not allow most deductions. The old regime has higher rates but allows deductions under 80C, 80D, HRA, etc. If your total deductions exceed Rs. 3-4 lakhs, the old regime might save more.
+
+---
+
+## HRA Exemption Calculator
+URL: https://mypaisahq.com/hra
+Calculate HRA exemption under Section 10(13A) with three-way comparison for metro and non-metro cities.
+
+### FAQ
+
+Q: How is HRA exemption calculated?
+A: HRA exemption is the minimum of three values: (1) Actual HRA received from employer, (2) 50% of basic salary for metro cities (Delhi, Mumbai, Kolkata, Chennai) or 40% for non-metro cities, and (3) Actual rent paid minus 10% of basic salary. The lowest of these three amounts is your HRA exemption under Section 10(13A).
+
+Q: What is Section 10(13A) of the Income Tax Act?
+A: Section 10(13A) provides tax exemption on HRA (House Rent Allowance) received by salaried employees. To claim this exemption, you must be a salaried employee receiving HRA, live in a rented accommodation, and actually pay rent.
+
+Q: Can I claim HRA if I live in my own house?
+A: No, you cannot claim HRA exemption if you live in your own house. To claim HRA tax benefit, you must be paying rent for your accommodation. However, if you have a home loan in a different city and pay rent where you work, you can claim both.
+
+Q: Which cities are classified as metro for HRA calculation?
+A: Only four cities are classified as metros: Delhi, Mumbai, Kolkata, and Chennai. For these cities, HRA exemption is calculated at 50% of basic salary. All other cities use 40% of basic salary.
+
+Q: Can I claim HRA under the new tax regime?
+A: No, HRA exemption under Section 10(13A) is not available under the new tax regime (FY 2025-26). If you want to claim HRA exemption, you must opt for the old tax regime.
+
+---
+
+## Salary Hike Calculator
+URL: https://mypaisahq.com/hike
+Calculate new CTC after a hike percentage or reverse-calculate the hike needed for a target salary.
+
+### FAQ
+
+Q: How to calculate salary hike percentage?
+A: Salary hike percentage = ((New Salary - Old Salary) / Old Salary) x 100. For example, if your CTC increased from Rs. 10,00,000 to Rs. 12,00,000, the hike percentage is ((12,00,000 - 10,00,000) / 10,00,000) x 100 = 20%.
+
+Q: What is a good salary hike percentage in India?
+A: In India, the average annual salary hike is typically 8-12% for the IT industry. A hike of 15-20% is considered good, while 25%+ is excellent and usually happens when switching companies.
+
+Q: How to calculate new salary after hike?
+A: New Salary = Current Salary x (1 + Hike Percentage / 100). For example, if your current CTC is Rs. 8,00,000 and you receive a 15% hike: New CTC = 8,00,000 x 1.15 = Rs. 9,20,000.
+
+Q: Should I negotiate salary based on CTC or in-hand salary?
+A: Always negotiate based on CTC as it represents total compensation. However, understand the CTC breakup — a high CTC with large variable components may result in lower monthly in-hand salary.
+
+Q: How much hike should I ask when switching jobs in India?
+A: When switching jobs, a standard hike expectation is 30-50% of your current CTC. For experienced professionals in high-demand domains, 50-80% hikes are achievable.
+
+---
+
+## Income Tax Calculator FY 2025-26
+URL: https://mypaisahq.com/income-tax
+Slab-wise tax breakup with Section 87A rebate, 80C, 80D deductions. Side-by-side old vs new regime comparison.
+
+### FAQ
+
+Q: What are the new income tax slabs for FY 2025-26?
+A: Under the new regime for FY 2025-26: Up to Rs. 4,00,000 — Nil; Rs. 4-8 lakh — 5%; Rs. 8-12 lakh — 10%; Rs. 12-16 lakh — 15%; Rs. 16-20 lakh — 20%; Rs. 20-24 lakh — 25%; Above Rs. 24 lakh — 30%. Standard deduction of Rs. 75,000 is available.
+
+Q: Is there no tax up to Rs. 12 lakhs under new regime?
+A: Yes, effectively there is no tax for income up to Rs. 12,00,000 under the new regime for FY 2025-26 due to the Section 87A rebate of Rs. 60,000.
+
+Q: Which tax regime is better — old or new for FY 2025-26?
+A: The new regime is better if you have minimal deductions (below Rs. 3-4 lakhs). The old regime is better if you claim substantial deductions under 80C, 80D, HRA, home loan interest totaling Rs. 4 lakhs or more.
+
+Q: What is Section 87A rebate?
+A: Section 87A provides a tax rebate for individuals with taxable income below a threshold. Under new regime for FY 2025-26, a rebate of up to Rs. 60,000 is available if taxable income does not exceed Rs. 12,00,000.
+
+Q: What is Health and Education Cess?
+A: Health and Education Cess is a 4% surcharge levied on the total income tax amount (after rebate). It funds healthcare and education initiatives and applies regardless of which tax regime you choose.
+
+---
+
+## SIP Returns Calculator
+URL: https://mypaisahq.com/sip
+Estimate mutual fund SIP returns with optional annual step-up (top-up) and interactive growth chart.
+
+### FAQ
+
+Q: How does SIP (Systematic Investment Plan) work?
+A: SIP is a method of investing a fixed amount regularly (usually monthly) in mutual funds. Each month, your SIP amount buys units at the current NAV. Over time, this averages out the cost (rupee cost averaging) and benefits from compounding.
+
+Q: What is step-up SIP and how does it help?
+A: Step-up SIP means increasing your SIP amount by a fixed percentage every year. For example, a 10% step-up on a Rs. 10,000 SIP means investing Rs. 11,000 in year 2, Rs. 12,100 in year 3. A 10% annual step-up over 15 years can result in 50-80% more corpus compared to a flat SIP.
+
+Q: What returns can I expect from SIP in India?
+A: Historical returns from equity mutual funds in India have averaged 12-15% annually over 10+ year periods. Large-cap funds typically deliver 10-12%, mid-cap 12-15%, and small-cap 14-18%. For conservative planning, use 10-12% for equity and 6-8% for debt fund SIPs.
+
+Q: How much should I invest in SIP per month?
+A: A common guideline is to invest at least 20-30% of your monthly income through SIPs. You can start with as little as Rs. 500/month.
+
+Q: Is SIP better than lump sum investment?
+A: SIP is generally better for most investors because it averages purchase costs, enforces discipline, and is easier on the budget. Lump sum can outperform in consistently rising markets, but SIP provides better risk-adjusted returns for most investors.
+
+---
+
+## Loan vs SIP Comparison
+URL: https://mypaisahq.com/loan-vs-sip
+Compare loan prepayment vs SIP investment to determine the optimal financial strategy.
+
+### FAQ
+
+Q: Should I prepay my home loan or invest in SIP?
+A: Compare your loan interest rate with expected SIP returns. If SIP returns exceed loan interest (e.g., 12% vs 8.5%), investing is mathematically better. But consider tax benefits on home loan, risk tolerance, and the comfort of being debt-free.
+
+Q: When is prepaying a loan better than SIP?
+A: Prepaying is better when loan interest exceeds expected SIP returns, you want guaranteed savings, you're nearing retirement, or you have high-interest loans like personal loans or credit card debt.
+
+Q: How is EMI calculated for a loan?
+A: EMI = P x R x (1+R)^N / ((1+R)^N - 1), where P = Principal, R = Monthly interest rate (annual/12/100), N = Total months. For example, Rs. 30 lakh at 8.5% for 20 years gives EMI of approximately Rs. 26,036.
+
+Q: What factors should I consider in the loan vs SIP decision?
+A: Consider: interest rate differential, tax benefits (home loan interest under Sec 24(b) up to Rs. 2 lakh), investment horizon, risk appetite, and emergency fund adequacy.
+
+Q: Can I do both — partial loan prepayment and SIP?
+A: Yes, this balanced approach is often best. Use 50% of surplus to prepay loan and invest 50% in SIP. Adjust based on your loan rate and goals.
+
+---
+
+## Goal-based Top-up SIP Calculator
+URL: https://mypaisahq.com/goal-sip
+Reverse-calculate the monthly SIP needed to reach a financial goal with inflation adjustment and annual top-up.
+
+### FAQ
+
+Q: What is a goal-based SIP?
+A: A goal-based SIP reverse-calculates the monthly SIP amount needed to reach a specific financial goal (house, education, retirement) within a set time frame, considering expected returns and inflation.
+
+Q: How does SIP top-up (step-up) work?
+A: SIP top-up means increasing your monthly SIP by a fixed percentage yearly. With 10% top-up on Rs. 10,000, you invest Rs. 11,000 in year 2, Rs. 12,100 in year 3. This significantly reduces the starting SIP needed for your goal.
+
+Q: How does inflation affect my financial goal?
+A: Inflation increases your goal's cost over time. If your goal is Rs. 1 crore today at 6% inflation, it will cost approximately Rs. 2.40 crore in 15 years. This calculator adjusts for inflation automatically.
+
+Q: What return rate should I assume for goal-based SIP?
+A: For equity SIPs with 10+ year horizons, assume 10-12%. For 5-10 years, use 8-10% with balanced funds. For under 5 years, use 6-7% with debt funds. Be conservative.
+
+Q: How much SIP do I need for 1 crore in 15 years?
+A: At 12% returns with no step-up, approximately Rs. 20,000/month. With 10% step-up, start with just Rs. 10,500/month. Accounting for 6% inflation (target Rs. 2.40 crore), you need about Rs. 48,000/month without step-up or Rs. 25,000/month with 10% step-up.

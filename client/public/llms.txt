@@ -1,0 +1,19 @@
+# My Paisa HQ
+
+> Free Indian finance calculators for salary, tax, investment and more. All calculations are real-time, use Indian number formatting (lakhs and crores), and are designed for Indian professionals.
+
+## Calculators
+
+- [8th Pay Commission Salary Calculator](https://mypaisahq.com/8th-pay-commission): Calculate revised salary under the 8th CPC with fitment factor (2.28x-2.86x), HRA, DA and Transport Allowance for all pay levels (Level 1-18).
+- [Gratuity Calculator](https://mypaisahq.com/gratuity): Calculate gratuity amount using the Payment of Gratuity Act formula (15/26), tax exemption under Section 10(10), and 5-year eligibility check.
+- [In-Hand Salary / CTC Calculator](https://mypaisahq.com/salary): Break down CTC into monthly in-hand salary with basic pay, HRA, PF (capped at Rs. 21,600/year), professional tax, and income tax under old and new regime.
+- [HRA Exemption Calculator](https://mypaisahq.com/hra): Calculate HRA exemption under Section 10(13A) with three-way comparison for metro and non-metro cities.
+- [Salary Hike Calculator](https://mypaisahq.com/hike): Calculate new CTC after a hike percentage or reverse-calculate the hike needed for a target salary. Includes comparison table for 5%-50% hikes.
+- [Income Tax Calculator FY 2025-26](https://mypaisahq.com/income-tax): Slab-wise tax breakup with Section 87A rebate, 80C, 80D deductions. Side-by-side old vs new regime comparison with cess calculation.
+- [SIP Returns Calculator](https://mypaisahq.com/sip): Estimate mutual fund SIP returns with optional annual step-up (top-up). Includes growth chart showing invested amount vs corpus value over time.
+- [Loan vs SIP Comparison](https://mypaisahq.com/loan-vs-sip): Compare loan prepayment vs SIP investment. Calculate EMI, total interest outflow, and SIP returns to determine the optimal financial strategy.
+- [Goal-based Top-up SIP Calculator](https://mypaisahq.com/goal-sip): Reverse-calculate the monthly SIP needed to reach a financial goal with inflation adjustment and annual top-up. Year-by-year investment summary.
+
+## Optional
+
+- [Full FAQ content for all calculators](https://mypaisahq.com/llms-full.txt)

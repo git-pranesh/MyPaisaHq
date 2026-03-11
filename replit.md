@@ -46,11 +46,13 @@ client/src/
 9. `/goal-sip` - Goal-based top-up SIP (inflation-adjusted target, reverse-calc starting SIP)
 
 ## SEO Infrastructure
-- **SEOHead component** (`components/seo-head.tsx`) - Per-page meta descriptions, canonical URLs, and JSON-LD structured data injection
-- **JSON-LD Schemas**: Every calculator page has WebApplication, FAQPage, and BreadcrumbList schemas. Homepage has Organization, WebSite, and ItemList schemas
+- **Server-side SEO injection** (`server/seo-data.ts`) - Injects per-page title, meta tags, JSON-LD schemas, and noscript FAQ content into raw HTML before browser receives it. This ensures non-JS crawlers (LLM pipelines, Bing) see all content without executing JavaScript.
+- **SEOHead component** (`components/seo-head.tsx`) - Client-side meta tag updates via DOM manipulation (works alongside server-side injection)
+- **JSON-LD Schemas**: Every calculator page has WebApplication, FAQPage, and BreadcrumbList schemas. Homepage has Organization, WebSite, and ItemList schemas. Injected both server-side (in raw HTML) and client-side.
 - **FAQ Sections** (`components/faq-section.tsx`) - 5 FAQs per calculator targeting "People Also Ask" queries, rendered in Accordion
 - **Breadcrumbs** (`components/breadcrumb.tsx`) - "Home > Calculator Name" with BreadcrumbList schema
 - **Related Tools** (`components/related-tools.tsx`) - 3 cross-links per calculator for internal link equity
+- **LLM Discovery** - `client/public/llms.txt` (overview) and `client/public/llms-full.txt` (complete FAQ reference) for AI system discovery
 - **Twitter Cards** - twitter:card, twitter:title, twitter:description in index.html
 - **Open Graph** - og:title, og:description, og:url, og:type, og:site_name
 - **Sitemap** - `client/public/sitemap.xml` with lastmod dates and changefreq
