@@ -42,6 +42,11 @@ function Navbar() {
                 </Button>
               </Link>
             ))}
+            <a href="https://mypaisahq.com/blog" target="_blank" rel="noopener noreferrer">
+              <Button variant="ghost" size="sm" data-testid="link-nav-knowledge-hub">
+                Knowledge Hub
+              </Button>
+            </a>
           </div>
 
           <Button
@@ -70,6 +75,11 @@ function Navbar() {
                 </Button>
               </Link>
             ))}
+            <a href="https://mypaisahq.com/blog" target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)}>
+              <Button variant="ghost" className="w-full justify-start" data-testid="link-mobile-knowledge-hub">
+                Knowledge Hub
+              </Button>
+            </a>
           </div>
         </div>
       )}
@@ -88,6 +98,9 @@ function Footer() {
             </div>
             <span className="font-semibold text-sm">My Paisa HQ</span>
           </Link>
+          <a href="https://mypaisahq.com/blog" target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-primary hover:underline" data-testid="link-footer-knowledge-hub">
+            Knowledge Hub
+          </a>
           <p className="text-xs text-muted-foreground text-center max-w-xl" data-testid="text-disclaimer">
             Disclaimer: The calculators provided are for informational purposes only. Results are approximate
             and should not be considered as financial advice. Please consult a qualified financial advisor for
