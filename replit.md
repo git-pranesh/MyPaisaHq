@@ -53,6 +53,7 @@ client/src/
 - **Breadcrumbs** (`components/breadcrumb.tsx`) - "Home > Calculator Name" with BreadcrumbList schema
 - **Related Tools** (`components/related-tools.tsx`) - 3 cross-links per calculator for internal link equity
 - **LLM Discovery** - `client/public/llms.txt` (overview) and `client/public/llms-full.txt` (complete FAQ reference) for AI system discovery
+- **IndexNow** - `server/indexnow.ts` auto-submits all 10 calculator URLs to Bing/Yandex/etc on every production startup. Key file: `client/public/2eff04eeb1374409835369730a484489.txt`. Manual trigger: `POST /api/submit-indexnow`
 - **Twitter Cards** - twitter:card, twitter:title, twitter:description in index.html
 - **Open Graph** - og:title, og:description, og:url, og:type, og:site_name
 - **Sitemap** - `client/public/sitemap.xml` with lastmod dates and changefreq
