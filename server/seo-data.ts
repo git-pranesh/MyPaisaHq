@@ -308,7 +308,7 @@ export function injectSEO(html: string, urlPath: string): string {
   );
 
   const jsonLdScripts = seo.jsonLd
-    .map((schema) => `<script type="application/ld+json">${JSON.stringify(schema)}</script>`)
+    .map((schema) => `<script type="application/ld+json" data-seo-server="true">${JSON.stringify(schema)}</script>`)
     .join("\n    ");
   html = html.replace("</head>", `    ${jsonLdScripts}\n  </head>`);
 

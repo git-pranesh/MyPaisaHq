@@ -16,7 +16,7 @@ export function serveStatic(app: Express) {
   app.use("/{*path}", (req, res) => {
     const indexPath = path.resolve(distPath, "index.html");
     let html = fs.readFileSync(indexPath, "utf-8");
-    html = injectSEO(html, req.path);
+    html = injectSEO(html, req.originalUrl);
     res.status(200).set({ "Content-Type": "text/html" }).end(html);
   });
 }

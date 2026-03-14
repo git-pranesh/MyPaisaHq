@@ -39,7 +39,7 @@ export default function SEOHead({ title, description, canonicalPath, jsonLd }: S
     canonical.setAttribute("href", fullUrl);
 
     if (jsonLd) {
-      const existingScripts = document.querySelectorAll('script[data-seo-jsonld]');
+      const existingScripts = document.querySelectorAll('script[data-seo-jsonld], script[data-seo-server]');
       existingScripts.forEach((s) => s.remove());
 
       const schemas = Array.isArray(jsonLd) ? jsonLd : [jsonLd];
