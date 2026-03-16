@@ -259,6 +259,36 @@ const seoPages: Record<string, PageSEO> = {
     ],
     faqText: faqsToText(goalSipFaqs),
   },
+  "/hra-calculator": {
+    title: "HRA Exemption Calculator by City 2025-26 | My Paisa HQ",
+    description: "Calculate HRA exemption under Section 10(13A) for 19 Indian cities. Know if your city qualifies for 50% (metro) or 40% (non-metro) HRA exemption and optimize your tax savings.",
+    canonical: `${SITE}/hra-calculator`,
+    jsonLd: [
+      { "@context": "https://schema.org", "@type": "CollectionPage", name: "HRA Exemption Calculator by City 2025-26", url: `${SITE}/hra-calculator` },
+      breadcrumbSchema("HRA Calculator by City", `${SITE}/hra-calculator`),
+    ],
+    faqText: "HRA exemption under Section 10(13A) depends on whether your city is classified as metro (50% of basic) or non-metro (40% of basic). Only Mumbai, Delhi, Kolkata, and Chennai are metros.",
+  },
+  "/salary-calculator": {
+    title: "Salary Calculator by LPA 2025-26 — In-Hand Salary at Every CTC | My Paisa HQ",
+    description: "Calculate in-hand take-home salary for any CTC from 3 LPA to 50 LPA with PF, professional tax, and income tax under old and new regime.",
+    canonical: `${SITE}/salary-calculator`,
+    jsonLd: [
+      { "@context": "https://schema.org", "@type": "CollectionPage", name: "Salary Calculator by LPA 2025-26", url: `${SITE}/salary-calculator` },
+      breadcrumbSchema("Salary Calculator by CTC", `${SITE}/salary-calculator`),
+    ],
+    faqText: "Calculate in-hand salary from CTC for various salary levels from 3 LPA to 50 LPA with detailed breakdown of basic pay, HRA, PF, professional tax, and income tax.",
+  },
+  "/sip-calculator": {
+    title: "SIP Calculator by Goal 2025-26 — Monthly SIP for Every Financial Goal | My Paisa HQ",
+    description: "Goal-based SIP calculators pre-configured for retirement, house purchase, child education, emergency fund, car purchase, vacation, and wedding fund.",
+    canonical: `${SITE}/sip-calculator`,
+    jsonLd: [
+      { "@context": "https://schema.org", "@type": "CollectionPage", name: "SIP Calculator by Goal 2025-26", url: `${SITE}/sip-calculator` },
+      breadcrumbSchema("SIP Calculator by Goal", `${SITE}/sip-calculator`),
+    ],
+    faqText: "Goal-based SIP calculators pre-configured for retirement, house purchase, child education, emergency fund, car purchase, vacation, and wedding fund.",
+  },
 };
 
 const hraCityData: Record<string, { name: string; isMetro: boolean; hraPercent: number }> = {
@@ -313,45 +343,6 @@ const sipGoalMap: Record<string, { name: string; target: number; duration: numbe
 };
 
 function getDynamicSEO(path: string): PageSEO | null {
-  if (path === "/hra-calculator") {
-    return {
-      title: "HRA Exemption Calculator by City 2025-26 | My Paisa HQ",
-      description: "Calculate HRA exemption under Section 10(13A) for 19 Indian cities. Know if your city qualifies for 50% (metro) or 40% (non-metro) HRA exemption and optimize your tax savings.",
-      canonical: `${SITE}/hra-calculator`,
-      jsonLd: [
-        { "@context": "https://schema.org", "@type": "CollectionPage", name: "HRA Exemption Calculator by City 2025-26", url: `${SITE}/hra-calculator` },
-        breadcrumbSchema("HRA Calculator by City", `${SITE}/hra-calculator`),
-      ],
-      faqText: "HRA exemption under Section 10(13A) depends on whether your city is classified as metro (50% of basic) or non-metro (40% of basic). Only Mumbai, Delhi, Kolkata, and Chennai are metros.",
-    };
-  }
-
-  if (path === "/salary-calculator") {
-    return {
-      title: "Salary Calculator by LPA 2025-26 — In-Hand Salary at Every CTC | My Paisa HQ",
-      description: "Calculate in-hand take-home salary for any CTC from 3 LPA to 50 LPA with PF, professional tax, and income tax under old and new regime.",
-      canonical: `${SITE}/salary-calculator`,
-      jsonLd: [
-        { "@context": "https://schema.org", "@type": "CollectionPage", name: "Salary Calculator by LPA 2025-26", url: `${SITE}/salary-calculator` },
-        breadcrumbSchema("Salary Calculator by CTC", `${SITE}/salary-calculator`),
-      ],
-      faqText: "Calculate in-hand salary from CTC for various salary levels from 3 LPA to 50 LPA with detailed breakdown of basic pay, HRA, PF, professional tax, and income tax.",
-    };
-  }
-
-  if (path === "/sip-calculator") {
-    return {
-      title: "SIP Calculator by Goal 2025-26 — Monthly SIP for Every Financial Goal | My Paisa HQ",
-      description: "Goal-based SIP calculators pre-configured for retirement, house purchase, child education, emergency fund, car purchase, vacation, and wedding fund.",
-      canonical: `${SITE}/sip-calculator`,
-      jsonLd: [
-        { "@context": "https://schema.org", "@type": "CollectionPage", name: "SIP Calculator by Goal 2025-26", url: `${SITE}/sip-calculator` },
-        breadcrumbSchema("SIP Calculator by Goal", `${SITE}/sip-calculator`),
-      ],
-      faqText: "Goal-based SIP calculators pre-configured for retirement, house purchase, child education, emergency fund, car purchase, vacation, and wedding fund.",
-    };
-  }
-
   const hraMatch = path.match(/^\/hra-calculator\/([a-z-]+)$/);
   if (hraMatch) {
     const city = hraCityData[hraMatch[1]];
@@ -368,8 +359,13 @@ function getDynamicSEO(path: string): PageSEO | null {
             { "@type": "ListItem", position: 2, name: "HRA Calculator by City", item: `${SITE}/hra-calculator` },
             { "@type": "ListItem", position: 3, name: `HRA Calculator ${city.name}`, item: `${SITE}/hra-calculator/${slug}` },
           ]},
+          faqSchema([
+            { q: `What is HRA exemption in ${city.name}?`, a: `In ${city.name}, HRA exemption under Section 10(13A) is calculated at ${city.hraPercent}% of basic salary because ${city.name} is classified as a ${city.isMetro ? "metro" : "non-metro"} city.` },
+            { q: `Is ${city.name} a metro city for HRA?`, a: city.isMetro ? `Yes, ${city.name} is a metro city — 50% HRA exemption.` : `No, ${city.name} is non-metro — 40% HRA exemption. Only Mumbai, Delhi, Kolkata, Chennai are metros.` },
+            ...hraFaqs,
+          ]),
         ],
-        faqText: `Q: Is ${city.name} a metro city for HRA?\nA: ${city.isMetro ? `Yes, ${city.name} is a metro city — 50% HRA exemption.` : `No, ${city.name} is non-metro — 40% HRA exemption. Only Mumbai, Delhi, Kolkata, Chennai are metros.`}`,
+        faqText: `Q: Is ${city.name} a metro city for HRA?\nA: ${city.isMetro ? `Yes, ${city.name} is a metro city — 50% HRA exemption.` : `No, ${city.name} is non-metro — 40% HRA exemption. Only Mumbai, Delhi, Kolkata, Chennai are metros.`}\n\n${faqsToText(hraFaqs)}`,
       };
     }
   }
@@ -390,8 +386,13 @@ function getDynamicSEO(path: string): PageSEO | null {
             { "@type": "ListItem", position: 2, name: "Salary Calculator by CTC", item: `${SITE}/salary-calculator` },
             { "@type": "ListItem", position: 3, name: `${lpa.label} Salary`, item: `${SITE}/salary-calculator/${slug}` },
           ]},
+          faqSchema([
+            { q: `What is the in-hand salary for ${lpa.label}?`, a: `For a CTC of ${lpa.label} (₹${lpa.ctc.toLocaleString("en-IN")}/year), the in-hand salary depends on basic salary %, PF deductions, professional tax, and your tax regime. Use this calculator for exact figures.` },
+            { q: `Which tax regime is better at ${lpa.label}?`, a: `At ${lpa.label} CTC, the better regime depends on your deductions. The new regime offers lower rates with fewer deductions, while the old regime allows 80C, 80D, HRA etc. Compare both using the calculator above.` },
+            ...salaryFaqs,
+          ]),
         ],
-        faqText: `Q: What is the in-hand salary for ${lpa.label} CTC?\nA: For a CTC of ${lpa.label}, the in-hand salary depends on basic salary percentage, PF, professional tax, and tax regime. Use this calculator for exact figures.`,
+        faqText: `Q: What is the in-hand salary for ${lpa.label} CTC?\nA: For a CTC of ${lpa.label}, the in-hand salary depends on basic salary percentage, PF, professional tax, and tax regime. Use this calculator for exact figures.\n\n${faqsToText(salaryFaqs)}`,
       };
     }
   }
@@ -412,8 +413,13 @@ function getDynamicSEO(path: string): PageSEO | null {
             { "@type": "ListItem", position: 2, name: "SIP Calculator by Goal", item: `${SITE}/sip-calculator` },
             { "@type": "ListItem", position: 3, name: `SIP for ${goal.name}`, item: `${SITE}/sip-calculator/${slug}` },
           ]},
+          faqSchema([
+            { q: `How much SIP is needed for ${goal.name}?`, a: `To reach ₹${goal.target.toLocaleString("en-IN")} for ${goal.name} over ${goal.duration} years at ${goal.ret}% expected returns, use this calculator with the step-up option for a realistic plan.` },
+            { q: `What is the best SIP strategy for ${goal.name}?`, a: `For ${goal.name}, start with a monthly SIP and enable annual step-up to increase your contribution each year. This helps beat inflation and reach your target faster.` },
+            ...sipFaqs,
+          ]),
         ],
-        faqText: `Q: How much SIP is needed for ${goal.name}?\nA: To reach ₹${goal.target.toLocaleString("en-IN")} over ${goal.duration} years at ${goal.ret}% returns, use this calculator with step-up option.`,
+        faqText: `Q: How much SIP is needed for ${goal.name}?\nA: To reach ₹${goal.target.toLocaleString("en-IN")} over ${goal.duration} years at ${goal.ret}% returns, use this calculator with step-up option.\n\n${faqsToText(sipFaqs)}`,
       };
     }
   }
