@@ -270,17 +270,17 @@ const hraCityData: Record<string, { name: string; isMetro: boolean; hraPercent: 
   hyderabad: { name: "Hyderabad", isMetro: false, hraPercent: 40 },
   pune: { name: "Pune", isMetro: false, hraPercent: 40 },
   ahmedabad: { name: "Ahmedabad", isMetro: false, hraPercent: 40 },
-  gurgaon: { name: "Gurgaon (Gurugram)", isMetro: false, hraPercent: 40 },
-  noida: { name: "Noida", isMetro: false, hraPercent: 40 },
   jaipur: { name: "Jaipur", isMetro: false, hraPercent: 40 },
+  surat: { name: "Surat", isMetro: false, hraPercent: 40 },
   lucknow: { name: "Lucknow", isMetro: false, hraPercent: 40 },
-  chandigarh: { name: "Chandigarh", isMetro: false, hraPercent: 40 },
-  indore: { name: "Indore", isMetro: false, hraPercent: 40 },
-  coimbatore: { name: "Coimbatore", isMetro: false, hraPercent: 40 },
   nagpur: { name: "Nagpur", isMetro: false, hraPercent: 40 },
+  indore: { name: "Indore", isMetro: false, hraPercent: 40 },
+  bhopal: { name: "Bhopal", isMetro: false, hraPercent: 40 },
+  visakhapatnam: { name: "Visakhapatnam", isMetro: false, hraPercent: 40 },
   patna: { name: "Patna", isMetro: false, hraPercent: 40 },
-  bhubaneswar: { name: "Bhubaneswar", isMetro: false, hraPercent: 40 },
-  guwahati: { name: "Guwahati", isMetro: false, hraPercent: 40 },
+  vadodara: { name: "Vadodara", isMetro: false, hraPercent: 40 },
+  coimbatore: { name: "Coimbatore", isMetro: false, hraPercent: 40 },
+  kochi: { name: "Kochi", isMetro: false, hraPercent: 40 },
 };
 
 const salaryLpaMap: Record<string, { label: string; ctc: number }> = {
@@ -288,38 +288,38 @@ const salaryLpaMap: Record<string, { label: string; ctc: number }> = {
   "4-lpa": { label: "4 LPA", ctc: 400000 },
   "5-lpa": { label: "5 LPA", ctc: 500000 },
   "6-lpa": { label: "6 LPA", ctc: 600000 },
+  "7-lpa": { label: "7 LPA", ctc: 700000 },
   "8-lpa": { label: "8 LPA", ctc: 800000 },
+  "9-lpa": { label: "9 LPA", ctc: 900000 },
   "10-lpa": { label: "10 LPA", ctc: 1000000 },
   "12-lpa": { label: "12 LPA", ctc: 1200000 },
   "15-lpa": { label: "15 LPA", ctc: 1500000 },
+  "18-lpa": { label: "18 LPA", ctc: 1800000 },
   "20-lpa": { label: "20 LPA", ctc: 2000000 },
   "25-lpa": { label: "25 LPA", ctc: 2500000 },
   "30-lpa": { label: "30 LPA", ctc: 3000000 },
   "40-lpa": { label: "40 LPA", ctc: 4000000 },
   "50-lpa": { label: "50 LPA", ctc: 5000000 },
-  "75-lpa": { label: "75 LPA", ctc: 7500000 },
-  "1-crore": { label: "1 Crore", ctc: 10000000 },
-  "1.5-crore": { label: "1.5 Crore", ctc: 15000000 },
 };
 
 const sipGoalMap: Record<string, { name: string; target: number; duration: number; ret: number }> = {
-  "1-crore": { name: "1 Crore Corpus", target: 10000000, duration: 15, ret: 12 },
-  retirement: { name: "Retirement Planning", target: 50000000, duration: 25, ret: 12 },
-  "child-education": { name: "Child's Higher Education", target: 25000000, duration: 15, ret: 12 },
-  "house-down-payment": { name: "House Down Payment", target: 3000000, duration: 5, ret: 10 },
+  retirement: { name: "Retirement Planning", target: 30000000, duration: 30, ret: 12 },
+  "house-purchase": { name: "House Purchase", target: 10000000, duration: 7, ret: 12 },
+  "child-education": { name: "Child's Education", target: 5000000, duration: 15, ret: 12 },
   "emergency-fund": { name: "Emergency Fund", target: 600000, duration: 3, ret: 7 },
-  "financial-freedom": { name: "Financial Freedom (5 Crore)", target: 50000000, duration: 20, ret: 12 },
-  "car-purchase": { name: "Car Purchase Fund", target: 1500000, duration: 3, ret: 8 },
+  "car-purchase": { name: "Car Purchase", target: 1200000, duration: 3, ret: 8 },
+  vacation: { name: "Dream Vacation", target: 500000, duration: 2, ret: 7 },
+  wedding: { name: "Wedding Fund", target: 2000000, duration: 5, ret: 8 },
 };
 
 function getDynamicSEO(path: string): PageSEO | null {
   if (path === "/hra-calculator") {
     return {
-      title: "HRA Calculator by City - Metro vs Non-Metro HRA Exemption | My Paisa HQ",
+      title: "HRA Exemption Calculator by City 2025-26 | My Paisa HQ",
       description: "Calculate HRA exemption under Section 10(13A) for 19 Indian cities. Know if your city qualifies for 50% (metro) or 40% (non-metro) HRA exemption and optimize your tax savings.",
       canonical: `${SITE}/hra-calculator`,
       jsonLd: [
-        { "@context": "https://schema.org", "@type": "CollectionPage", name: "HRA Calculator by City", url: `${SITE}/hra-calculator` },
+        { "@context": "https://schema.org", "@type": "CollectionPage", name: "HRA Exemption Calculator by City 2025-26", url: `${SITE}/hra-calculator` },
         breadcrumbSchema("HRA Calculator by City", `${SITE}/hra-calculator`),
       ],
       faqText: "HRA exemption under Section 10(13A) depends on whether your city is classified as metro (50% of basic) or non-metro (40% of basic). Only Mumbai, Delhi, Kolkata, and Chennai are metros.",
@@ -328,27 +328,27 @@ function getDynamicSEO(path: string): PageSEO | null {
 
   if (path === "/salary-calculator") {
     return {
-      title: "In-Hand Salary Calculator by CTC (3 LPA to 1.5 Crore) | My Paisa HQ",
-      description: "Calculate in-hand take-home salary for any CTC from 3 LPA to 1.5 Crore with PF, professional tax, and income tax under old and new regime.",
+      title: "Salary Calculator by LPA 2025-26 — In-Hand Salary at Every CTC | My Paisa HQ",
+      description: "Calculate in-hand take-home salary for any CTC from 3 LPA to 50 LPA with PF, professional tax, and income tax under old and new regime.",
       canonical: `${SITE}/salary-calculator`,
       jsonLd: [
-        { "@context": "https://schema.org", "@type": "CollectionPage", name: "Salary Calculator by CTC", url: `${SITE}/salary-calculator` },
+        { "@context": "https://schema.org", "@type": "CollectionPage", name: "Salary Calculator by LPA 2025-26", url: `${SITE}/salary-calculator` },
         breadcrumbSchema("Salary Calculator by CTC", `${SITE}/salary-calculator`),
       ],
-      faqText: "Calculate in-hand salary from CTC for various salary levels from 3 LPA to 1.5 Crore with detailed breakdown of basic pay, HRA, PF, professional tax, and income tax.",
+      faqText: "Calculate in-hand salary from CTC for various salary levels from 3 LPA to 50 LPA with detailed breakdown of basic pay, HRA, PF, professional tax, and income tax.",
     };
   }
 
   if (path === "/sip-calculator") {
     return {
-      title: "SIP Calculator by Goal — Retirement, 1 Crore, Education & More | My Paisa HQ",
-      description: "Goal-based SIP calculators for retirement, 1 crore corpus, child education, house down payment, emergency fund, financial freedom, and car purchase.",
+      title: "SIP Calculator by Goal 2025-26 — Monthly SIP for Every Financial Goal | My Paisa HQ",
+      description: "Goal-based SIP calculators pre-configured for retirement, house purchase, child education, emergency fund, car purchase, vacation, and wedding fund.",
       canonical: `${SITE}/sip-calculator`,
       jsonLd: [
-        { "@context": "https://schema.org", "@type": "CollectionPage", name: "SIP Calculator by Goal", url: `${SITE}/sip-calculator` },
+        { "@context": "https://schema.org", "@type": "CollectionPage", name: "SIP Calculator by Goal 2025-26", url: `${SITE}/sip-calculator` },
         breadcrumbSchema("SIP Calculator by Goal", `${SITE}/sip-calculator`),
       ],
-      faqText: "Goal-based SIP calculators pre-configured for retirement, 1 crore corpus, child education, house down payment, emergency fund, financial freedom, and car purchase.",
+      faqText: "Goal-based SIP calculators pre-configured for retirement, house purchase, child education, emergency fund, car purchase, vacation, and wedding fund.",
     };
   }
 
@@ -358,7 +358,7 @@ function getDynamicSEO(path: string): PageSEO | null {
     if (city) {
       const slug = hraMatch[1];
       return {
-        title: `HRA Calculator ${city.name} - ${city.isMetro ? "Metro" : "Non-Metro"} (${city.hraPercent}%) | My Paisa HQ`,
+        title: `HRA Calculator for ${city.name} 2025-26 | ${city.isMetro ? "Metro" : "Non-Metro"} HRA Exemption | My Paisa HQ`,
         description: `Calculate HRA exemption for ${city.name} under Section 10(13A). ${city.name} is a ${city.isMetro ? "metro" : "non-metro"} city with ${city.hraPercent}% HRA on basic salary.`,
         canonical: `${SITE}/hra-calculator/${slug}`,
         jsonLd: [
@@ -380,7 +380,7 @@ function getDynamicSEO(path: string): PageSEO | null {
     if (lpa) {
       const slug = salaryMatch[1];
       return {
-        title: `${lpa.label} Salary — In-Hand, Tax & CTC Breakdown FY 2025-26 | My Paisa HQ`,
+        title: `${lpa.label} In-Hand Salary Calculator 2025-26 | Monthly Take-Home | My Paisa HQ`,
         description: `${lpa.label} CTC (₹${lpa.ctc.toLocaleString("en-IN")}/year) in-hand salary breakdown with PF, professional tax, income tax. Compare old vs new tax regime.`,
         canonical: `${SITE}/salary-calculator/${slug}`,
         jsonLd: [
@@ -402,7 +402,7 @@ function getDynamicSEO(path: string): PageSEO | null {
     if (goal) {
       const slug = sipMatch[1];
       return {
-        title: `SIP Calculator for ${goal.name} — How Much SIP Do You Need? | My Paisa HQ`,
+        title: `SIP Calculator for ${goal.name} 2025-26 | Monthly Investment Needed | My Paisa HQ`,
         description: `Calculate the monthly SIP needed for ${goal.name}. Target ₹${goal.target.toLocaleString("en-IN")} over ${goal.duration} years at ${goal.ret}% returns with step-up option.`,
         canonical: `${SITE}/sip-calculator/${slug}`,
         jsonLd: [

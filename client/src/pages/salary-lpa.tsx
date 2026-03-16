@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { useParams, Link, Redirect } from "wouter";
+import { useParams, Link } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -9,8 +9,10 @@ import { ArrowRight } from "lucide-react";
 import ResultCard from "@/components/result-card";
 import SEOHead from "@/components/seo-head";
 import Breadcrumb from "@/components/breadcrumb";
+import FAQSection, { type FAQItem } from "@/components/faq-section";
 import { formatINR } from "@/lib/formatters";
 import { getLpaBySlug, salaryLpaData } from "@/data/salary-lpa";
+import NotFound from "@/pages/not-found";
 
 function calcNewRegimeTax(taxableIncome: number): number {
   const slabs = [
@@ -49,21 +51,29 @@ function calcOldRegimeTax(taxableIncome: number): number {
   return tax;
 }
 
+const standardSalaryFaqs: FAQItem[] = [
+  { question: "How to calculate in-hand salary from CTC?", answer: "In-hand salary = CTC minus employer PF contribution minus employee PF minus professional tax minus income tax. First, calculate basic salary (typically 40-50% of CTC). Then compute HRA, PF deductions, professional tax, and income tax under your chosen regime. The remaining amount is your monthly in-hand (take-home) salary." },
+  { question: "What is the difference between CTC and in-hand salary?", answer: "CTC (Cost to Company) is the total amount your employer spends on you annually, including basic pay, HRA, employer PF, insurance, bonuses and other benefits. In-hand salary is what you actually receive in your bank account after all deductions like employee PF, professional tax, and income tax. Typically, in-hand salary is 65-75% of CTC." },
+  { question: "What is the PF contribution limit in India?", answer: "The statutory PF contribution is 12% of basic salary from both employer and employee. The PF contribution is calculated on basic salary up to a ceiling of Rs. 15,000 per month, which means the maximum PF contribution is Rs. 1,800/month or Rs. 21,600/year." },
+  { question: "What is professional tax and how much is deducted?", answer: "Professional tax is a state-level tax on income earned through employment or profession. The maximum amount that can be levied is Rs. 2,500 per year. Different states have different slabs — for example, Maharashtra charges Rs. 200/month (Rs. 2,400/year)." },
+  { question: "Which tax regime is better — old or new?", answer: "The new tax regime (FY 2025-26) offers lower slab rates and no tax up to Rs. 12 lakhs income but does not allow most deductions. The old regime has higher rates but allows deductions under 80C, 80D, HRA, etc. If your total deductions exceed Rs. 3-4 lakhs, the old regime might save more." },
+];
+
 export default function SalaryLPA() {
   const { lpa } = useParams<{ lpa: string }>();
   const lpaData = getLpaBySlug(lpa || "");
 
   if (!lpaData) {
-    return <Redirect to="/salary-calculator" />;
+    return <NotFound />;
   }
 
   return <SalaryLPACalculator key={lpaData.slug} lpaData={lpaData} />;
 }
 
 function SalaryLPACalculator({ lpaData }: { lpaData: NonNullable<ReturnType<typeof getLpaBySlug>> }) {
-  const [ctc, setCTC] = useState(lpaData.ctc);
+  const [ctc, setCTC] = useState(lpaData.annualCTC);
   const [basicPercent, setBasicPercent] = useState(40);
-  const [isMetro, setIsMetro] = useState(true);
+  const [isMetro, setIsMetro] = useState(false);
   const [pfEnabled, setPfEnabled] = useState(true);
   const [professionalTax, setProfessionalTax] = useState(2400);
 
@@ -91,19 +101,34 @@ function SalaryLPACalculator({ lpaData }: { lpaData: NonNullable<ReturnType<type
   const copyText = `${lpaData.label} Salary Breakdown\nAnnual CTC: ${formatINR(ctc)}\nBasic: ${formatINR(basicAnnual)}/yr\nHRA: ${formatINR(hraAnnual)}/yr\nPF (Employee): ${formatINR(pfAnnual)}/yr\nNew Regime Tax: ${formatINR(totalTaxNew)}\nIn-Hand (New): ${formatINR(inHandNewMonthly)}/month\nOld Regime Tax: ${formatINR(totalTaxOld)}\nIn-Hand (Old): ${formatINR(inHandOldMonthly)}/month`;
 
   const nearbyLpaData = lpaData.nearbyLpa
-    .map((slug) => salaryLpaData.find((l) => l.slug === slug))
+    .map((val) => salaryLpaData.find((l) => l.lpa === val))
     .filter(Boolean);
+
+  const lpaFaqs: FAQItem[] = [
+    {
+      question: `What is the in-hand salary for ${lpaData.label}?`,
+      answer: `For a CTC of ${lpaData.label} (₹${lpaData.annualCTC.toLocaleString("en-IN")}/year), the approximate in-hand salary is ₹${inHandNewMonthly.toLocaleString("en-IN")}/month under the new tax regime and ₹${inHandOldMonthly.toLocaleString("en-IN")}/month under the old regime (with 40% basic, PF enabled, non-metro city).`,
+    },
+    {
+      question: `Which tax regime is better at ${lpaData.label}?`,
+      answer: inHandNewMonthly >= inHandOldMonthly
+        ? `At ${lpaData.label} CTC, the new tax regime gives you a higher take-home of ₹${inHandNewMonthly.toLocaleString("en-IN")}/month compared to ₹${inHandOldMonthly.toLocaleString("en-IN")}/month under the old regime. The new regime is better unless you have significant deductions beyond PF.`
+        : `At ${lpaData.label} CTC, the old tax regime gives you a higher take-home of ₹${inHandOldMonthly.toLocaleString("en-IN")}/month compared to ₹${inHandNewMonthly.toLocaleString("en-IN")}/month under the new regime. Consider the old regime if you claim HRA, 80C, and 80D deductions.`,
+    },
+  ];
+
+  const allFaqs = [...lpaFaqs, ...standardSalaryFaqs];
 
   const jsonLd = useMemo(() => [
     {
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      name: `${lpaData.label} Salary Calculator`,
+      name: `${lpaData.label} In-Hand Salary Calculator 2025-26`,
       url: `https://mypaisahq.com/salary-calculator/${lpaData.slug}`,
       applicationCategory: "FinanceApplication",
       operatingSystem: "Any",
       offers: { "@type": "Offer", price: "0", priceCurrency: "INR" },
-      description: `Calculate in-hand salary from ${lpaData.label} CTC (₹${lpaData.ctc.toLocaleString("en-IN")}/year) with PF, tax, and regime comparison.`,
+      description: `Calculate in-hand salary from ${lpaData.label} CTC (₹${lpaData.annualCTC.toLocaleString("en-IN")}/year) with PF, tax, and regime comparison.`,
     },
     {
       "@context": "https://schema.org",
@@ -117,26 +142,13 @@ function SalaryLPACalculator({ lpaData }: { lpaData: NonNullable<ReturnType<type
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      mainEntity: [
-        {
-          "@type": "Question",
-          name: `What is the in-hand salary for ${lpaData.label} CTC?`,
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: `For a CTC of ${lpaData.label} (₹${lpaData.ctc.toLocaleString("en-IN")}/year), the approximate in-hand salary is ₹${inHandNewMonthly.toLocaleString("en-IN")}/month under the new tax regime and ₹${inHandOldMonthly.toLocaleString("en-IN")}/month under the old regime (with 40% basic, PF enabled, metro city).`,
-          },
-        },
-        {
-          "@type": "Question",
-          name: `How much tax do I pay on ${lpaData.label} salary?`,
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: `On a ${lpaData.label} CTC, income tax is approximately ₹${totalTaxNew.toLocaleString("en-IN")} under the new regime and ₹${totalTaxOld.toLocaleString("en-IN")} under the old regime (including 4% cess, with standard assumptions).`,
-          },
-        },
-      ],
+      mainEntity: allFaqs.map((f) => ({
+        "@type": "Question",
+        name: f.question,
+        acceptedAnswer: { "@type": "Answer", text: f.answer },
+      })),
     },
-  ], [lpaData, inHandNewMonthly, inHandOldMonthly, totalTaxNew, totalTaxOld]);
+  ], [lpaData, allFaqs]);
 
   const BreakdownTable = ({ regime }: { regime: "new" | "old" }) => {
     const stdDed = regime === "new" ? stdDeductionNew : stdDeductionOld;
@@ -224,8 +236,8 @@ function SalaryLPACalculator({ lpaData }: { lpaData: NonNullable<ReturnType<type
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
       <SEOHead
-        title={`${lpaData.label} Salary — In-Hand, Tax & CTC Breakdown FY 2025-26 | My Paisa HQ`}
-        description={`${lpaData.label} CTC (₹${lpaData.ctc.toLocaleString("en-IN")}/year) in-hand salary breakdown with PF, professional tax, income tax. Compare old vs new tax regime. Pre-filled for ${lpaData.label}.`}
+        title={`${lpaData.label} In-Hand Salary Calculator 2025-26 | Monthly Take-Home | My Paisa HQ`}
+        description={`${lpaData.label} CTC (₹${lpaData.annualCTC.toLocaleString("en-IN")}/year) in-hand salary breakdown with PF, professional tax, income tax. Compare old vs new tax regime. Pre-filled for ${lpaData.label}.`}
         canonicalPath={`/salary-calculator/${lpaData.slug}`}
         jsonLd={jsonLd}
       />
@@ -234,11 +246,20 @@ function SalaryLPACalculator({ lpaData }: { lpaData: NonNullable<ReturnType<type
         parent={{ label: "Salary Calculator by CTC", href: "/salary-calculator" }}
       />
       <div className="mb-8">
-        <h1 className="text-2xl md:text-3xl font-bold mb-2">{lpaData.label} Salary — In-Hand & Tax Breakdown</h1>
-        <p className="text-muted-foreground">CTC of ₹{lpaData.ctc.toLocaleString("en-IN")}/year — see your monthly take-home for FY 2025-26</p>
+        <h1 className="text-2xl md:text-3xl font-bold mb-2" data-testid="heading-salary-lpa">{lpaData.label} In-Hand Salary Calculator</h1>
+        <p className="text-muted-foreground">CTC of ₹{lpaData.annualCTC.toLocaleString("en-IN")}/year — see your monthly take-home for FY 2025-26</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+      <div className="mb-6 p-4 rounded-lg border">
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          If your CTC is {lpaData.label}, here's your exact in-hand salary breakdown for FY 2025-26. The calculator below shows your monthly take-home after PF, professional tax, and income tax deductions under both old and new tax regimes.
+        </p>
+        <a href="#calculator" className="text-sm text-primary hover:underline mt-2 inline-block" data-testid="link-see-breakdown">
+          See My Breakdown →
+        </a>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6" id="calculator">
         <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle className="text-base">Input Details</CardTitle>
@@ -305,14 +326,11 @@ function SalaryLPACalculator({ lpaData }: { lpaData: NonNullable<ReturnType<type
         </div>
       </div>
 
-      <div className="mt-8 p-4 rounded-lg border">
-        <h2 className="text-base font-semibold mb-2">About {lpaData.label} CTC</h2>
-        <p className="text-sm text-muted-foreground leading-relaxed">{lpaData.description}</p>
-      </div>
+      <FAQSection faqs={allFaqs} />
 
       {nearbyLpaData.length > 0 && (
         <div className="mt-8">
-          <h2 className="text-base font-semibold mb-3">Compare Other CTC Levels</h2>
+          <h2 className="text-base font-semibold mb-3">Compare with Other LPA</h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {nearbyLpaData.map((l) => l && (
               <Link key={l.slug} href={`/salary-calculator/${l.slug}`}>

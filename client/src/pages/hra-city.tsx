@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { useParams, Link, Redirect } from "wouter";
+import { useParams, Link } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -7,24 +7,34 @@ import { ArrowRight } from "lucide-react";
 import ResultCard from "@/components/result-card";
 import SEOHead from "@/components/seo-head";
 import Breadcrumb from "@/components/breadcrumb";
+import FAQSection, { type FAQItem } from "@/components/faq-section";
 import { formatINR } from "@/lib/formatters";
 import { getCityBySlug, hraCities } from "@/data/hra-cities";
+import NotFound from "@/pages/not-found";
+
+const standardHraFaqs: FAQItem[] = [
+  { question: "How is HRA exemption calculated?", answer: "HRA exemption is the minimum of three values: (1) Actual HRA received from employer, (2) 50% of basic salary for metro cities (Delhi, Mumbai, Kolkata, Chennai) or 40% for non-metro cities, and (3) Actual rent paid minus 10% of basic salary. The lowest of these three amounts is your HRA exemption under Section 10(13A)." },
+  { question: "What is Section 10(13A) of the Income Tax Act?", answer: "Section 10(13A) provides tax exemption on HRA (House Rent Allowance) received by salaried employees. To claim this exemption, you must be a salaried employee receiving HRA, live in a rented accommodation, and actually pay rent." },
+  { question: "Can I claim HRA if I live in my own house?", answer: "No, you cannot claim HRA exemption if you live in your own house. To claim HRA tax benefit, you must be paying rent for your accommodation. However, if you have a home loan in a different city and pay rent where you work, you can claim both." },
+  { question: "Which cities are classified as metro for HRA calculation?", answer: "Only four cities are classified as metros: Delhi, Mumbai, Kolkata, and Chennai. For these cities, HRA exemption is calculated at 50% of basic salary. All other cities use 40% of basic salary." },
+  { question: "Can I claim HRA under the new tax regime?", answer: "No, HRA exemption under Section 10(13A) is not available under the new tax regime (FY 2025-26). If you want to claim HRA exemption, you must opt for the old tax regime." },
+];
 
 export default function HRACity() {
   const { city } = useParams<{ city: string }>();
   const cityData = getCityBySlug(city || "");
 
   if (!cityData) {
-    return <Redirect to="/hra-calculator" />;
+    return <NotFound />;
   }
 
   return <HRACityCalculator key={cityData.slug} cityData={cityData} />;
 }
 
 function HRACityCalculator({ cityData }: { cityData: NonNullable<ReturnType<typeof getCityBySlug>> }) {
-  const [basicSalary, setBasicSalary] = useState(cityData.typicalBasic);
-  const [hraReceived, setHraReceived] = useState(Math.round(cityData.typicalBasic * cityData.hraPercent / 100));
-  const [rentPaid, setRentPaid] = useState(cityData.avgRent);
+  const [basicSalary, setBasicSalary] = useState(cityData.avgBasicMonthly);
+  const [hraReceived, setHraReceived] = useState(Math.round(cityData.avgBasicMonthly * (cityData.isMetro ? 0.5 : 0.4)));
+  const [rentPaid, setRentPaid] = useState(cityData.avgRentMonthly);
 
   const percentOfBasic = (basicSalary * cityData.hraPercent) / 100;
   const rentMinus10 = Math.max(0, rentPaid - basicSalary * 0.1);
@@ -37,11 +47,26 @@ function HRACityCalculator({ cityData }: { cityData: NonNullable<ReturnType<type
     .map((slug) => hraCities.find((c) => c.slug === slug))
     .filter(Boolean);
 
+  const cityFaqs: FAQItem[] = [
+    {
+      question: `What is HRA exemption in ${cityData.name}?`,
+      answer: `In ${cityData.name}, HRA exemption under Section 10(13A) is calculated at ${cityData.hraPercent}% of basic salary because ${cityData.name} is classified as a ${cityData.isMetro ? "metro" : "non-metro"} city. The actual exemption is the minimum of: actual HRA received, ${cityData.hraPercent}% of basic salary, and rent paid minus 10% of basic salary.`,
+    },
+    {
+      question: `Is ${cityData.name} a metro city for HRA?`,
+      answer: cityData.isMetro
+        ? `Yes, ${cityData.name} is classified as a metro city for HRA purposes under Section 10(13A). HRA exemption is calculated at 50% of basic salary. Only four cities qualify as metros: Mumbai, Delhi, Kolkata, and Chennai.`
+        : `No, ${cityData.name} is classified as a non-metro city for HRA purposes. HRA exemption is calculated at 40% of basic salary. Only Mumbai, Delhi, Kolkata, and Chennai are classified as metro cities.`,
+    },
+  ];
+
+  const allFaqs = [...cityFaqs, ...standardHraFaqs];
+
   const jsonLd = useMemo(() => [
     {
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      name: `HRA Calculator ${cityData.name}`,
+      name: `HRA Calculator for ${cityData.name} 2025-26`,
       url: `https://mypaisahq.com/hra-calculator/${cityData.slug}`,
       applicationCategory: "FinanceApplication",
       operatingSystem: "Any",
@@ -60,33 +85,18 @@ function HRACityCalculator({ cityData }: { cityData: NonNullable<ReturnType<type
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      mainEntity: [
-        {
-          "@type": "Question",
-          name: `Is ${cityData.name} a metro city for HRA?`,
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: cityData.isMetro
-              ? `Yes, ${cityData.name} is classified as a metro city for HRA purposes under Section 10(13A). HRA exemption is calculated at 50% of basic salary.`
-              : `No, ${cityData.name} is classified as a non-metro city for HRA purposes. HRA exemption is calculated at 40% of basic salary. Only Mumbai, Delhi, Kolkata, and Chennai are metros.`,
-          },
-        },
-        {
-          "@type": "Question",
-          name: `What is the HRA exemption percentage for ${cityData.name}?`,
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: `The HRA exemption for ${cityData.name} is ${cityData.hraPercent}% of basic salary (${cityData.isMetro ? "metro" : "non-metro"} rate). The actual exemption is the minimum of: actual HRA received, ${cityData.hraPercent}% of basic salary, and rent paid minus 10% of basic salary.`,
-          },
-        },
-      ],
+      mainEntity: allFaqs.map((f) => ({
+        "@type": "Question",
+        name: f.question,
+        acceptedAnswer: { "@type": "Answer", text: f.answer },
+      })),
     },
-  ], [cityData]);
+  ], [cityData, allFaqs]);
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
       <SEOHead
-        title={`HRA Calculator ${cityData.name} - ${cityData.isMetro ? "Metro" : "Non-Metro"} (${cityData.hraPercent}%) | My Paisa HQ`}
+        title={`HRA Calculator for ${cityData.name} 2025-26 | ${cityData.isMetro ? "Metro" : "Non-Metro"} HRA Exemption | My Paisa HQ`}
         description={`Calculate HRA exemption for ${cityData.name} under Section 10(13A). ${cityData.name} is a ${cityData.isMetro ? "metro" : "non-metro"} city with ${cityData.hraPercent}% HRA on basic salary. Pre-filled with typical ${cityData.name} rent and salary data.`}
         canonicalPath={`/hra-calculator/${cityData.slug}`}
         jsonLd={jsonLd}
@@ -96,13 +106,25 @@ function HRACityCalculator({ cityData }: { cityData: NonNullable<ReturnType<type
         parent={{ label: "HRA Calculator by City", href: "/hra-calculator" }}
       />
       <div className="mb-8">
-        <h1 className="text-2xl md:text-3xl font-bold mb-2">HRA Calculator — {cityData.name}</h1>
+        <h1 className="text-2xl md:text-3xl font-bold mb-2" data-testid="heading-hra-city">HRA Calculator — {cityData.name}</h1>
         <p className="text-muted-foreground">
           {cityData.isMetro ? "Metro city" : "Non-metro city"} — {cityData.hraPercent}% of basic salary for HRA exemption under Section 10(13A)
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="mb-6 p-4 rounded-lg border">
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          {cityData.name}, {cityData.state} is classified as a <strong>{cityData.isMetro ? "metro" : "non-metro"}</strong> city under Indian tax law.
+          {cityData.isMetro
+            ? ` As one of the four metro cities (Mumbai, Delhi, Kolkata, Chennai), HRA exemption is calculated at 50% of your basic salary — the highest rate available.`
+            : ` HRA exemption is calculated at 40% of your basic salary. Only Mumbai, Delhi, Kolkata, and Chennai qualify for the higher 50% metro rate.`}
+        </p>
+        <a href="#calculator" className="text-sm text-primary hover:underline mt-2 inline-block" data-testid="link-calculate-hra">
+          Calculate My HRA →
+        </a>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6" id="calculator">
         <Card>
           <CardHeader>
             <CardTitle className="text-base">Your Details ({cityData.name})</CardTitle>
@@ -144,7 +166,7 @@ function HRACityCalculator({ cityData }: { cityData: NonNullable<ReturnType<type
           </CardContent>
         </Card>
 
-        <ResultCard title={`HRA Exemption — ${cityData.name}`} copyText={copyText} id="hra-city">
+        <ResultCard title={`HRA Exemption — ${cityData.name}`} copyText={copyText} id="hra-city-result">
           <div className="space-y-4">
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
@@ -181,14 +203,11 @@ function HRACityCalculator({ cityData }: { cityData: NonNullable<ReturnType<type
         </ResultCard>
       </div>
 
-      <div className="mt-8 p-4 rounded-lg border">
-        <h2 className="text-base font-semibold mb-2">About HRA in {cityData.name}</h2>
-        <p className="text-sm text-muted-foreground leading-relaxed">{cityData.description}</p>
-      </div>
+      <FAQSection faqs={allFaqs} />
 
       {nearbyCityData.length > 0 && (
         <div className="mt-8">
-          <h2 className="text-base font-semibold mb-3">HRA Calculator for Nearby Cities</h2>
+          <h2 className="text-base font-semibold mb-3">Explore Other Cities</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {nearbyCityData.map((c) => c && (
               <Link key={c.slug} href={`/hra-calculator/${c.slug}`}>
@@ -196,7 +215,7 @@ function HRACityCalculator({ cityData }: { cityData: NonNullable<ReturnType<type
                   <CardContent className="pt-4 pb-3 px-4">
                     <div className="flex items-center justify-between gap-2">
                       <div>
-                        <p className="text-sm font-medium">{c.name}</p>
+                        <p className="text-sm font-medium">{c.name}, {c.state}</p>
                         <p className="text-xs text-muted-foreground mt-1">{c.isMetro ? "Metro" : "Non-metro"} — {c.hraPercent}% HRA</p>
                       </div>
                       <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0" />

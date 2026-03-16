@@ -1,20 +1,20 @@
 import { useMemo } from "react";
 import { Link } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, Target } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import SEOHead from "@/components/seo-head";
 import Breadcrumb from "@/components/breadcrumb";
 import { sipGoals } from "@/data/sip-goals";
-import { formatINRCompact } from "@/lib/formatters";
+import { formatINRCompact, formatINR } from "@/lib/formatters";
 
 export default function SIPHub() {
   const jsonLd = useMemo(() => [
     {
       "@context": "https://schema.org",
       "@type": "CollectionPage",
-      name: "SIP Calculator by Goal",
+      name: "SIP Calculator by Goal 2025-26",
       url: "https://mypaisahq.com/sip-calculator",
-      description: "Goal-based SIP calculators for retirement, 1 crore corpus, child education, house down payment, emergency fund, financial freedom, and car purchase.",
+      description: "Goal-based SIP calculators for retirement, house purchase, child education, emergency fund, car purchase, vacation, and wedding fund.",
     },
     {
       "@context": "https://schema.org",
@@ -40,15 +40,21 @@ export default function SIPHub() {
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
       <SEOHead
-        title="SIP Calculator by Goal — Retirement, 1 Crore, Education & More | My Paisa HQ"
-        description="Goal-based SIP calculators pre-configured for retirement, 1 crore corpus, child education, house down payment, emergency fund, financial freedom, and car purchase. See exactly how much SIP you need."
+        title="SIP Calculator by Goal 2025-26 — Monthly SIP for Every Financial Goal | My Paisa HQ"
+        description="Goal-based SIP calculators pre-configured for retirement, house purchase, child education, emergency fund, car purchase, vacation, and wedding. See exactly how much SIP you need."
         canonicalPath="/sip-calculator"
         jsonLd={jsonLd}
       />
       <Breadcrumb currentPage="SIP Calculator by Goal" />
       <div className="mb-8">
-        <h1 className="text-2xl md:text-3xl font-bold mb-2">SIP Calculator by Goal</h1>
+        <h1 className="text-2xl md:text-3xl font-bold mb-2" data-testid="heading-sip-hub">SIP Calculator by Financial Goal</h1>
         <p className="text-muted-foreground">Choose your financial goal to see the exact SIP amount needed with step-up option</p>
+      </div>
+
+      <div className="mb-4 p-4 rounded-lg bg-primary/10">
+        <p className="text-sm">
+          <strong>Goal-based investing</strong> works backward from your target amount. Instead of investing a random amount, you define your goal, set a timeline, and calculate the exact monthly SIP needed. Adding an annual step-up aligns investments with salary growth.
+        </p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -59,11 +65,11 @@ export default function SIPHub() {
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <Target className="w-4 h-4 text-primary shrink-0" />
+                      <span className="text-lg">{goal.emoji}</span>
                       <p className="text-sm font-medium">{goal.name}</p>
                     </div>
                     <p className="text-xs text-muted-foreground mt-1">
-                      Target: {formatINRCompact(goal.targetAmount)} | {goal.duration} years | {goal.expectedReturn}% returns
+                      Target: {formatINRCompact(goal.targetAmount)} | {goal.timelineYears} years | SIP: {formatINR(goal.monthlyInvestment)}/mo
                     </p>
                   </div>
                   <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0 mt-1" />

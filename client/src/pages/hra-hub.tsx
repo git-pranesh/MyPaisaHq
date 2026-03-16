@@ -14,7 +14,7 @@ export default function HRAHub() {
     {
       "@context": "https://schema.org",
       "@type": "CollectionPage",
-      name: "HRA Calculator by City - India",
+      name: "HRA Exemption Calculator by City 2025-26",
       url: "https://mypaisahq.com/hra-calculator",
       description: "Calculate HRA exemption under Section 10(13A) for 19 Indian cities. Metro cities (50% HRA) vs non-metro cities (40% HRA) with pre-filled city-specific data.",
     },
@@ -42,14 +42,14 @@ export default function HRAHub() {
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
       <SEOHead
-        title="HRA Calculator by City - Metro vs Non-Metro HRA Exemption | My Paisa HQ"
+        title="HRA Exemption Calculator by City 2025-26 | My Paisa HQ"
         description="Calculate HRA exemption under Section 10(13A) for 19 Indian cities. Know if your city qualifies for 50% (metro) or 40% (non-metro) HRA exemption and optimize your tax savings."
         canonicalPath="/hra-calculator"
         jsonLd={jsonLd}
       />
       <Breadcrumb currentPage="HRA Calculator by City" />
       <div className="mb-8">
-        <h1 className="text-2xl md:text-3xl font-bold mb-2">HRA Calculator by City</h1>
+        <h1 className="text-2xl md:text-3xl font-bold mb-2" data-testid="heading-hra-hub">HRA Calculator by City 2025-26</h1>
         <p className="text-muted-foreground">Select your city to calculate HRA exemption under Section 10(13A) with pre-filled city-specific data</p>
       </div>
 
@@ -71,8 +71,8 @@ export default function HRAHub() {
                 <CardContent className="pt-4 pb-3 px-4">
                   <div className="flex items-center justify-between gap-2">
                     <div>
-                      <p className="text-sm font-medium">{city.name}</p>
-                      <p className="text-xs text-muted-foreground mt-1">HRA at {city.hraPercent}% of basic | Avg rent: ₹{city.avgRent.toLocaleString("en-IN")}/mo</p>
+                      <p className="text-sm font-medium">{city.name}, {city.state}</p>
+                      <p className="text-xs text-muted-foreground mt-1">HRA at {city.hraPercent}% of basic | Avg rent: ₹{city.avgRentMonthly.toLocaleString("en-IN")}/mo</p>
                     </div>
                     <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0" />
                   </div>
@@ -95,8 +95,8 @@ export default function HRAHub() {
                 <CardContent className="pt-4 pb-3 px-4">
                   <div className="flex items-center justify-between gap-2">
                     <div>
-                      <p className="text-sm font-medium">{city.name}</p>
-                      <p className="text-xs text-muted-foreground mt-1">HRA at {city.hraPercent}% | Avg rent: ₹{city.avgRent.toLocaleString("en-IN")}/mo</p>
+                      <p className="text-sm font-medium">{city.name}, {city.state}</p>
+                      <p className="text-xs text-muted-foreground mt-1">HRA at {city.hraPercent}% | Avg rent: ₹{city.avgRentMonthly.toLocaleString("en-IN")}/mo</p>
                     </div>
                     <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0" />
                   </div>
