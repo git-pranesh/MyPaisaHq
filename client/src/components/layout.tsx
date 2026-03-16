@@ -91,7 +91,7 @@ function Footer() {
   return (
     <footer className="border-t bg-muted/30 mt-16" data-testid="footer">
       <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <Link href="/" className="flex items-center gap-2" data-testid="link-footer-home">
               <div className="w-6 h-6 rounded bg-primary flex items-center justify-center">
@@ -104,6 +104,26 @@ function Footer() {
                 Knowledge Hub
               </Button>
             </a>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+            <div>
+              <p className="font-medium text-xs uppercase tracking-wide text-muted-foreground mb-2">Calculators by City</p>
+              <Link href="/hra-calculator" className="text-xs text-muted-foreground hover:text-primary transition-colors block" data-testid="link-footer-hra-calculator">
+                HRA Calculator by City
+              </Link>
+            </div>
+            <div>
+              <p className="font-medium text-xs uppercase tracking-wide text-muted-foreground mb-2">Calculators by Salary</p>
+              <Link href="/salary-calculator" className="text-xs text-muted-foreground hover:text-primary transition-colors block" data-testid="link-footer-salary-calculator">
+                Salary Calculator by CTC
+              </Link>
+            </div>
+            <div>
+              <p className="font-medium text-xs uppercase tracking-wide text-muted-foreground mb-2">Calculators by Goal</p>
+              <Link href="/sip-calculator" className="text-xs text-muted-foreground hover:text-primary transition-colors block" data-testid="link-footer-sip-calculator">
+                SIP Calculator by Goal
+              </Link>
+            </div>
           </div>
           <p className="text-xs text-muted-foreground text-center" data-testid="text-disclaimer">
             Disclaimer: The calculators provided are for informational purposes only. Results are approximate

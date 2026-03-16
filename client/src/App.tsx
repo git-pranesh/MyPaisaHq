@@ -15,6 +15,12 @@ import SIPCalc from "@/pages/sip";
 import LoanVsSIP from "@/pages/loan-vs-sip";
 import GoalSIP from "@/pages/goal-sip";
 import Brand from "@/pages/brand";
+import HRAHub from "@/pages/hra-hub";
+import HRACity from "@/pages/hra-city";
+import SalaryHub from "@/pages/salary-hub";
+import SalaryLPA from "@/pages/salary-lpa";
+import SIPHub from "@/pages/sip-hub";
+import SIPGoalPage from "@/pages/sip-goal";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -32,6 +38,12 @@ function Router() {
         <Route path="/loan-vs-sip" component={LoanVsSIP} />
         <Route path="/goal-sip" component={GoalSIP} />
         <Route path="/brand" component={Brand} />
+        <Route path="/hra-calculator" component={HRAHub} />
+        <Route path="/salary-calculator" component={SalaryHub} />
+        <Route path="/sip-calculator" component={SIPHub} />
+        <Route path="/hra-calculator/:city" component={HRACity} />
+        <Route path="/salary-calculator/:lpa" component={SalaryLPA} />
+        <Route path="/sip-calculator/:goal" component={SIPGoalPage} />
         <Route component={NotFound} />
       </Switch>
     </Layout>

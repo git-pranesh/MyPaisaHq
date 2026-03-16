@@ -14,8 +14,13 @@ client/src/
 ├── App.tsx              # Main app with all routes
 ├── components/
 │   ├── layout.tsx       # Navbar + Footer wrapper
+│   ├── breadcrumb.tsx   # Breadcrumb with optional parent level
 │   ├── result-card.tsx  # Reusable result display with copy button
 │   └── ui/              # Shadcn UI components
+├── data/
+│   ├── hra-cities.ts    # 19 Indian cities with metro/non-metro HRA data
+│   ├── salary-lpa.ts   # 16 CTC levels (3 LPA to 1.5 Crore)
+│   └── sip-goals.ts    # 7 financial goals with target/duration/returns
 ├── lib/
 │   ├── formatters.ts    # Indian number formatting (lakhs/crores), clipboard
 │   ├── pay-matrix.ts    # 7th CPC pay matrix data (Levels 1-18)
@@ -31,7 +36,13 @@ client/src/
 │   ├── income-tax.tsx   # Income tax FY 2025-26
 │   ├── sip.tsx          # SIP returns calculator
 │   ├── loan-vs-sip.tsx  # Loan vs SIP comparison
-│   └── goal-sip.tsx     # Goal-based top-up SIP calculator
+│   ├── goal-sip.tsx     # Goal-based top-up SIP calculator
+│   ├── hra-hub.tsx      # Hub: HRA calculator by city (19 cities)
+│   ├── hra-city.tsx     # Detail: HRA calculator for specific city
+│   ├── salary-hub.tsx   # Hub: Salary calculator by CTC (16 levels)
+│   ├── salary-lpa.tsx   # Detail: Salary calculator for specific CTC
+│   ├── sip-hub.tsx      # Hub: SIP calculator by goal (7 goals)
+│   └── sip-goal.tsx     # Detail: SIP calculator for specific goal
 ```
 
 ## 9 Calculators
@@ -45,6 +56,13 @@ client/src/
 8. `/loan-vs-sip` - Loan prepayment vs SIP investment
 9. `/goal-sip` - Goal-based top-up SIP (inflation-adjusted target, reverse-calc starting SIP)
 
+## Programmatic SEO Pages (45 new URLs)
+- **HRA by City** — `/hra-calculator` hub + `/hra-calculator/:city` (19 cities). Metro (50%): Mumbai, Delhi, Kolkata, Chennai. Non-metro (40%): Bangalore, Hyderabad, Pune, etc.
+- **Salary by CTC** — `/salary-calculator` hub + `/salary-calculator/:lpa` (16 levels from 3 LPA to 1.5 Crore). Full salary breakdown with regime comparison.
+- **SIP by Goal** — `/sip-calculator` hub + `/sip-calculator/:goal` (7 goals: 1-crore, retirement, child-education, house-down-payment, emergency-fund, financial-freedom, car-purchase).
+- Each detail page has: pre-filled inputs, working calculator, nearby/related links for internal linking, 3-level breadcrumbs, unique JSON-LD, server-side SEO injection.
+- Invalid slugs redirect to hub page via wouter's `<Redirect>`.
+
 ## SEO Infrastructure
 - **Server-side SEO injection** (`server/seo-data.ts`) - Injects per-page title, meta tags, JSON-LD schemas, and noscript FAQ content into raw HTML before browser receives it. This ensures non-JS crawlers (LLM pipelines, Bing) see all content without executing JavaScript.
 - **SEOHead component** (`components/seo-head.tsx`) - Client-side meta tag updates via DOM manipulation (works alongside server-side injection)
@@ -53,7 +71,7 @@ client/src/
 - **Breadcrumbs** (`components/breadcrumb.tsx`) - "Home > Calculator Name" with BreadcrumbList schema
 - **Related Tools** (`components/related-tools.tsx`) - 3 cross-links per calculator for internal link equity
 - **LLM Discovery** - `client/public/llms.txt` (overview) and `client/public/llms-full.txt` (complete FAQ reference) for AI system discovery
-- **IndexNow** - `server/indexnow.ts` auto-submits all 10 calculator URLs to Bing/Yandex/etc on every production startup. Key file: `client/public/2eff04eeb1374409835369730a484489.txt`. Manual trigger: `POST /api/submit-indexnow`
+- **IndexNow** - `server/indexnow.ts` auto-submits all 55 URLs (10 calculators + 45 programmatic SEO pages) to Bing/Yandex/etc on every production startup. Key file: `client/public/2eff04eeb1374409835369730a484489.txt`. Manual trigger: `POST /api/submit-indexnow`
 - **Twitter Cards** - twitter:card, twitter:title, twitter:description in index.html
 - **Open Graph** - og:title, og:description, og:url, og:type, og:site_name
 - **Sitemap** - `client/public/sitemap.xml` with lastmod dates and changefreq

@@ -261,13 +261,173 @@ const seoPages: Record<string, PageSEO> = {
   },
 };
 
+const hraCityData: Record<string, { name: string; isMetro: boolean; hraPercent: number }> = {
+  mumbai: { name: "Mumbai", isMetro: true, hraPercent: 50 },
+  delhi: { name: "Delhi", isMetro: true, hraPercent: 50 },
+  kolkata: { name: "Kolkata", isMetro: true, hraPercent: 50 },
+  chennai: { name: "Chennai", isMetro: true, hraPercent: 50 },
+  bangalore: { name: "Bangalore", isMetro: false, hraPercent: 40 },
+  hyderabad: { name: "Hyderabad", isMetro: false, hraPercent: 40 },
+  pune: { name: "Pune", isMetro: false, hraPercent: 40 },
+  ahmedabad: { name: "Ahmedabad", isMetro: false, hraPercent: 40 },
+  gurgaon: { name: "Gurgaon (Gurugram)", isMetro: false, hraPercent: 40 },
+  noida: { name: "Noida", isMetro: false, hraPercent: 40 },
+  jaipur: { name: "Jaipur", isMetro: false, hraPercent: 40 },
+  lucknow: { name: "Lucknow", isMetro: false, hraPercent: 40 },
+  chandigarh: { name: "Chandigarh", isMetro: false, hraPercent: 40 },
+  indore: { name: "Indore", isMetro: false, hraPercent: 40 },
+  coimbatore: { name: "Coimbatore", isMetro: false, hraPercent: 40 },
+  nagpur: { name: "Nagpur", isMetro: false, hraPercent: 40 },
+  patna: { name: "Patna", isMetro: false, hraPercent: 40 },
+  bhubaneswar: { name: "Bhubaneswar", isMetro: false, hraPercent: 40 },
+  guwahati: { name: "Guwahati", isMetro: false, hraPercent: 40 },
+};
+
+const salaryLpaMap: Record<string, { label: string; ctc: number }> = {
+  "3-lpa": { label: "3 LPA", ctc: 300000 },
+  "4-lpa": { label: "4 LPA", ctc: 400000 },
+  "5-lpa": { label: "5 LPA", ctc: 500000 },
+  "6-lpa": { label: "6 LPA", ctc: 600000 },
+  "8-lpa": { label: "8 LPA", ctc: 800000 },
+  "10-lpa": { label: "10 LPA", ctc: 1000000 },
+  "12-lpa": { label: "12 LPA", ctc: 1200000 },
+  "15-lpa": { label: "15 LPA", ctc: 1500000 },
+  "20-lpa": { label: "20 LPA", ctc: 2000000 },
+  "25-lpa": { label: "25 LPA", ctc: 2500000 },
+  "30-lpa": { label: "30 LPA", ctc: 3000000 },
+  "40-lpa": { label: "40 LPA", ctc: 4000000 },
+  "50-lpa": { label: "50 LPA", ctc: 5000000 },
+  "75-lpa": { label: "75 LPA", ctc: 7500000 },
+  "1-crore": { label: "1 Crore", ctc: 10000000 },
+  "1.5-crore": { label: "1.5 Crore", ctc: 15000000 },
+};
+
+const sipGoalMap: Record<string, { name: string; target: number; duration: number; ret: number }> = {
+  "1-crore": { name: "1 Crore Corpus", target: 10000000, duration: 15, ret: 12 },
+  retirement: { name: "Retirement Planning", target: 50000000, duration: 25, ret: 12 },
+  "child-education": { name: "Child's Higher Education", target: 25000000, duration: 15, ret: 12 },
+  "house-down-payment": { name: "House Down Payment", target: 3000000, duration: 5, ret: 10 },
+  "emergency-fund": { name: "Emergency Fund", target: 600000, duration: 3, ret: 7 },
+  "financial-freedom": { name: "Financial Freedom (5 Crore)", target: 50000000, duration: 20, ret: 12 },
+  "car-purchase": { name: "Car Purchase Fund", target: 1500000, duration: 3, ret: 8 },
+};
+
+function getDynamicSEO(path: string): PageSEO | null {
+  if (path === "/hra-calculator") {
+    return {
+      title: "HRA Calculator by City - Metro vs Non-Metro HRA Exemption | My Paisa HQ",
+      description: "Calculate HRA exemption under Section 10(13A) for 19 Indian cities. Know if your city qualifies for 50% (metro) or 40% (non-metro) HRA exemption and optimize your tax savings.",
+      canonical: `${SITE}/hra-calculator`,
+      jsonLd: [
+        { "@context": "https://schema.org", "@type": "CollectionPage", name: "HRA Calculator by City", url: `${SITE}/hra-calculator` },
+        breadcrumbSchema("HRA Calculator by City", `${SITE}/hra-calculator`),
+      ],
+      faqText: "HRA exemption under Section 10(13A) depends on whether your city is classified as metro (50% of basic) or non-metro (40% of basic). Only Mumbai, Delhi, Kolkata, and Chennai are metros.",
+    };
+  }
+
+  if (path === "/salary-calculator") {
+    return {
+      title: "In-Hand Salary Calculator by CTC (3 LPA to 1.5 Crore) | My Paisa HQ",
+      description: "Calculate in-hand take-home salary for any CTC from 3 LPA to 1.5 Crore with PF, professional tax, and income tax under old and new regime.",
+      canonical: `${SITE}/salary-calculator`,
+      jsonLd: [
+        { "@context": "https://schema.org", "@type": "CollectionPage", name: "Salary Calculator by CTC", url: `${SITE}/salary-calculator` },
+        breadcrumbSchema("Salary Calculator by CTC", `${SITE}/salary-calculator`),
+      ],
+      faqText: "Calculate in-hand salary from CTC for various salary levels from 3 LPA to 1.5 Crore with detailed breakdown of basic pay, HRA, PF, professional tax, and income tax.",
+    };
+  }
+
+  if (path === "/sip-calculator") {
+    return {
+      title: "SIP Calculator by Goal — Retirement, 1 Crore, Education & More | My Paisa HQ",
+      description: "Goal-based SIP calculators for retirement, 1 crore corpus, child education, house down payment, emergency fund, financial freedom, and car purchase.",
+      canonical: `${SITE}/sip-calculator`,
+      jsonLd: [
+        { "@context": "https://schema.org", "@type": "CollectionPage", name: "SIP Calculator by Goal", url: `${SITE}/sip-calculator` },
+        breadcrumbSchema("SIP Calculator by Goal", `${SITE}/sip-calculator`),
+      ],
+      faqText: "Goal-based SIP calculators pre-configured for retirement, 1 crore corpus, child education, house down payment, emergency fund, financial freedom, and car purchase.",
+    };
+  }
+
+  const hraMatch = path.match(/^\/hra-calculator\/([a-z-]+)$/);
+  if (hraMatch) {
+    const city = hraCityData[hraMatch[1]];
+    if (city) {
+      const slug = hraMatch[1];
+      return {
+        title: `HRA Calculator ${city.name} - ${city.isMetro ? "Metro" : "Non-Metro"} (${city.hraPercent}%) | My Paisa HQ`,
+        description: `Calculate HRA exemption for ${city.name} under Section 10(13A). ${city.name} is a ${city.isMetro ? "metro" : "non-metro"} city with ${city.hraPercent}% HRA on basic salary.`,
+        canonical: `${SITE}/hra-calculator/${slug}`,
+        jsonLd: [
+          webApp(`HRA Calculator ${city.name}`, `${SITE}/hra-calculator/${slug}`, `Calculate HRA exemption for ${city.name}. ${city.isMetro ? "Metro" : "Non-metro"} city — ${city.hraPercent}% of basic salary.`),
+          { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: SITE },
+            { "@type": "ListItem", position: 2, name: "HRA Calculator by City", item: `${SITE}/hra-calculator` },
+            { "@type": "ListItem", position: 3, name: `HRA Calculator ${city.name}`, item: `${SITE}/hra-calculator/${slug}` },
+          ]},
+        ],
+        faqText: `Q: Is ${city.name} a metro city for HRA?\nA: ${city.isMetro ? `Yes, ${city.name} is a metro city — 50% HRA exemption.` : `No, ${city.name} is non-metro — 40% HRA exemption. Only Mumbai, Delhi, Kolkata, Chennai are metros.`}`,
+      };
+    }
+  }
+
+  const salaryMatch = path.match(/^\/salary-calculator\/([a-z0-9.-]+)$/);
+  if (salaryMatch) {
+    const lpa = salaryLpaMap[salaryMatch[1]];
+    if (lpa) {
+      const slug = salaryMatch[1];
+      return {
+        title: `${lpa.label} Salary — In-Hand, Tax & CTC Breakdown FY 2025-26 | My Paisa HQ`,
+        description: `${lpa.label} CTC (₹${lpa.ctc.toLocaleString("en-IN")}/year) in-hand salary breakdown with PF, professional tax, income tax. Compare old vs new tax regime.`,
+        canonical: `${SITE}/salary-calculator/${slug}`,
+        jsonLd: [
+          webApp(`${lpa.label} Salary Calculator`, `${SITE}/salary-calculator/${slug}`, `Calculate in-hand salary from ${lpa.label} CTC with tax regime comparison.`),
+          { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: SITE },
+            { "@type": "ListItem", position: 2, name: "Salary Calculator by CTC", item: `${SITE}/salary-calculator` },
+            { "@type": "ListItem", position: 3, name: `${lpa.label} Salary`, item: `${SITE}/salary-calculator/${slug}` },
+          ]},
+        ],
+        faqText: `Q: What is the in-hand salary for ${lpa.label} CTC?\nA: For a CTC of ${lpa.label}, the in-hand salary depends on basic salary percentage, PF, professional tax, and tax regime. Use this calculator for exact figures.`,
+      };
+    }
+  }
+
+  const sipMatch = path.match(/^\/sip-calculator\/([a-z0-9.-]+)$/);
+  if (sipMatch) {
+    const goal = sipGoalMap[sipMatch[1]];
+    if (goal) {
+      const slug = sipMatch[1];
+      return {
+        title: `SIP Calculator for ${goal.name} — How Much SIP Do You Need? | My Paisa HQ`,
+        description: `Calculate the monthly SIP needed for ${goal.name}. Target ₹${goal.target.toLocaleString("en-IN")} over ${goal.duration} years at ${goal.ret}% returns with step-up option.`,
+        canonical: `${SITE}/sip-calculator/${slug}`,
+        jsonLd: [
+          webApp(`SIP for ${goal.name}`, `${SITE}/sip-calculator/${slug}`, `Calculate monthly SIP for ${goal.name}. Target: ₹${goal.target.toLocaleString("en-IN")} over ${goal.duration} years.`),
+          { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: SITE },
+            { "@type": "ListItem", position: 2, name: "SIP Calculator by Goal", item: `${SITE}/sip-calculator` },
+            { "@type": "ListItem", position: 3, name: `SIP for ${goal.name}`, item: `${SITE}/sip-calculator/${slug}` },
+          ]},
+        ],
+        faqText: `Q: How much SIP is needed for ${goal.name}?\nA: To reach ₹${goal.target.toLocaleString("en-IN")} over ${goal.duration} years at ${goal.ret}% returns, use this calculator with step-up option.`,
+      };
+    }
+  }
+
+  return null;
+}
+
 function escapeHtml(str: string): string {
   return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
 export function injectSEO(html: string, urlPath: string): string {
   const cleanPath = urlPath.split("?")[0].split("#")[0].replace(/\/+$/, "") || "/";
-  const seo = seoPages[cleanPath];
+  const seo = seoPages[cleanPath] || getDynamicSEO(cleanPath);
   if (!seo) return html;
 
   html = html.replace(
