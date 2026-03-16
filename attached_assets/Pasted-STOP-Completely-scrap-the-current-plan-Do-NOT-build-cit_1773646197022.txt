@@ -1,0 +1,98 @@
+STOP. Completely scrap the current plan. Do NOT build city pages for income tax. Here is why and what to build instead:
+
+WHY THE OLD PLAN IS WRONG:
+Income tax in India has zero city-specific variation. Tax slabs are national law — Mumbai and Delhi produce identical results. Building 20 near-identical income tax city pages = doorway pages = Google thin content penalty. This will hurt the live website, not help it.
+
+NEW PLAN — CORRECT PROGRAMMATIC SEO ARCHITECTURE:
+Each of our 9 calculators has a different natural variation axis. Build pages only where genuine content differentiation exists.
+
+=== PHASE 1: HRA CALCULATOR BY CITY (LEGALLY JUSTIFIED) ===
+HRA exemption % is legally different: metro cities get 50% basic salary, non-metro get 40%. This is REAL differentiation.
+
+Create: client/src/data/hra-cities.ts
+- Metro cities (50% HRA): Mumbai, Delhi, Kolkata, Chennai (these 4 are legally defined metros for HRA)
+- Non-metro cities (40% HRA): Bangalore, Hyderabad, Pune, Ahmedabad, Jaipur, Surat, Lucknow, Nagpur, Indore, Bhopal, Visakhapatnam, Patna, Vadodara, Coimbatore, Kochi (15 cities)
+- Each entry: slug, name, state, isMetro (boolean), hraPercent (50 or 40), avgRent (realistic monthly rent for that city)
+
+Create: client/src/pages/hra-city.tsx
+- Route: /hra-calculator/:city
+- The calculator must AUTOMATICALLY pre-select metro/non-metro based on city
+- Show the actual HRA % that applies ("In Mumbai, HRA exemption is 50% of Basic Salary since it is a metro city")
+- City-specific avg rent pre-populated as default
+- Unique FAQs per city (e.g. "What is HRA exemption in Mumbai?", "Is Bangalore a metro city for HRA?")
+- Title: "HRA Calculator for [City] 2025-26 | Metro/Non-Metro HRA Exemption"
+- Breadcrumb: Home > HRA Calculator > [City]
+- "Explore other cities" section at bottom linking to 5 related cities
+
+Create: client/src/pages/hra-hub.tsx
+- Route: /hra-calculator (replaces or wraps existing /hra page)
+- Lists all 19 cities in two groups: Metro Cities and Non-Metro Cities
+- Brief explanation of the metro vs non-metro rule
+- Links to all city pages
+- This page goes in the footer
+
+=== PHASE 2: SALARY CALCULATOR BY LPA ===
+"X LPA in hand salary" is one of the highest searched finance queries in India. Each LPA page has genuinely different output.
+
+Create: client/src/data/salary-lpa.ts
+- LPA values: 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 18, 20, 25, 30, 40, 50 (16 entries)
+- Each entry: lpa, slug (e.g. "10-lpa"), annualCTC, monthlyGross, approxInHand (post-tax estimate)
+
+Create: client/src/pages/salary-lpa.tsx  
+- Route: /salary-calculator/:lpa (e.g. /salary-calculator/10-lpa)
+- Pre-populate the salary calculator with that CTC value
+- Show the result automatically on page load (pre-calculated)
+- Unique intro: "If your CTC is 10 LPA, here is your exact in-hand salary breakdown..."
+- Title: "10 LPA In Hand Salary Calculator 2025-26 | Monthly Take-Home"
+- City-agnostic, LPA is the differentiator
+- Breadcrumb: Home > Salary Calculator > 10 LPA
+- "Compare with other LPA" section linking to nearby LPA pages (e.g. 8 LPA, 9 LPA, 11 LPA, 12 LPA)
+
+Create: client/src/pages/salary-hub.tsx
+- Route: /salary-calculator
+- Lists all 16 LPA values as cards showing approx in-hand salary
+- Footer link: "Salary Calculator by LPA"
+
+=== PHASE 3: SIP CALCULATOR BY GOAL ===
+Create: client/src/data/sip-goals.ts
+- Goals: retirement, house-purchase, child-education, emergency-fund, car-purchase, vacation, wedding (7 goals)
+- Each: slug, name, targetAmount (realistic default), timelineYears (default), monthlyInvestment (pre-calculated)
+
+Create: client/src/pages/sip-goal.tsx
+- Route: /sip-calculator/:goal (e.g. /sip-calculator/retirement)
+- Pre-populate with goal-specific defaults
+- Goal-specific intro and FAQs
+- Title: "SIP Calculator for Retirement 2025 | How Much to Invest Monthly"
+
+Create: client/src/pages/sip-hub.tsx
+- Route: /sip-calculator
+- Footer link: "SIP Calculator by Goal"
+
+=== ROUTING — add all to client/src/App.tsx ===
+/hra-calculator (hub)
+/hra-calculator/:city
+/salary-calculator (hub)
+/salary-calculator/:lpa
+/sip-calculator (hub)
+/sip-calculator/:goal
+
+=== FOOTER — update client/src/components/layout.tsx ===
+Add new section "Calculators" with 3 links:
+- HRA Calculator by City (/hra-calculator)
+- Salary by LPA (/salary-calculator)
+- SIP by Goal (/sip-calculator)
+
+=== SITEMAP — update client/public/sitemap.xml ===
+Add all new URLs: 3 hubs + 19 HRA cities + 16 salary LPA + 7 SIP goals = 45 new URLs
+
+=== SERVER SEO — update server/seo-data.ts ===
+Inject correct title, description, canonical for every new route pattern
+
+=== IMPORTANT RULES ===
+- Do NOT touch or break existing /hra, /salary, /sip pages
+- Do NOT build any city pages for income-tax, gratuity, pay-commission, loan-vs-sip, goal-sip
+- Calculators must actually WORK and show results on all new pages
+- Each page must have genuinely unique content (not just keyword swap)
+- Test /hra-calculator/mumbai, /salary-calculator/10-lpa, and /sip-calculator/retirement before finishing
+
+Build Phase 1 (HRA by city) first, then Phase 2 (Salary by LPA), then Phase 3 (SIP by goal). Go.

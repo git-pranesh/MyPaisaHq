@@ -1,0 +1,55 @@
+Using the Programmatic SEO skill, build city-based landing pages for our two highest-traffic calculator tools. Here is exactly what to build and how:
+
+**GOAL:** Create programmatic landing pages that rank for "[city] income tax calculator" and "[city] salary calculator" searches across India's top 20 cities.
+
+**TECH STACK (already confirmed):**
+- React + Wouter routing (NOT Next.js)
+- Express backend
+- Existing pages: client/src/pages/income-tax.tsx and client/src/pages/salary.tsx
+- Routes registered in client/src/App.tsx
+- SEO handled via <SEOHead> component in client/src/components/seo-head.tsx
+- Server-side SEO injection in server/seo-data.ts
+
+**CITIES TO TARGET (create data file):**
+Create client/src/data/cities.ts with these 20 cities:
+Mumbai, Delhi, Bangalore, Hyderabad, Chennai, Kolkata, Pune, Ahmedabad, Jaipur, Surat, Lucknow, Kanpur, Nagpur, Patna, Indore, Thane, Bhopal, Visakhapatnam, Pimpri-Chinchwad, Vadodara
+
+Each city entry should include: slug (url-safe), name (display), state, avgSalary (realistic monthly), costOfLiving (low/medium/high)
+
+**PAGES TO CREATE:**
+
+1. client/src/pages/income-tax-city.tsx
+   - Route: /income-tax-calculator/:city
+   - Reuse ALL the calculation logic from income-tax.tsx
+   - Add city-specific intro paragraph mentioning the city by name
+   - Unique <SEOHead> with title: "[City] Income Tax Calculator 2025-26 | My Paisa HQ"
+   - Unique meta description mentioning the city
+   - Canonical URL: /income-tax-calculator/[city-slug]
+   - Breadcrumb: Home > Income Tax Calculator > [City]
+   - Add city-specific FAQ (e.g. "What is the average salary in [City]?")
+   - Same RelatedTools and FAQSection at bottom
+
+2. client/src/pages/salary-city.tsx
+   - Route: /salary-calculator/:city
+   - Reuse ALL calculation logic from salary.tsx
+   - Same pattern as above but for salary
+   - Title: "[City] Salary Calculator 2025-26 | My Paisa HQ"
+
+**ROUTING — add to client/src/App.tsx:**
+<Route path="/income-tax-calculator/:city" component={IncomeTaxCity} />
+<Route path="/salary-calculator/:city" component={SalaryCity} />
+
+**SERVER SEO — add to server/seo-data.ts:**
+For each city route, inject the correct title, description, canonical
+
+**SITEMAP — update client/public/sitemap.xml:**
+Add all 40 new city URLs (20 cities × 2 calculators)
+
+**IMPORTANT RULES:**
+- Do NOT break any existing pages or routes
+- Do NOT change income-tax.tsx or salary.tsx directly
+- The calculator must actually WORK on city pages (not just static HTML)
+- Keep the exact same visual design as existing pages
+- Test that /income-tax-calculator/mumbai and /salary-calculator/bangalore load correctly before finishing
+
+Go ahead and implement this completely.
