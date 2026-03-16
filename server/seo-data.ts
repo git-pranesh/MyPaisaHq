@@ -275,7 +275,7 @@ const seoPages: Record<string, PageSEO> = {
     canonical: `${SITE}/salary-calculator`,
     jsonLd: [
       { "@context": "https://schema.org", "@type": "CollectionPage", name: "Salary Calculator by LPA 2025-26", url: `${SITE}/salary-calculator` },
-      breadcrumbSchema("Salary Calculator by CTC", `${SITE}/salary-calculator`),
+      breadcrumbSchema("Salary Calculator by LPA", `${SITE}/salary-calculator`),
     ],
     faqText: "Calculate in-hand salary from CTC for various salary levels from 3 LPA to 50 LPA with detailed breakdown of basic pay, HRA, PF, professional tax, and income tax.",
   },
@@ -383,7 +383,7 @@ function getDynamicSEO(path: string): PageSEO | null {
           webApp(`${lpa.label} Salary Calculator`, `${SITE}/salary-calculator/${slug}`, `Calculate in-hand salary from ${lpa.label} CTC with tax regime comparison.`),
           { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
             { "@type": "ListItem", position: 1, name: "Home", item: SITE },
-            { "@type": "ListItem", position: 2, name: "Salary Calculator by CTC", item: `${SITE}/salary-calculator` },
+            { "@type": "ListItem", position: 2, name: "Salary Calculator by LPA", item: `${SITE}/salary-calculator` },
             { "@type": "ListItem", position: 3, name: `${lpa.label} Salary`, item: `${SITE}/salary-calculator/${slug}` },
           ]},
           faqSchema([
@@ -433,7 +433,7 @@ function escapeHtml(str: string): string {
 
 export function injectSEO(html: string, urlPath: string): string {
   const cleanPath = urlPath.split("?")[0].split("#")[0].replace(/\/+$/, "") || "/";
-  const seo = seoPages[cleanPath] || getDynamicSEO(cleanPath);
+  const seo = getDynamicSEO(cleanPath) || seoPages[cleanPath];
   if (!seo) return html;
 
   html = html.replace(
