@@ -3,6 +3,7 @@ import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "http";
 import { scheduleIndexNowOnStartup } from "./indexnow";
+import { scheduleGoogleIndexingOnStartup } from "./google-indexing";
 
 const app = express();
 const httpServer = createServer(app);
@@ -100,6 +101,7 @@ app.use((req, res, next) => {
     () => {
       log(`serving on port ${port}`);
       scheduleIndexNowOnStartup();
+      scheduleGoogleIndexingOnStartup();
     },
   );
 })();
