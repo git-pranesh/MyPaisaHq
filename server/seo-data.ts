@@ -478,13 +478,13 @@ export function injectSEO(html: string, urlPath: string): string {
     .join("\n    ");
   html = html.replace("</head>", `    ${jsonLdScripts}\n  </head>`);
 
-  const noscriptContent = `<noscript><div style="max-width:800px;margin:40px auto;padding:0 20px;font-family:system-ui,sans-serif"><h1>${escapeHtml(seo.title)}</h1><p>${escapeHtml(seo.description)}</p><hr/>${seo.faqText.split("\n\n").map(block => {
+  const prerenderContent = `<div data-server-rendered="true" style="max-width:800px;margin:40px auto;padding:0 20px;font-family:system-ui,sans-serif"><h1>${escapeHtml(seo.title)}</h1><p>${escapeHtml(seo.description)}</p><hr/>${seo.faqText.split("\n\n").map(block => {
     const lines = block.split("\n");
     const q = lines[0]?.replace(/^Q: /, "") || "";
     const a = lines[1]?.replace(/^A: /, "") || "";
     return `<h3>${escapeHtml(q)}</h3><p>${escapeHtml(a)}</p>`;
-  }).join("")}<hr/><p><a href="https://mypaisahq.com">My Paisa HQ</a> - Free Indian Finance Calculators</p></div></noscript>`;
-  html = html.replace('<div id="root"></div>', `<div id="root"></div>${noscriptContent}`);
+  }).join("")}<hr/><p><a href="https://mypaisahq.com">My Paisa HQ</a> - Free Indian Finance Calculators</p></div>`;
+  html = html.replace('<div id="root"></div>', `<div id="root">${prerenderContent}</div>`);
 
   return html;
 }
