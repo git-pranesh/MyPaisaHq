@@ -1,0 +1,35 @@
+Three files, three fixes, in this order:
+
+Step 1 — Fix server/seo-data.ts (Homepage empty root)
+Find the "/" entry in seoPages — it currently has:
+
+ts
+faqText: "My Paisa HQ offers 9 free Indian finance calculators: ..."
+Replace that entire faqText line with:
+
+ts
+faqText: [
+  { q: "What calculators does My Paisa HQ offer?", a: "My Paisa HQ offers 9 free Indian finance calculators: 8th Pay Commission Salary Calculator, Gratuity Calculator, In-Hand Salary/CTC Calculator, HRA Exemption Calculator, Salary Hike Calculator, Income Tax Calculator FY 2025-26, SIP Returns Calculator, Loan vs SIP Comparison, and Goal-based Top-up SIP Calculator." },
+  { q: "Are the calculators free to use?", a: "Yes, all calculators on My Paisa HQ are completely free. No registration, no login, no hidden charges. All calculations happen in real-time in your browser." },
+  { q: "Are the calculators updated for FY 2025-26?", a: "Yes. The Income Tax Calculator uses the latest FY 2025-26 slabs with the new Section 87A rebate of Rs. 60,000. The 8th Pay Commission calculator reflects the latest expected fitment factors of 2.28x to 2.86x." },
+  { q: "Do I need to create an account to use the calculators?", a: "No account or login is required. All calculators on My Paisa HQ work instantly in your browser with no sign-up, no email, and no personal data collected." },
+].map(f => `Q: ${f.q}\nA: ${f.a}`).join("\n\n"),
+Step 2 — Fix server/static.ts (Cache-Control)
+Find this line in the catch-all route:
+
+ts
+res.status(200).set({ "Content-Type": "text/html" }).end(html);
+Replace with:
+
+ts
+res.status(200).set({
+  "Content-Type": "text/html",
+  "Cache-Control": "public, max-age=3600, s-maxage=86400, stale-while-revalidate=86400",
+}).end(html);
+Step 3 — Fix client/index.html (25-font bomb)
+Find the giant Google Fonts <link> tag (the one with all 25 family= entries). Delete the entire thing including both preconnect lines above it. Replace with:
+
+xml
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&display=swap" rel="stylesheet">

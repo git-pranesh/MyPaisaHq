@@ -158,7 +158,12 @@ const seoPages: Record<string, PageSEO> = {
         ],
       },
     ],
-    faqText: "My Paisa HQ offers 9 free Indian finance calculators: 8th Pay Commission Salary Calculator, Gratuity Calculator, In-Hand Salary/CTC Calculator, HRA Exemption Calculator, Salary Hike Calculator, Income Tax Calculator FY 2025-26, SIP Returns Calculator, Loan vs SIP Comparison, and Goal-based Top-up SIP Calculator. All calculations are real-time, use Indian number formatting (lakhs and crores), and are designed for Indian professionals.",
+    faqText: [
+      { q: "What calculators does My Paisa HQ offer?", a: "My Paisa HQ offers 9 free Indian finance calculators: 8th Pay Commission Salary Calculator, Gratuity Calculator, In-Hand Salary/CTC Calculator, HRA Exemption Calculator, Salary Hike Calculator, Income Tax Calculator FY 2025-26, SIP Returns Calculator, Loan vs SIP Comparison, and Goal-based Top-up SIP Calculator." },
+      { q: "Are the calculators free to use?", a: "Yes, all calculators on My Paisa HQ are completely free. No registration, no login, no hidden charges. All calculations happen in real-time in your browser." },
+      { q: "Are the calculators updated for FY 2025-26?", a: "Yes. The Income Tax Calculator uses the latest FY 2025-26 slabs with the new Section 87A rebate of Rs. 60,000. The 8th Pay Commission calculator reflects the latest expected fitment factors of 2.28x to 2.86x." },
+      { q: "Do I need to create an account to use the calculators?", a: "No account or login is required. All calculators on My Paisa HQ work instantly in your browser with no sign-up, no email, and no personal data collected." },
+    ].map(f => `Q: ${f.q}\nA: ${f.a}`).join("\n\n"),
   },
   "/8th-pay-commission": {
     title: "8th Pay Commission Salary Calculator 2026 - My Paisa HQ",

@@ -17,6 +17,9 @@ export function serveStatic(app: Express) {
     const indexPath = path.resolve(distPath, "index.html");
     let html = fs.readFileSync(indexPath, "utf-8");
     html = injectSEO(html, req.originalUrl);
-    res.status(200).set({ "Content-Type": "text/html" }).end(html);
+    res.status(200).set({
+      "Content-Type": "text/html",
+      "Cache-Control": "public, max-age=3600, s-maxage=86400, stale-while-revalidate=86400",
+    }).end(html);
   });
 }
