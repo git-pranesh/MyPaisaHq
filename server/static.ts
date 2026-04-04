@@ -11,7 +11,7 @@ export function serveStatic(app: Express) {
     );
   }
 
-  app.use(express.static(distPath));
+  app.use(express.static(distPath, { index: false }));
 
   app.use("/{*path}", (req, res) => {
     const indexPath = path.resolve(distPath, "index.html");
