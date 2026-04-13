@@ -1,9 +1,12 @@
 import { useEffect } from "react";
 
+const DEFAULT_OG_IMAGE = "https://mypaisahq.com/og-default.png";
+
 interface SEOHeadProps {
   title: string;
   description: string;
   canonicalPath: string;
+  ogImage?: string;
   jsonLd?: object | object[];
 }
 
@@ -17,18 +20,21 @@ function upsertMeta(attr: string, key: string, content: string) {
   el.setAttribute("content", content);
 }
 
-export default function SEOHead({ title, description, canonicalPath, jsonLd }: SEOHeadProps) {
+export default function SEOHead({ title, description, canonicalPath, ogImage, jsonLd }: SEOHeadProps) {
   useEffect(() => {
     document.title = title;
 
     const fullUrl = `https://mypaisahq.com${canonicalPath}`;
+    const image = ogImage || DEFAULT_OG_IMAGE;
 
     upsertMeta("name", "description", description);
     upsertMeta("property", "og:title", title);
     upsertMeta("property", "og:description", description);
     upsertMeta("property", "og:url", fullUrl);
+    upsertMeta("property", "og:image", image);
     upsertMeta("name", "twitter:title", title);
     upsertMeta("name", "twitter:description", description);
+    upsertMeta("name", "twitter:image", image);
 
     let canonical = document.querySelector('link[rel="canonical"]');
     if (!canonical) {
@@ -56,7 +62,7 @@ export default function SEOHead({ title, description, canonicalPath, jsonLd }: S
       const scripts = document.querySelectorAll('script[data-seo-jsonld]');
       scripts.forEach((s) => s.remove());
     };
-  }, [title, description, canonicalPath, jsonLd]);
+  }, [title, description, canonicalPath, ogImage, jsonLd]);
 
   return null;
 }

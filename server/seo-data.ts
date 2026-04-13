@@ -2,9 +2,12 @@ interface PageSEO {
   title: string;
   description: string;
   canonical: string;
+  ogImage?: string;
   jsonLd: object[];
   faqText: string;
 }
+
+const DEFAULT_OG_IMAGE = "https://mypaisahq.com/og-default.png";
 
 const SITE = "https://mypaisahq.com";
 
@@ -118,6 +121,30 @@ const goalSipFaqs = [
   { q: "How does inflation affect my financial goal?", a: "Inflation increases your goal's cost over time. If your goal is Rs. 1 crore today at 6% inflation, it will cost approximately Rs. 2.40 crore in 15 years. This calculator adjusts for inflation automatically." },
   { q: "What return rate should I assume for goal-based SIP?", a: "For equity SIPs with 10+ year horizons, assume 10-12%. For 5-10 years, use 8-10% with balanced funds. For under 5 years, use 6-7% with debt funds. Be conservative." },
   { q: "How much SIP do I need for 1 crore in 15 years?", a: "At 12% returns with no step-up, approximately Rs. 20,000/month. With 10% step-up, start with just Rs. 10,500/month. Accounting for 6% inflation (target Rs. 2.40 crore), you need about Rs. 48,000/month without step-up or Rs. 25,000/month with 10% step-up." },
+];
+
+const hraHubFaqs = [
+  { q: "Which cities qualify for 50% HRA exemption in India?", a: "Only four cities qualify for 50% HRA exemption: Mumbai, Delhi, Kolkata, and Chennai. These are the four metro cities classified under the Income Tax Act. All other cities — including Bangalore, Hyderabad, Pune, Ahmedabad, Jaipur, and Surat — qualify for 40% HRA exemption." },
+  { q: "How is HRA exemption calculated under Section 10(13A)?", a: "HRA exemption is the minimum of three values: (1) actual HRA received from employer, (2) 50% of basic salary for metro cities or 40% for non-metro cities, and (3) actual rent paid minus 10% of basic salary. The lowest of these three is the tax-exempt amount." },
+  { q: "Can I claim HRA if my city is not in the metro list?", a: "Yes, you can still claim HRA exemption for non-metro cities — but at 40% of basic salary instead of 50%. All Indian cities except Mumbai, Delhi, Kolkata, and Chennai are treated as non-metro for HRA purposes." },
+  { q: "Can I claim HRA exemption under the new tax regime?", a: "No. HRA exemption under Section 10(13A) is only available under the old tax regime. If you opt for the new tax regime (FY 2025-26), you cannot claim any HRA deduction regardless of your city." },
+  { q: "What documents are needed to claim HRA exemption?", a: "To claim HRA exemption, you need: rent receipts (for rent above Rs. 8,400/month), the landlord's PAN if annual rent exceeds Rs. 1,00,000, and your employer's Form 16 showing HRA received. Self-declaration is sufficient for rent below Rs. 8,400/month." },
+];
+
+const salaryHubFaqs = [
+  { q: "How much is in-hand salary for 10 LPA CTC?", a: "For 10 LPA CTC, the in-hand (take-home) salary is approximately Rs. 65,000–70,000 per month under the new tax regime after PF (Rs. 1,800/month) and professional tax deductions. Under the old regime with 80C deductions, it may be slightly higher." },
+  { q: "What percentage of CTC is the in-hand salary?", a: "Typically, in-hand salary is 65–75% of CTC. At lower CTC (3–6 LPA), it is closer to 75–80% because income tax is negligible. At higher CTC (20+ LPA), it drops to 60–65% due to higher income tax slabs." },
+  { q: "Which LPA gives completely tax-free income in India?", a: "Under the new tax regime for FY 2025-26, income up to Rs. 12 lakhs is effectively tax-free due to the Section 87A rebate of Rs. 60,000. After the Rs. 75,000 standard deduction, anyone with a CTC below approximately 12.75 LPA pays zero income tax." },
+  { q: "How is PF calculated on salary in India?", a: "PF (Provident Fund) is calculated at 12% of basic salary from both employer and employee. The contribution is capped at Rs. 1,800/month (12% of Rs. 15,000 statutory ceiling) for most private sector employees, though voluntary higher contributions are allowed." },
+  { q: "Should I choose old or new tax regime at 15 LPA?", a: "At 15 LPA, the new regime is usually better if your deductions are under Rs. 2.5 lakhs. If you have home loan interest, 80C investments, NPS contributions, and HRA totaling over Rs. 3 lakhs, the old regime may save more. Use the calculator to compare both scenarios." },
+];
+
+const sipHubFaqs = [
+  { q: "How much monthly SIP is needed to reach Rs. 1 crore?", a: "At 12% expected returns over 15 years, you need approximately Rs. 20,000/month SIP. With 10% annual step-up, you can start with just Rs. 10,500/month. Over 20 years, a flat Rs. 10,000/month SIP is sufficient to reach Rs. 1 crore." },
+  { q: "Which SIP goal should I start with as a beginner?", a: "Start with an emergency fund SIP targeting 6 months of expenses. It is a 2–3 year goal using conservative debt funds at 6–7% returns. This builds the investing habit before committing to long-term goals like retirement or house purchase." },
+  { q: "How does annual step-up (top-up) SIP improve returns?", a: "A 10% annual step-up on a Rs. 10,000 SIP means investing Rs. 11,000 in year 2, Rs. 12,100 in year 3, and so on. Over 15 years, this can result in 60–80% more corpus compared to a flat SIP, as contributions grow with your income." },
+  { q: "What return rate should I assume for long-term SIP goals?", a: "For equity SIPs with 10+ year horizons (retirement, child education), assume 10–12% annually based on historical Indian equity mutual fund returns. For 5–10 year goals, use 8–10% with balanced funds. For goals under 5 years, use 6–7% with debt funds." },
+  { q: "How does inflation affect SIP goal planning?", a: "Inflation increases your goal's future cost. If your target is Rs. 1 crore today at 6% inflation, you will need Rs. 1.79 crore in 10 years and Rs. 2.40 crore in 15 years. The SIP by goal calculators automatically account for inflation in the target amount." },
 ];
 
 const seoPages: Record<string, PageSEO> = {
@@ -271,8 +298,9 @@ const seoPages: Record<string, PageSEO> = {
     jsonLd: [
       { "@context": "https://schema.org", "@type": "CollectionPage", name: "HRA Exemption Calculator by City 2025-26", url: `${SITE}/hra-calculator` },
       breadcrumbSchema("HRA Calculator by City", `${SITE}/hra-calculator`),
+      faqSchema(hraHubFaqs),
     ],
-    faqText: "HRA exemption under Section 10(13A) depends on whether your city is classified as metro (50% of basic) or non-metro (40% of basic). Only Mumbai, Delhi, Kolkata, and Chennai are metros.",
+    faqText: faqsToText(hraHubFaqs),
   },
   "/salary-calculator": {
     title: "Salary Calculator by LPA 2025-26 — In-Hand Salary at Every CTC | My Paisa HQ",
@@ -281,8 +309,9 @@ const seoPages: Record<string, PageSEO> = {
     jsonLd: [
       { "@context": "https://schema.org", "@type": "CollectionPage", name: "Salary Calculator by LPA 2025-26", url: `${SITE}/salary-calculator` },
       breadcrumbSchema("Salary Calculator by LPA", `${SITE}/salary-calculator`),
+      faqSchema(salaryHubFaqs),
     ],
-    faqText: "Calculate in-hand salary from CTC for various salary levels from 3 LPA to 50 LPA with detailed breakdown of basic pay, HRA, PF, professional tax, and income tax.",
+    faqText: faqsToText(salaryHubFaqs),
   },
   "/sip-calculator": {
     title: "SIP Calculator by Goal 2025-26 — Monthly SIP for Every Financial Goal | My Paisa HQ",
@@ -291,8 +320,9 @@ const seoPages: Record<string, PageSEO> = {
     jsonLd: [
       { "@context": "https://schema.org", "@type": "CollectionPage", name: "SIP Calculator by Goal 2025-26", url: `${SITE}/sip-calculator` },
       breadcrumbSchema("SIP Calculator by Goal", `${SITE}/sip-calculator`),
+      faqSchema(sipHubFaqs),
     ],
-    faqText: "Goal-based SIP calculators pre-configured for retirement, house purchase, child education, emergency fund, car purchase, vacation, and wedding fund.",
+    faqText: faqsToText(sipHubFaqs),
   },
 };
 
@@ -469,6 +499,12 @@ export function injectSEO(html: string, urlPath: string): string {
     `<meta property="og:url" content="${escapeHtml(seo.canonical)}"`
   );
 
+  const ogImage = escapeHtml(seo.ogImage || DEFAULT_OG_IMAGE);
+  html = html.replace(
+    /<meta property="og:image" content="[^"]*"/,
+    `<meta property="og:image" content="${ogImage}"`
+  );
+
   html = html.replace(
     /<meta name="twitter:title" content="[^"]*"/,
     `<meta name="twitter:title" content="${escapeHtml(seo.title)}"`
@@ -476,6 +512,10 @@ export function injectSEO(html: string, urlPath: string): string {
   html = html.replace(
     /<meta name="twitter:description" content="[^"]*"/,
     `<meta name="twitter:description" content="${escapeHtml(seo.description)}"`
+  );
+  html = html.replace(
+    /<meta name="twitter:image" content="[^"]*"/,
+    `<meta name="twitter:image" content="${ogImage}"`
   );
 
   const jsonLdScripts = seo.jsonLd
