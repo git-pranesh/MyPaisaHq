@@ -150,7 +150,7 @@ const sipHubFaqs = [
 const seoPages: Record<string, PageSEO> = {
   "/": {
     title: "My Paisa HQ - Free Indian Finance Calculators",
-    description: "Free Indian finance calculators - 8th Pay Commission, Gratuity, Income Tax, SIP, HRA, Salary Hike, CTC breakdown, Loan vs SIP and Goal-based SIP tools. All free, all real-time.",
+    description: "Free Indian finance calculators for 8th Pay Commission, Gratuity, Income Tax, SIP, HRA, Salary Hike and CTC. All free and real-time.",
     canonical: SITE,
     jsonLd: [
       {
@@ -293,7 +293,7 @@ const seoPages: Record<string, PageSEO> = {
   },
   "/hra-calculator": {
     title: "HRA Exemption Calculator by City 2025-26 | My Paisa HQ",
-    description: "Calculate HRA exemption under Section 10(13A) for 19 Indian cities. Know if your city qualifies for 50% (metro) or 40% (non-metro) HRA exemption and optimize your tax savings.",
+    description: "Calculate HRA exemption under Section 10(13A) for 19 Indian cities. See if your city qualifies for 50% (metro) or 40% (non-metro) HRA.",
     canonical: `${SITE}/hra-calculator`,
     jsonLd: [
       { "@context": "https://schema.org", "@type": "CollectionPage", name: "HRA Exemption Calculator by City 2025-26", url: `${SITE}/hra-calculator` },
@@ -303,7 +303,7 @@ const seoPages: Record<string, PageSEO> = {
     faqText: faqsToText(hraHubFaqs),
   },
   "/salary-calculator": {
-    title: "Salary Calculator by LPA 2025-26 — In-Hand Salary at Every CTC | My Paisa HQ",
+    title: "Salary Calculator by LPA 2025-26 | My Paisa HQ",
     description: "Calculate in-hand take-home salary for any CTC from 3 LPA to 50 LPA with PF, professional tax, and income tax under old and new regime.",
     canonical: `${SITE}/salary-calculator`,
     jsonLd: [
@@ -314,7 +314,7 @@ const seoPages: Record<string, PageSEO> = {
     faqText: faqsToText(salaryHubFaqs),
   },
   "/sip-calculator": {
-    title: "SIP Calculator by Goal 2025-26 — Monthly SIP for Every Financial Goal | My Paisa HQ",
+    title: "SIP Calculator by Goal 2025-26 | My Paisa HQ",
     description: "Goal-based SIP calculators pre-configured for retirement, house purchase, child education, emergency fund, car purchase, vacation, and wedding fund.",
     canonical: `${SITE}/sip-calculator`,
     jsonLd: [
@@ -384,7 +384,7 @@ function getDynamicSEO(path: string): PageSEO | null {
     if (city) {
       const slug = hraMatch[1];
       return {
-        title: `HRA Calculator for ${city.name} 2025-26 | ${city.isMetro ? "Metro" : "Non-Metro"} HRA Exemption | My Paisa HQ`,
+        title: `HRA Calculator ${city.name} 2025-26 | My Paisa HQ`,
         description: `Calculate HRA exemption for ${city.name} under Section 10(13A). ${city.name} is a ${city.isMetro ? "metro" : "non-metro"} city with ${city.hraPercent}% HRA on basic salary.`,
         canonical: `${SITE}/hra-calculator/${slug}`,
         jsonLd: [
@@ -411,7 +411,7 @@ function getDynamicSEO(path: string): PageSEO | null {
     if (lpa) {
       const slug = salaryMatch[1];
       return {
-        title: `${lpa.label} In-Hand Salary Calculator 2025-26 | Monthly Take-Home | My Paisa HQ`,
+        title: `${lpa.label} In-Hand Salary Calculator | My Paisa HQ`,
         description: `${lpa.label} CTC (₹${lpa.ctc.toLocaleString("en-IN")}/year) in-hand salary breakdown with PF, professional tax, income tax. Compare old vs new tax regime.`,
         canonical: `${SITE}/salary-calculator/${slug}`,
         jsonLd: [
@@ -438,7 +438,7 @@ function getDynamicSEO(path: string): PageSEO | null {
     if (goal) {
       const slug = sipMatch[1];
       return {
-        title: `SIP Calculator for ${goal.name} 2025-26 | Monthly Investment Needed | My Paisa HQ`,
+        title: `SIP for ${goal.name} 2025-26 | My Paisa HQ`,
         description: `Calculate the monthly SIP needed for ${goal.name}. Target ₹${goal.target.toLocaleString("en-IN")} over ${goal.duration} years at ${goal.ret}% returns with step-up option.`,
         canonical: `${SITE}/sip-calculator/${slug}`,
         jsonLd: [
@@ -464,6 +464,74 @@ function getDynamicSEO(path: string): PageSEO | null {
 
 function escapeHtml(str: string): string {
   return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+const calculatorPages: { href: string; name: string }[] = [
+  { href: "/8th-pay-commission", name: "8th Pay Commission Calculator" },
+  { href: "/gratuity", name: "Gratuity Calculator" },
+  { href: "/salary", name: "In-Hand Salary Calculator" },
+  { href: "/hra", name: "HRA Exemption Calculator" },
+  { href: "/hike", name: "Salary Hike Calculator" },
+  { href: "/income-tax", name: "Income Tax Calculator FY 2025-26" },
+  { href: "/sip", name: "SIP Returns Calculator" },
+  { href: "/loan-vs-sip", name: "Loan vs SIP Calculator" },
+  { href: "/goal-sip", name: "Goal-based SIP Calculator" },
+];
+
+const hubPages: { href: string; name: string }[] = [
+  { href: "/hra-calculator", name: "HRA Calculator by City" },
+  { href: "/salary-calculator", name: "Salary Calculator by LPA" },
+  { href: "/sip-calculator", name: "SIP Calculator by Goal" },
+];
+
+function linkList(items: { href: string; name: string }[]): string {
+  return `<ul>${items.map((i) => `<li><a href="${i.href}">${escapeHtml(i.name)}</a></li>`).join("")}</ul>`;
+}
+
+function hraCityLinks(excludeSlug?: string): { href: string; name: string }[] {
+  return Object.entries(hraCityData)
+    .filter(([slug]) => slug !== excludeSlug)
+    .map(([slug, c]) => ({ href: `/hra-calculator/${slug}`, name: `HRA Calculator ${c.name}` }));
+}
+
+function lpaLinks(excludeSlug?: string): { href: string; name: string }[] {
+  return Object.entries(salaryLpaMap)
+    .filter(([slug]) => slug !== excludeSlug)
+    .map(([slug, l]) => ({ href: `/salary-calculator/${slug}`, name: `${l.label} In-Hand Salary` }));
+}
+
+function sipGoalLinks(excludeSlug?: string): { href: string; name: string }[] {
+  return Object.entries(sipGoalMap)
+    .filter(([slug]) => slug !== excludeSlug)
+    .map(([slug, g]) => ({ href: `/sip-calculator/${slug}`, name: `SIP for ${g.name}` }));
+}
+
+function getInternalLinks(path: string): string {
+  if (path === "/") {
+    return `<h2>All Calculators</h2>${linkList(calculatorPages)}<h2>Browse by Category</h2>${linkList(hubPages)}`;
+  }
+  if (path === "/hra-calculator") {
+    return `<h2>HRA Calculator by City</h2>${linkList(hraCityLinks())}<p><a href="/">Home</a></p>`;
+  }
+  if (path === "/salary-calculator") {
+    return `<h2>In-Hand Salary by CTC</h2>${linkList(lpaLinks())}<p><a href="/">Home</a></p>`;
+  }
+  if (path === "/sip-calculator") {
+    return `<h2>SIP Calculator by Goal</h2>${linkList(sipGoalLinks())}<p><a href="/">Home</a></p>`;
+  }
+  const hraMatch = path.match(/^\/hra-calculator\/([a-z-]+)$/);
+  if (hraMatch) {
+    return `<h2>Other Cities</h2>${linkList(hraCityLinks(hraMatch[1]))}<p><a href="/hra-calculator">All Cities</a> &middot; <a href="/">Home</a></p>`;
+  }
+  const salMatch = path.match(/^\/salary-calculator\/([a-z0-9.-]+)$/);
+  if (salMatch) {
+    return `<h2>Other Salary Levels</h2>${linkList(lpaLinks(salMatch[1]))}<p><a href="/salary-calculator">All Salary Levels</a> &middot; <a href="/">Home</a></p>`;
+  }
+  const sipMatch = path.match(/^\/sip-calculator\/([a-z0-9.-]+)$/);
+  if (sipMatch) {
+    return `<h2>Other Goals</h2>${linkList(sipGoalLinks(sipMatch[1]))}<p><a href="/sip-calculator">All Goals</a> &middot; <a href="/">Home</a></p>`;
+  }
+  return `<h2>Related Tools</h2>${linkList([...hubPages, ...calculatorPages.filter((c) => c.href !== path)])}<p><a href="/">Home</a></p>`;
 }
 
 export function injectSEO(html: string, urlPath: string): string {
@@ -523,12 +591,13 @@ export function injectSEO(html: string, urlPath: string): string {
     .join("\n    ");
   html = html.replace("</head>", `    ${jsonLdScripts}\n  </head>`);
 
-  const prerenderContent = `<div data-server-rendered="true" style="max-width:800px;margin:40px auto;padding:0 20px;font-family:system-ui,sans-serif"><h1>${escapeHtml(seo.title)}</h1><p>${escapeHtml(seo.description)}</p><hr/>${seo.faqText.split("\n\n").map(block => {
+  const internalLinks = getInternalLinks(cleanPath);
+  const prerenderContent = `<div data-server-rendered="true" style="max-width:800px;margin:40px auto;padding:0 20px;font-family:system-ui,sans-serif"><h1>${escapeHtml(seo.title)}</h1><p>${escapeHtml(seo.description)}</p>${internalLinks}<hr/>${seo.faqText.split("\n\n").map(block => {
     const lines = block.split("\n");
     const q = lines[0]?.replace(/^Q: /, "") || "";
     const a = lines[1]?.replace(/^A: /, "") || "";
     return `<h3>${escapeHtml(q)}</h3><p>${escapeHtml(a)}</p>`;
-  }).join("")}<hr/><p><a href="https://mypaisahq.com">My Paisa HQ</a> - Free Indian Finance Calculators</p></div>`;
+  }).join("")}<hr/><p><a href="/">My Paisa HQ</a> - Free Indian Finance Calculators</p></div>`;
   html = html.replace('<div id="root"></div>', `<div id="root">${prerenderContent}</div>`);
 
   return html;

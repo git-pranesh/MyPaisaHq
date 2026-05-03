@@ -1,0 +1,12 @@
+Error-Robots.txt_is_not_accessible.csv
+Error-indexable-Orphan_page_(has_no_incoming_internal_links).csv
+Error-indexable-Page_has_no_outgoing_links.csv
+Notice-HTTP_to_HTTPS_redirect.csv
+Notice-Pages_to_submit_to_IndexNow.csv
+Notice-indexable-H1_tag_changed.csv
+Notice-indexable-Meta_description_changed.csv
+Notice-indexable-Title_tag_changed.csv
+Warning-3XX_redirect.csv
+Warning-Slow_page.csv
+Warning-indexable-Meta_description_too_long.csv
+Warning-indexable-Title_too_long.csv
